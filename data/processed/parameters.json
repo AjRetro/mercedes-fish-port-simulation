@@ -1,0 +1,13 @@
+{
+  "source": "empirical_observations",
+  "total_boats": 12,
+  "span_hours": 9.5,
+  "arrival_rate": 1.2632,
+  "avg_service_time_hours": 1.042,
+  "avg_wait_time_hours": 0.146,
+  "direct_dock_probability": 0.667,
+  "boat_type_breakdown": {
+    "medium": 10,
+    "small": 2
+  }
+}
