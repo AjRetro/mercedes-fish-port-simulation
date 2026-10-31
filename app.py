@@ -1,7 +1,7 @@
 # app.py
 """
 Mercedes Fish Port Simulation & Operational Research Suite
-Camarines Norte State College (CNSC) – CCMS
+University of Camarines Norte (UCN) – CCMS
 Quantitative Modeling & Discrete-Event Simulation Engine
 
 Executive Design System:
@@ -352,10 +352,10 @@ st.markdown(
     f'<div class="brand-container">'
     f'<div>'
     f'<div class="brand-title">{SVG_ANCHOR}<span>Mercedes Fish Port Simulation & Analytics</span></div>'
-    f'<div class="brand-sub">Camarines Norte State College (CNSC) – Discrete-Event Maritime Logistics Digital Twin</div>'
+    f'<div class="brand-sub">University of Camarines Norte (UCN) – Discrete-Event Maritime Logistics Digital Twin</div>'
     f'</div>'
     f'<div class="header-pill-group">'
-    f'<span class="status-badge-meta">CNSC CCMS Research</span>'
+    f'<span class="status-badge-meta">UCN CCMS Research</span>'
     f'<div class="status-badge-live"><span class="status-dot"></span><span>SimPy Core Active</span></div>'
     f'</div>'
     f'</div>',
@@ -543,7 +543,7 @@ with tab1:
 # TAB 2: OBJECTIVE SCORECARD
 # ==============================================================================
 with tab2:
-    st.markdown('<div class="info-panel"><b>Research Proposal Compliance Matrix:</b> Verification of the 14 approved Camarines Norte State College (CNSC) specific research objectives.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="info-panel"><b>Research Proposal Compliance Matrix:</b> Verification of the 14 approved University of Camarines Norte (UCN) specific research objectives.</div>', unsafe_allow_html=True)
     
     c_prog1, c_prog2 = st.columns([3, 1])
     with c_prog1:
@@ -768,7 +768,7 @@ with tab5:
                 type="primary",
                 use_container_width=True
             )
-            st.caption("Complete IMRaD academic paper with mathematical formulations, 14 CNSC objectives, and references.")
+            st.caption("Complete IMRaD academic paper with mathematical formulations, 14 UCN objectives, and references.")
         else:
             st.caption("Academic paper file not found.")
 
