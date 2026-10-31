@@ -56,13 +56,13 @@ def _apply_dark_layout(fig: go.Figure, height: int = 340, title: str = "") -> go
             gridcolor=GRID_COLOR,
             zerolinecolor=BORDER_COLOR,
             tickfont=dict(color=MUTED_TEXT, size=10),
-            titlefont=dict(color=MUTED_TEXT, size=11),
+            title_font=dict(color=MUTED_TEXT, size=11),
         ),
         yaxis=dict(
             gridcolor=GRID_COLOR,
             zerolinecolor=BORDER_COLOR,
             tickfont=dict(color=MUTED_TEXT, size=10),
-            titlefont=dict(color=MUTED_TEXT, size=11),
+            title_font=dict(color=MUTED_TEXT, size=11),
         )
     )
     return fig
@@ -309,3 +309,4 @@ def plot_interactive_lattice(pairs: List[Tuple[float, float]]) -> go.Figure:
     fig.update_xaxes(title_text="Uniform Variate U_i", range=[0, 1])
     fig.update_yaxes(title_text="Uniform Variate U_{i+1}", range=[0, 1])
     return _apply_dark_layout(fig, height=340, title="2D Spectral Lattice Structure (Marsaglia Hyperplane Test)")
+
