@@ -473,7 +473,7 @@ with tab1:
         channel_capacity=channel_capacity,
         base_arrival_rate=arrival_rate
     )
-    components.html(twin_html, height=590, scrolling=False)
+    components.html(twin_html, height=605, scrolling=False)
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     col_btn, col_info = st.columns([1, 4])
