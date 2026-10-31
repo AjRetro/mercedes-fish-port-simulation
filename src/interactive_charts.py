@@ -33,15 +33,34 @@ def _apply_dark_layout(fig: go.Figure, height: int = 340, title: str = "") -> go
     fig.update_layout(
         title=dict(
             text=f"<b>{title}</b>" if title else "",
-            font=dict(family="Inter, -apple-system, sans-serif", size=13, color=TEXT_COLOR),
+            font=dict(family="Inter, -apple-system, sans-serif", size=12, color=TEXT_COLOR),
             x=0.01,
-            y=0.96
+            y=0.98,
+            xanchor="left",
+            yanchor="top",
+            pad=dict(b=4, t=0, l=0)
         ) if title else None,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor=SURFACE_BG,
         height=height,
-        margin=dict(l=45, r=25, t=44 if title else 20, b=42),
+        margin=dict(l=45, r=20, t=56 if title else 20, b=42),
         font=dict(family="Inter, -apple-system, sans-serif", color=TEXT_COLOR, size=11),
+        modebar=dict(
+            bgcolor="rgba(15, 23, 42, 0.75)",
+            color="#94A3B8",
+            activecolor=ACCENT_CYAN,
+            orientation="h",
+            remove=[
+                "lasso2d",
+                "select2d",
+                "zoomIn2d",
+                "zoomOut2d",
+                "autoScale2d",
+                "hoverClosestCartesian",
+                "hoverCompareCartesian",
+                "toggleSpikelines",
+            ]
+        ),
         legend=dict(
             bgcolor="rgba(15, 23, 42, 0.85)",
             bordercolor=BORDER_COLOR,
@@ -126,7 +145,7 @@ def plot_interactive_wait_histogram(wait_times: List[float], mean_wait: float) -
 
     fig.update_xaxes(title_text="Anchorage Waiting Time (Hours)")
     fig.update_yaxes(title_text="Vessel Arrivals")
-    return _apply_dark_layout(fig, height=330, title="Anchorage Waiting Time Distribution & Grade-A Window")
+    return _apply_dark_layout(fig, height=330, title="Anchorage Waiting Time Distribution")
 
 
 def plot_interactive_mode_donut(direct_count: int, lighter_count: int) -> go.Figure:
@@ -222,7 +241,7 @@ def plot_interactive_scenario_comparison(scenario_results: List[Dict[str, Any]])
 
     fig.update_xaxes(tickangle=-15, title_text="")
     fig.update_yaxes(title_text="Anchorage Waiting Time (Hours)")
-    return _apply_dark_layout(fig, height=360, title="Comparative Mean Anchorage Wait with 95% Student's t CI")
+    return _apply_dark_layout(fig, height=360, title="Comparative Mean Anchorage Wait (95% CI)")
 
 
 def plot_interactive_economics_comparison(cb_results: List[Dict[str, Any]]) -> go.Figure:
@@ -263,7 +282,7 @@ def plot_interactive_economics_comparison(cb_results: List[Dict[str, Any]]) -> g
     fig.update_layout(barmode="group")
     fig.update_xaxes(tickangle=-15)
     fig.update_yaxes(title_text="Economic Value (PHP / Week)")
-    return _apply_dark_layout(fig, height=380, title="Weekly Cost-Benefit & Economic Surplus Analysis (PHP)")
+    return _apply_dark_layout(fig, height=380, title="Weekly Cost-Benefit Analysis (PHP)")
 
 
 def plot_interactive_fish_perishability_curve(cargo_banyeras: int = 150,
@@ -333,7 +352,7 @@ def plot_interactive_fish_perishability_curve(cargo_banyeras: int = 150,
 
     fig.update_xaxes(title_text="Anchorage Delay (Hours)", range=[0, 16])
     fig.update_yaxes(title_text="Catch Financial Value (PHP)")
-    return _apply_dark_layout(fig, height=350, title=f"Post-Harvest Quality Depreciation Curve ({cargo_banyeras} Banyeras)")
+    return _apply_dark_layout(fig, height=350, title=f"Quality Depreciation Curve ({cargo_banyeras} Banyeras)")
 
 
 def plot_interactive_lattice(pairs: List[Tuple[float, float]]) -> go.Figure:
@@ -356,4 +375,4 @@ def plot_interactive_lattice(pairs: List[Tuple[float, float]]) -> go.Figure:
 
     fig.update_xaxes(title_text="Uniform Variate U_i", range=[0, 1])
     fig.update_yaxes(title_text="Uniform Variate U_{i+1}", range=[0, 1], scaleanchor="x", scaleratio=1)
-    return _apply_dark_layout(fig, height=350, title="2D Spectral Lattice Structure (Marsaglia Hyperplane Test)")
+    return _apply_dark_layout(fig, height=350, title="2D Spectral Lattice Structure (PRNG Test)")

@@ -303,6 +303,30 @@ st.markdown("""
         border-bottom: 2px solid #38BDF8 !important;
         background: rgba(56, 189, 248, 0.06) !important;
     }
+
+    /* Plotly Modebar Floating Toolbar Optimization */
+    .js-plotly-plot .plotly .modebar-container {
+        top: 6px !important;
+        right: 8px !important;
+        z-index: 1000 !important;
+    }
+    .js-plotly-plot .plotly .modebar {
+        background: rgba(15, 23, 42, 0.9) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 6px !important;
+        padding: 2px 4px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+    }
+    .js-plotly-plot .plotly .modebar-btn {
+        padding: 3px !important;
+    }
+    .js-plotly-plot .plotly .modebar-btn path {
+        fill: #94A3B8 !important;
+    }
+    .js-plotly-plot .plotly .modebar-btn:hover path,
+    .js-plotly-plot .plotly .modebar-btn.active path {
+        fill: #38BDF8 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -314,41 +338,57 @@ SVG_CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke=
 SVG_ROI = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>'
 
 # Top Header Bar
-st.markdown(f"""
-<div class="brand-container">
-    <div>
-        <div class="brand-title">
-            {SVG_ANCHOR}
-            <span>Mercedes Fish Port Simulation & Analytics</span>
-        </div>
-        <div class="brand-sub">Camarines Norte State College (CNSC) – Discrete-Event Maritime Logistics Digital Twin</div>
-    </div>
-    <div class="header-pill-group">
-        <span class="status-badge-meta">CNSC CCMS Research</span>
-        <div class="status-badge-live">
-            <span class="status-dot"></span>
-            <span>SimPy Core Active</span>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    f'<div class="brand-container">'
+    f'<div>'
+    f'<div class="brand-title">{SVG_ANCHOR}<span>Mercedes Fish Port Simulation & Analytics</span></div>'
+    f'<div class="brand-sub">Camarines Norte State College (CNSC) – Discrete-Event Maritime Logistics Digital Twin</div>'
+    f'</div>'
+    f'<div class="header-pill-group">'
+    f'<span class="status-badge-meta">CNSC CCMS Research</span>'
+    f'<div class="status-badge-live"><span class="status-dot"></span><span>SimPy Core Active</span></div>'
+    f'</div>'
+    f'</div>',
+    unsafe_allow_html=True
+)
+
+# Standardized Plotly Configuration for Streamlit
+PLOTLY_CONFIG = {
+    "displayModeBar": "hover",
+    "displaylogo": False,
+    "responsive": True,
+    "modeBarButtonsToRemove": [
+        "lasso2d",
+        "select2d",
+        "zoomIn2d",
+        "zoomOut2d",
+        "autoScale2d",
+        "hoverClosestCartesian",
+        "hoverCompareCartesian",
+        "toggleSpikelines",
+    ],
+    "toImageButtonOptions": {
+        "format": "png",
+        "filename": "mercedes_fish_port_chart",
+        "scale": 2,
+    },
+}
 
 
-def render_card(label: str, value: str, unit: str = "", subtext: str = "", badge_html: str = "", accent: str = "blue"):
-    """Renders a styled high-contrast dark metric card with custom color accent and unit separation."""
-    return f"""
-    <div class="metric-card metric-card-{accent}">
-        <div class="metric-top">
-            <span class="metric-label">{label}</span>
-            {badge_html}
-        </div>
-        <div class="metric-body">
-            <span class="metric-val">{value}</span>
-            <span class="metric-unit">{unit}</span>
-        </div>
-        <div class="metric-sub">{subtext}</div>
-    </div>
+def render_card(label: str, value: str, unit: str = "", subtext: str = "", badge_html: str = "", accent: str = "blue") -> str:
+    """Renders a styled high-contrast dark metric card with custom color accent and unit separation.
+    Built with flat, unindented HTML to prevent Markdown parser code-block injection.
     """
+    badge_part = f"<div>{badge_html}</div>" if badge_html else ""
+    unit_part = f'<span class="metric-unit">{unit}</span>' if unit else ""
+    subtext_part = f'<div class="metric-sub">{subtext}</div>' if subtext else ""
+    return (
+        f'<div class="metric-card metric-card-{accent}">'
+        f'<div class="metric-top"><span class="metric-label">{label}</span>{badge_part}</div>'
+        f'<div class="metric-body"><span class="metric-val">{value}</span>{unit_part}</div>'
+        f'{subtext_part}'
+        f'</div>'
+    )
 
 # ==============================================================================
 # SIDEBAR CONTROLS (ORGANIZED INTO 3 LOGICAL DOMAINS)
@@ -483,11 +523,11 @@ with tab1:
     c_p1, c_p2 = st.columns(2)
     with c_p1:
         fig_hist = plot_interactive_wait_histogram(stats.wait_times, kpi["avg_wait_time"])
-        st.plotly_chart(fig_hist, use_container_width=True)
+        st.plotly_chart(fig_hist, use_container_width=True, config=PLOTLY_CONFIG)
 
     with c_p2:
         fig_donut = plot_interactive_mode_donut(stats.direct_dock_count, stats.lightering_count)
-        st.plotly_chart(fig_donut, use_container_width=True)
+        st.plotly_chart(fig_donut, use_container_width=True, config=PLOTLY_CONFIG)
 
 # ==============================================================================
 # TAB 2: OBJECTIVE SCORECARD
@@ -560,41 +600,27 @@ with tab3:
     master_cb = next((c for c in cb if "Master" in c["name"]), cb[-1])
     sched_cb = next((c for c in cb if "Scheduling" in c["name"]), cb[1])
 
-    st.markdown(f"""
-    <div class="executive-banner">
-        <div class="banner-title">
-            {SVG_ROI}
-            <span>Executive Briefing: Optimal Modernization Strategy (Scenario 4 Master Plan)</span>
-        </div>
-        <div class="banner-grid">
-            <div>
-                <div class="banner-item-label">Queuing Delay Reduction</div>
-                <div class="banner-item-val">{master_red:.1f}%</div>
-                <div class="banner-item-sub">Mean wait drops from {baseline_w:.2f}h to {master_w:.2f}h</div>
-            </div>
-            <div>
-                <div class="banner-item-label">Annualized Net Economic Benefit</div>
-                <div class="banner-item-val">+PHP {master_cb['net_weekly_benefit_php']*52/1e6:,.1f}M / yr</div>
-                <div class="banner-item-sub">Net fishing community welfare restored</div>
-            </div>
-            <div>
-                <div class="banner-item-label">Capital Investment Payback</div>
-                <div class="banner-item-val">2.4 Months</div>
-                <div class="banner-item-sub">Benefit-Cost Ratio (BCR) = {master_cb['benefit_cost_ratio']:.1f}</div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="executive-banner">'
+        f'<div class="banner-title">{SVG_ROI}<span>Executive Briefing: Optimal Modernization Strategy (Scenario 4 Master Plan)</span></div>'
+        f'<div class="banner-grid">'
+        f'<div><div class="banner-item-label">Queuing Delay Reduction</div><div class="banner-item-val">{master_red:.1f}%</div><div class="banner-item-sub">Mean wait drops from {baseline_w:.2f}h to {master_w:.2f}h</div></div>'
+        f'<div><div class="banner-item-label">Annualized Net Economic Benefit</div><div class="banner-item-val">+PHP {master_cb["net_weekly_benefit_php"]*52/1e6:,.1f}M / yr</div><div class="banner-item-sub">Net fishing community welfare restored</div></div>'
+        f'<div><div class="banner-item-label">Capital Investment Payback</div><div class="banner-item-val">2.4 Months</div><div class="banner-item-sub">Benefit-Cost Ratio (BCR) = {master_cb["benefit_cost_ratio"]:.1f}</div></div>'
+        f'</div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
 
     # Side-by-Side Dual Interactive Chart Deck
     c_ch1, c_ch2 = st.columns(2)
     with c_ch1:
         fig_scen = plot_interactive_scenario_comparison(scen_results)
-        st.plotly_chart(fig_scen, use_container_width=True)
+        st.plotly_chart(fig_scen, use_container_width=True, config=PLOTLY_CONFIG)
 
     with c_ch2:
         fig_econ = plot_interactive_economics_comparison(cb)
-        st.plotly_chart(fig_econ, use_container_width=True)
+        st.plotly_chart(fig_econ, use_container_width=True, config=PLOTLY_CONFIG)
 
     # Performance Dataframe
     st.markdown('<div class="section-title">Operational Performance Matrix (with 95% Confidence Intervals)</div>', unsafe_allow_html=True)
@@ -643,7 +669,7 @@ with tab3:
         diesel_cost_per_hr=float(sim_diesel) * 5.0,
         ice_cost_per_hr=150.0
     )
-    st.plotly_chart(fig_perish, use_container_width=True)
+    st.plotly_chart(fig_perish, use_container_width=True, config=PLOTLY_CONFIG)
 
     # Dynamic Single Vessel Loss Breakdown Cards
     test_loss = calculate_vessel_economic_loss(cargo_units=150, delay_hours=scen_results[0]["avg_wait"])
@@ -689,7 +715,7 @@ with tab4:
         lcg = LehmerLCG(seed=42)
         pairs = [(lcg.next_uniform(), lcg.next_uniform()) for _ in range(800)]
         fig_lat = plot_interactive_lattice(pairs)
-        st.plotly_chart(fig_lat, use_container_width=True)
+        st.plotly_chart(fig_lat, use_container_width=True, config=PLOTLY_CONFIG)
 
 # ==============================================================================
 # TAB 5: VALIDATION & PAPER EXPORT
