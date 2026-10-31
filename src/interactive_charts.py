@@ -2,55 +2,56 @@
 """
 Interactive Plotly Visualization Suite for Mercedes Fish Port Simulation.
 Engineered for modern dark-theme Streamlit dashboards:
-- High contrast, WCAG 2.1 AA compliant color palette
+- High contrast, WCAG 2.1 AA compliant color palette (Deep Harbor Design Tokens)
 - Responsive layout with touch and hover tooltips
 - Interactive zoom, pan, and hover telemetry
+- Plotly 6/7+ compliant without deprecated axis properties
 """
 
 from typing import List, Dict, Any, Tuple
 import numpy as np
 import plotly.graph_objects as go
-import plotly.express as px
 
-# High-Contrast Dark Theme Palette
-DARK_BG = "#0B0F19"
-SURFACE_BG = "#111827"
-BORDER_COLOR = "#334155"
+# Deep Harbor Design Tokens
+DARK_BG = "#080C14"
+SURFACE_BG = "#0F172A"
+SURFACE_ELEV = "#1E293B"
+BORDER_COLOR = "rgba(255, 255, 255, 0.08)"
 TEXT_COLOR = "#F8FAFC"
 MUTED_TEXT = "#94A3B8"
-GRID_COLOR = "rgba(255, 255, 255, 0.06)"
+GRID_COLOR = "rgba(255, 255, 255, 0.04)"
 
-BLUE_ACCENT = "#38BDF8"
-EMERALD_ACCENT = "#34D399"
-AMBER_ACCENT = "#FBBF24"
-ROSE_ACCENT = "#F87171"
-PURPLE_ACCENT = "#A78BFA"
+ACCENT_CYAN = "#38BDF8"
+ACCENT_EMERALD = "#34D399"
+ACCENT_AMBER = "#FBBF24"
+ACCENT_ROSE = "#F87171"
+ACCENT_PURPLE = "#A78BFA"
 
 
 def _apply_dark_layout(fig: go.Figure, height: int = 340, title: str = "") -> go.Figure:
     """Applies standardized dark theme layout across all Plotly figures."""
     fig.update_layout(
         title=dict(
-            text=title,
-            font=dict(family="Inter, sans-serif", size=14, color=TEXT_COLOR),
+            text=f"<b>{title}</b>" if title else "",
+            font=dict(family="Inter, -apple-system, sans-serif", size=13, color=TEXT_COLOR),
             x=0.01,
             y=0.96
         ) if title else None,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor=SURFACE_BG,
         height=height,
-        margin=dict(l=40, r=20, t=40 if title else 20, b=40),
-        font=dict(family="Inter, sans-serif", color=TEXT_COLOR, size=11),
+        margin=dict(l=45, r=25, t=44 if title else 20, b=42),
+        font=dict(family="Inter, -apple-system, sans-serif", color=TEXT_COLOR, size=11),
         legend=dict(
-            bgcolor="rgba(17, 24, 39, 0.8)",
+            bgcolor="rgba(15, 23, 42, 0.85)",
             bordercolor=BORDER_COLOR,
             borderwidth=1,
             font=dict(size=10, color=TEXT_COLOR)
         ),
         hoverlabel=dict(
-            bgcolor=SURFACE_BG,
-            bordercolor=BLUE_ACCENT,
-            font=dict(family="Inter, sans-serif", size=12, color=TEXT_COLOR)
+            bgcolor=SURFACE_ELEV,
+            bordercolor=ACCENT_CYAN,
+            font=dict(family="Inter, -apple-system, sans-serif", size=12, color=TEXT_COLOR)
         ),
         xaxis=dict(
             gridcolor=GRID_COLOR,
@@ -69,22 +70,35 @@ def _apply_dark_layout(fig: go.Figure, height: int = 340, title: str = "") -> go
 
 
 def plot_interactive_wait_histogram(wait_times: List[float], mean_wait: float) -> go.Figure:
-    """Interactive histogram of anchorage waiting times with mean and p90 lines."""
+    """Interactive histogram of anchorage waiting times with mean, p90, and Grade A window."""
     if not wait_times:
         wait_times = [0.0]
 
     p90_wait = float(np.percentile(wait_times, 90))
 
     fig = go.Figure()
+    
+    # Grade A Prime Holding Window Background (0 to 3 hours)
+    fig.add_vrect(
+        x0=0,
+        x1=3.0,
+        fillcolor="rgba(16, 185, 129, 0.08)",
+        layer="below",
+        line_width=0,
+        annotation_text="Prime Grade-A Window (≤3h)",
+        annotation_position="top left",
+        annotation_font=dict(color=ACCENT_EMERALD, size=9)
+    )
+
     fig.add_trace(go.Histogram(
         x=wait_times,
         nbinsx=28,
         marker=dict(
-            color=BLUE_ACCENT,
+            color=ACCENT_CYAN,
             opacity=0.85,
             line=dict(color="#0284C7", width=1)
         ),
-        hovertemplate="Wait: %{x:.2f}h<br>Vessel Count: %{y}<extra></extra>",
+        hovertemplate="Wait Range: %{x:.2f}h<br>Vessel Count: %{y}<extra></extra>",
         name="Vessels"
     ))
 
@@ -93,10 +107,10 @@ def plot_interactive_wait_histogram(wait_times: List[float], mean_wait: float) -
         x=mean_wait,
         line_width=2,
         line_dash="dash",
-        line_color=ROSE_ACCENT,
+        line_color=ACCENT_ROSE,
         annotation_text=f"Mean: {mean_wait:.2f}h",
         annotation_position="top right",
-        annotation_font=dict(color=ROSE_ACCENT, size=10)
+        annotation_font=dict(color=ACCENT_ROSE, size=10)
     )
 
     # 90th Percentile Vertical Line
@@ -104,31 +118,31 @@ def plot_interactive_wait_histogram(wait_times: List[float], mean_wait: float) -
         x=p90_wait,
         line_width=1.5,
         line_dash="dot",
-        line_color=AMBER_ACCENT,
+        line_color=ACCENT_AMBER,
         annotation_text=f"P90: {p90_wait:.2f}h",
         annotation_position="top left",
-        annotation_font=dict(color=AMBER_ACCENT, size=10)
+        annotation_font=dict(color=ACCENT_AMBER, size=10)
     )
 
     fig.update_xaxes(title_text="Anchorage Waiting Time (Hours)")
     fig.update_yaxes(title_text="Vessel Arrivals")
-    return _apply_dark_layout(fig, height=330, title="Anchorage Waiting Time Distribution")
+    return _apply_dark_layout(fig, height=330, title="Anchorage Waiting Time Distribution & Grade-A Window")
 
 
 def plot_interactive_mode_donut(direct_count: int, lighter_count: int) -> go.Figure:
-    """Interactive donut chart for vessel landing mode breakdown."""
+    """Interactive donut chart for vessel landing mode breakdown with center total."""
     total = direct_count + lighter_count
     if total == 0:
         direct_count, lighter_count = 1, 1
 
     labels = ["Direct Wharf Landing", "Anchorage Lightering"]
     values = [direct_count, lighter_count]
-    colors = [EMERALD_ACCENT, BLUE_ACCENT]
+    colors = [ACCENT_EMERALD, ACCENT_CYAN]
 
     fig = go.Figure(data=[go.Pie(
         labels=labels,
         values=values,
-        hole=0.58,
+        hole=0.62,
         marker=dict(colors=colors, line=dict(color=SURFACE_BG, width=2)),
         textinfo="percent+label",
         textfont=dict(color=TEXT_COLOR, size=11),
@@ -137,41 +151,42 @@ def plot_interactive_mode_donut(direct_count: int, lighter_count: int) -> go.Fig
 
     fig.update_layout(
         annotations=[dict(
-            text=f"<b>{total}</b><br><span style='font-size:10px; color:#94A3B8'>Total</span>",
+            text=f"<span style='font-size:20px; font-weight:700; color:{TEXT_COLOR}'>{total}</span><br><span style='font-size:11px; color:{MUTED_TEXT}'>Vessels</span>",
             x=0.5, y=0.5,
-            font=dict(size=14, color=TEXT_COLOR),
             showarrow=False
         )],
         showlegend=False
     )
-    return _apply_dark_layout(fig, height=330, title="Landing Workflow Mode Breakdown")
+    return _apply_dark_layout(fig, height=330, title="Vessel Landing Workflow Distribution")
 
 
 def plot_interactive_scenario_comparison(scenario_results: List[Dict[str, Any]]) -> go.Figure:
-    """Interactive bar chart comparing average waiting times with 95% Confidence Intervals."""
+    """Interactive bar chart comparing average waiting times with direct data labels and 95% CIs."""
     names = [r["name"] for r in scenario_results]
     waits = [r["avg_wait"] for r in scenario_results]
     errs = [r.get("ci_wait_half_width", 0.0) for r in scenario_results]
     turnarounds = [r.get("avg_total", 0.0) for r in scenario_results]
     throughputs = [r.get("avg_completed", 0.0) for r in scenario_results]
 
-    # Color highlights: Baseline is slate/neutral, Master Strategy is vibrant emerald, others blue/amber
     colors = []
     for n in names:
         if "Master" in n:
-            colors.append(EMERALD_ACCENT)
+            colors.append(ACCENT_EMERALD)
         elif "Baseline" in n:
             colors.append(MUTED_TEXT)
         elif "Scheduling" in n:
-            colors.append(BLUE_ACCENT)
+            colors.append(ACCENT_CYAN)
         else:
-            colors.append(AMBER_ACCENT)
+            colors.append(ACCENT_AMBER)
 
     fig = go.Figure()
 
     fig.add_trace(go.Bar(
         x=names,
         y=waits,
+        text=[f"{w:.2f}h" for w in waits],
+        textposition="outside",
+        textfont=dict(color=TEXT_COLOR, size=10),
         error_y=dict(
             type="data",
             array=errs,
@@ -189,10 +204,21 @@ def plot_interactive_scenario_comparison(scenario_results: List[Dict[str, Any]])
             "<b>%{x}</b><br>"
             + "Mean Wait: %{y:.2f} ± %{customdata[2]:.2f} hrs<br>"
             + "Turnaround: %{customdata[0]:.2f} hrs<br>"
-            + "Weekly Throughput: %{customdata[1]:.0f} vessels<extra></extra>"
+            + "Throughput: %{customdata[1]:.0f} vessels<extra></extra>"
         ),
         name="Mean Wait Time"
     ))
+
+    # Horizontal target line: Maximum safe dwell before ice melt & quality loss (4.0h)
+    fig.add_hline(
+        y=4.0,
+        line_dash="dot",
+        line_color=ACCENT_AMBER,
+        line_width=1.5,
+        annotation_text="Safe Quality Threshold (4.0h)",
+        annotation_position="top left",
+        annotation_font=dict(color=ACCENT_AMBER, size=10)
+    )
 
     fig.update_xaxes(tickangle=-15, title_text="")
     fig.update_yaxes(title_text="Anchorage Waiting Time (Hours)")
@@ -210,28 +236,28 @@ def plot_interactive_economics_comparison(cb_results: List[Dict[str, Any]]) -> g
     fig = go.Figure()
 
     fig.add_trace(go.Bar(
-        name="Gross Savings (Delay & Spoilage Avoided)",
+        name="Gross Savings (Delay Avoided)",
         x=names,
         y=savings,
-        marker=dict(color=BLUE_ACCENT),
-        hovertemplate="Gross Savings: PHP %{y:,.0f}/week<extra></extra>"
+        marker=dict(color=ACCENT_CYAN),
+        hovertemplate="Gross Savings: PHP %{y:,.0f}/wk<extra></extra>"
     ))
 
     fig.add_trace(go.Bar(
-        name="Incremental Cost (CAPEX + OPEX)",
+        name="Added Cost (CAPEX + OPEX)",
         x=names,
         y=costs,
-        marker=dict(color=ROSE_ACCENT),
-        hovertemplate="Implementation Cost: PHP %{y:,.0f}/week<extra></extra>"
+        marker=dict(color=ACCENT_ROSE),
+        hovertemplate="Added Cost: PHP %{y:,.0f}/wk<extra></extra>"
     ))
 
     fig.add_trace(go.Bar(
         name="Net Economic Benefit",
         x=names,
         y=nets,
-        marker=dict(color=EMERALD_ACCENT),
+        marker=dict(color=ACCENT_EMERALD),
         customdata=bcrs,
-        hovertemplate="<b>Net Benefit: PHP %{y:,.0f}/week</b><br>BCR: %{customdata:.2f}<extra></extra>"
+        hovertemplate="<b>Net Benefit: PHP %{y:,.0f}/wk</b><br>BCR: %{customdata:.2f}<extra></extra>"
     ))
 
     fig.update_layout(barmode="group")
@@ -245,7 +271,7 @@ def plot_interactive_fish_perishability_curve(cargo_banyeras: int = 150,
                                               decay_rate: float = 0.035,
                                               diesel_cost_per_hr: float = 350.0,
                                               ice_cost_per_hr: float = 150.0) -> go.Figure:
-    """Interactive curve showing exponential fish spoilage, fuel idling, and ice losses over delay hours."""
+    """Interactive curve showing quality degradation across Grade A, B, and C holding zones."""
     hours = np.linspace(0, 16, 100)
     gross_value = cargo_banyeras * price_per_banyera
 
@@ -257,12 +283,42 @@ def plot_interactive_fish_perishability_curve(cargo_banyeras: int = 150,
 
     fig = go.Figure()
 
+    # Zone 1 (0 to 3 Hours): Grade-A Prime Catch
+    fig.add_vrect(
+        x0=0, x1=3.0,
+        fillcolor="rgba(16, 185, 129, 0.08)",
+        layer="below", line_width=0,
+        annotation_text="Grade-A Prime (0–3h)",
+        annotation_position="top left",
+        annotation_font=dict(color=ACCENT_EMERALD, size=9)
+    )
+
+    # Zone 2 (3 to 6 Hours): Grade-B Commercial Discount
+    fig.add_vrect(
+        x0=3.0, x1=6.0,
+        fillcolor="rgba(245, 158, 11, 0.08)",
+        layer="below", line_width=0,
+        annotation_text="Grade-B Discount (3–6h)",
+        annotation_position="top left",
+        annotation_font=dict(color=ACCENT_AMBER, size=9)
+    )
+
+    # Zone 3 (> 6 Hours): Grade-C Industrial Devaluation
+    fig.add_vrect(
+        x0=6.0, x1=16.0,
+        fillcolor="rgba(239, 68, 68, 0.08)",
+        layer="below", line_width=0,
+        annotation_text="Grade-C / Industrial (>6h)",
+        annotation_position="top left",
+        annotation_font=dict(color=ACCENT_ROSE, size=9)
+    )
+
     fig.add_trace(go.Scatter(
         x=hours,
         y=remaining_value,
         mode="lines",
         name="Residual Cargo Market Value",
-        line=dict(color=EMERALD_ACCENT, width=2.5),
+        line=dict(color=ACCENT_EMERALD, width=2.5),
         hovertemplate="Delay: %{x:.1f}h<br>Remaining Cargo Value: PHP %{y:,.0f}<extra></extra>"
     ))
 
@@ -270,26 +326,18 @@ def plot_interactive_fish_perishability_curve(cargo_banyeras: int = 150,
         x=hours,
         y=total_loss,
         mode="lines",
-        name="Cumulative Congestion Penalty",
-        line=dict(color=ROSE_ACCENT, width=2.5, dash="dash"),
+        name="Cumulative Congestion Loss",
+        line=dict(color=ACCENT_ROSE, width=2.5, dash="dash"),
         hovertemplate="Delay: %{x:.1f}h<br>Cumulative Loss: PHP %{y:,.0f}<extra></extra>"
     ))
 
-    # Grade Threshold Vertical Lines
-    fig.add_vline(x=3.0, line_dash="dot", line_color=AMBER_ACCENT, line_width=1,
-                  annotation_text="Grade B Discount (~3h)", annotation_position="top left",
-                  annotation_font=dict(color=AMBER_ACCENT, size=9))
-    fig.add_vline(x=6.0, line_dash="dot", line_color=ROSE_ACCENT, line_width=1,
-                  annotation_text="Grade C / Industrial (~6h)", annotation_position="top left",
-                  annotation_font=dict(color=ROSE_ACCENT, size=9))
-
-    fig.update_xaxes(title_text="Anchorage Delay (Hours)")
+    fig.update_xaxes(title_text="Anchorage Delay (Hours)", range=[0, 16])
     fig.update_yaxes(title_text="Catch Financial Value (PHP)")
-    return _apply_dark_layout(fig, height=340, title=f"Post-Harvest Quality Depreciation Curve ({cargo_banyeras} Banyeras)")
+    return _apply_dark_layout(fig, height=350, title=f"Post-Harvest Quality Depreciation Curve ({cargo_banyeras} Banyeras)")
 
 
 def plot_interactive_lattice(pairs: List[Tuple[float, float]]) -> go.Figure:
-    """Interactive 2D spectral lattice test scatter for Lehmer PRNG."""
+    """Interactive 2D spectral lattice test scatter for Lehmer PRNG with 1:1 square aspect ratio."""
     u_i = [p[0] for p in pairs]
     u_next = [p[1] for p in pairs]
 
@@ -300,13 +348,12 @@ def plot_interactive_lattice(pairs: List[Tuple[float, float]]) -> go.Figure:
         mode="markers",
         marker=dict(
             size=4,
-            color=BLUE_ACCENT,
+            color=ACCENT_CYAN,
             opacity=0.65
         ),
         hovertemplate="U_i: %{x:.4f}<br>U_{i+1}: %{y:.4f}<extra></extra>"
     ))
 
     fig.update_xaxes(title_text="Uniform Variate U_i", range=[0, 1])
-    fig.update_yaxes(title_text="Uniform Variate U_{i+1}", range=[0, 1])
-    return _apply_dark_layout(fig, height=340, title="2D Spectral Lattice Structure (Marsaglia Hyperplane Test)")
-
+    fig.update_yaxes(title_text="Uniform Variate U_{i+1}", range=[0, 1], scaleanchor="x", scaleratio=1)
+    return _apply_dark_layout(fig, height=350, title="2D Spectral Lattice Structure (Marsaglia Hyperplane Test)")
