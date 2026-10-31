@@ -15,6 +15,7 @@ import os
 import pandas as pd
 import numpy as np
 import streamlit as st
+import streamlit.components.v1 as components
 
 from src.model import run_simulation
 from src.scenarios import run_all_scenarios_for_ui, get_default_scenario_definitions
@@ -22,6 +23,7 @@ from src.cost_benefit import analyze_scenarios, calculate_vessel_economic_loss, 
 from src.prng import LehmerLCG, CRNStreamManager
 from src.data_loader import compute_parameters_from_df, load_field_observations
 from src.validation import run_deterministic_verification, validate_against_field_observations
+from src.port_canvas import generate_digital_twin_html
 from src.interactive_charts import (
     plot_interactive_wait_histogram,
     plot_interactive_mode_donut,
@@ -463,6 +465,17 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     st.markdown('<div class="info-panel"><b>Multi-Tier Maritime Network Topology:</b> Outer Roadstead (Q_anch) → Estuarine Channel Corridor (C_chan) → Parallel Shuttle Bancas (R_banca) → Wharf Landing Berths (B_berth).</div>', unsafe_allow_html=True)
     
+    # Interactive Digital Twin Port Canvas (Panelist Live Observation Deck)
+    st.markdown('<div class="section-title">Interactive Digital Twin: Live Maritime Flow & 6:00 AM Bulungan Rush</div>', unsafe_allow_html=True)
+    twin_html = generate_digital_twin_html(
+        num_berths=num_berths,
+        num_bancas=num_small_boats,
+        channel_capacity=channel_capacity,
+        base_arrival_rate=arrival_rate
+    )
+    components.html(twin_html, height=590, scrolling=False)
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
     col_btn, col_info = st.columns([1, 4])
     with col_btn:
         run_sim_btn = st.button("Execute Simulation Trial", type="primary", use_container_width=True)
