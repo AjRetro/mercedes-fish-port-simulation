@@ -304,18 +304,28 @@ st.markdown("""
         background: rgba(56, 189, 248, 0.06) !important;
     }
 
-    /* Plotly Modebar Floating Toolbar Optimization */
+    /* Plotly Modebar Floating Toolbar: Fully hidden until hovered */
     .js-plotly-plot .plotly .modebar-container {
         top: 6px !important;
         right: 8px !important;
         z-index: 1000 !important;
     }
+    [data-testid="stPlotlyChart"] .modebar,
     .js-plotly-plot .plotly .modebar {
-        background: rgba(15, 23, 42, 0.9) !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        background: rgba(15, 23, 42, 0.92) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         border-radius: 6px !important;
         padding: 2px 4px !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+        transition: opacity 0.2s ease-in-out !important;
+    }
+    [data-testid="stPlotlyChart"]:hover .modebar,
+    .js-plotly-plot:hover .modebar,
+    .js-plotly-plot .plotly:hover .modebar {
+        opacity: 1 !important;
+        pointer-events: auto !important;
     }
     .js-plotly-plot .plotly .modebar-btn {
         padding: 3px !important;

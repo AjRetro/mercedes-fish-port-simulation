@@ -46,7 +46,7 @@ def _apply_dark_layout(fig: go.Figure, height: int = 340, title: str = "") -> go
         margin=dict(l=45, r=20, t=56 if title else 20, b=42),
         font=dict(family="Inter, -apple-system, sans-serif", color=TEXT_COLOR, size=11),
         modebar=dict(
-            bgcolor="rgba(15, 23, 42, 0.75)",
+            bgcolor="rgba(0, 0, 0, 0)",
             color="#94A3B8",
             activecolor=ACCENT_CYAN,
             orientation="h",
