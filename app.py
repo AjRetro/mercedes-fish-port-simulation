@@ -24,6 +24,7 @@ from src.prng import LehmerLCG, CRNStreamManager
 from src.data_loader import compute_parameters_from_df, load_field_observations
 from src.validation import run_deterministic_verification, validate_against_field_observations
 from src.port_canvas import generate_digital_twin_html
+from src.port_3d_engine import generate_3d_digital_twin_html
 from src.interactive_charts import (
     plot_interactive_wait_histogram,
     plot_interactive_mode_donut,
@@ -37,14 +38,51 @@ from src.interactive_charts import (
 # STREAMLIT PAGE CONFIGURATION
 # ==============================================================================
 st.set_page_config(
-    page_title="Mercedes Fish Port - Simulation & Analytics Suite",
+    page_title="Mercedes Fish Port — 3D DES Digital Twin",
     page_icon="https://raw.githubusercontent.com/feathericons/feather/master/icons/anchor.svg",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
+# Check View Mode (Defaults to 100% Full-Screen 3D Digital Twin)
+view_mode = st.query_params.get("view", "3d")
+
+if view_mode == "3d":
+    st.markdown("""
+    <style>
+        /* Zero-Clutter Full-Screen 3D Viewport (100vw x 100vh) */
+        header[data-testid="stHeader"] { display: none !important; }
+        [data-testid="stSidebar"] { display: none !important; }
+        [data-testid="stSidebarCollapsedControl"] { display: none !important; }
+        footer { display: none !important; }
+        #MainMenu { display: none !important; }
+        
+        .main, .block-container {
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: 100vw !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            overflow: hidden !important;
+        }
+        iframe {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            border: none !important;
+            z-index: 1 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    html_3d = generate_3d_digital_twin_html()
+    components.html(html_3d, height=1080, scrolling=False)
+    st.stop()
+
 # ==============================================================================
-# DEEP HARBOR DESIGN SYSTEM (WCAG 2.1 AA COMPLIANT)
+# DEEP HARBOR DESIGN SYSTEM (WCAG 2.1 AA COMPLIANT) - ACADEMIC REPORT VIEW
 # ==============================================================================
 st.markdown("""
 <style>
