@@ -3,12 +3,17 @@
 Interactive 3D Discrete-Event Simulation (DES) Digital Twin Engine
 for Mercedes Fish Port, Mercedes, Camarines Norte.
 
-Developed collaboratively by:
-- @design-ux-architect: Zero-clutter 100% full-screen workspace, progressive disclosure modals, publication screenshot mode.
-- @design-ui-designer: Deep ocean slate palette, glassmorphic HUD pills, WCAG 2.1 AA contrast, crisp typography.
-- @engineering-frontend-developer / Simulation Engineer: WebGL Three.js engine with real-world spatial topology,
-  13-berth concrete wharf, persistent small boat fleet (24 bancas), dual medium vessel behaviors (direct docking vs distant anchorage),
-  top-lantern lighthouse beam, semi-diurnal tidal gating, and 6:00 AM Bulungan auction rush.
+Developed strictly in accordance with Agency Agents Skills:
+- C:/Users/L470/.gemini/config/skills/agency-ux-architect/SKILL.md
+- C:/Users/L470/.gemini/config/skills/agency-ui-designer/SKILL.md
+- C:/Users/L470/.gemini/config/skills/agency-frontend-developer/SKILL.md
+
+Key Architecture & Spatial Upgrades:
+1. Rebuilt Lighthouse Scene Graph: LighthouseRoot -> Tower (Y=0..18) -> LanternRoomGroup (Y=18.5) -> LightRotorPivot with SpotLight & volumetric cone mesh tip-locked at Y=18.5.
+2. Expanded 13-Berth Concrete Wharf Apron: 200 units long x 26 units wide, with 13 dedicated berths (BERTH_SLOTS[0..12], 14 units spacing, zero hull overlap).
+3. Persistent Small Boat Fleet: 24 artisanal bancas moored at shallow basin, dynamic lightering loop (~75% moored, ~25% fetching fish from distant anchorage).
+4. Zero-Clipping Waypoint Navigation: Pier AABB exclusion box, 15-unit straight reverse before turning, and Boids repulsion collision avoidance.
+5. Ocean Boat Hydrodynamics & Wakes: Multi-sine wave buoyancy (heave, pitch, roll), turn banking, throttle pitch, stern expanding foam trail, and Kelvin V-shaped bow wakes.
 """
 
 def generate_3d_digital_twin_html() -> str:
@@ -44,7 +49,6 @@ def generate_3d_digital_twin_html() -> str:
         color: #F8FAFC;
     }
 
-    /* 100% Full-Screen 3D WebGL Canvas Viewport */
     #webgl-canvas {
         position: absolute;
         top: 0;
@@ -55,7 +59,6 @@ def generate_3d_digital_twin_html() -> str:
         display: block;
     }
 
-    /* Global Glassmorphic Styles */
     .glass-panel {
         background: rgba(11, 20, 38, 0.78);
         backdrop-filter: blur(16px) saturate(180%);
@@ -65,9 +68,6 @@ def generate_3d_digital_twin_html() -> str:
         border-radius: 10px;
     }
 
-    /* -------------------------------------------------------------
-       TOP FLOATING HUD BAR (MINIMALIST & NON-INTRUSIVE)
-       ------------------------------------------------------------- */
     #hud-top {
         position: absolute;
         top: 14px;
@@ -87,7 +87,6 @@ def generate_3d_digital_twin_html() -> str:
         pointer-events: auto;
     }
 
-    /* Left Group: Title Badge & Scenario Pill */
     .title-pill {
         display: inline-flex;
         align-items: center;
@@ -117,7 +116,6 @@ def generate_3d_digital_twin_html() -> str:
         letter-spacing: 0.04em;
     }
 
-    /* Center Group: Live Clock, Bulungan Surge, Tide Pill */
     .clock-pill {
         display: flex;
         align-items: center;
@@ -170,7 +168,6 @@ def generate_3d_digital_twin_html() -> str:
         color: #F87171;
     }
 
-    /* Right Group: Playback Controls & Action Modal Triggers */
     .btn-hud {
         background: rgba(15, 23, 42, 0.85);
         border: 1px solid rgba(255, 255, 255, 0.14);
@@ -205,9 +202,6 @@ def generate_3d_digital_twin_html() -> str:
         background: #0369A1;
     }
 
-    /* -------------------------------------------------------------
-       BOTTOM-LEFT COMPACT LIVE KPI STRIP
-       ------------------------------------------------------------- */
     #hud-bottom-left {
         position: absolute;
         bottom: 16px;
@@ -217,7 +211,7 @@ def generate_3d_digital_twin_html() -> str:
         flex-direction: column;
         gap: 7px;
         pointer-events: none;
-        max-width: 360px;
+        max-width: 380px;
     }
     .kpi-grid {
         display: grid;
@@ -255,7 +249,6 @@ def generate_3d_digital_twin_html() -> str:
         line-height: 1.3;
     }
 
-    /* Bottom Center Camera & Screenshot Hint */
     #hud-bottom-center {
         position: absolute;
         bottom: 16px;
@@ -276,9 +269,6 @@ def generate_3d_digital_twin_html() -> str:
         gap: 6px;
     }
 
-    /* -------------------------------------------------------------
-       INTERACTIVE 3D VESSEL CALLOUT TOOLTIP
-       ------------------------------------------------------------- */
     #vessel-tooltip {
         position: absolute;
         display: none;
@@ -335,9 +325,6 @@ def generate_3d_digital_twin_html() -> str:
         transition: width 0.3s ease;
     }
 
-    /* -------------------------------------------------------------
-       MODAL SYSTEM (PROGRESSIVE DISCLOSURE)
-       ------------------------------------------------------------- */
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -408,7 +395,6 @@ def generate_3d_digital_twin_html() -> str:
         flex: 1;
     }
 
-    /* Modal Tab Styling */
     .modal-tabs {
         display: flex;
         gap: 8px;
@@ -439,7 +425,6 @@ def generate_3d_digital_twin_html() -> str:
         display: block;
     }
 
-    /* Slider / Input Rows */
     .param-row {
         display: flex;
         align-items: center;
@@ -482,7 +467,6 @@ def generate_3d_digital_twin_html() -> str:
         text-align: right;
     }
 
-    /* Preset Policy Cards */
     .preset-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -526,7 +510,6 @@ def generate_3d_digital_twin_html() -> str:
         line-height: 1.4;
     }
 
-    /* Analytics Tables & Figures */
     .table-container {
         width: 100%;
         border-collapse: collapse;
@@ -550,7 +533,6 @@ def generate_3d_digital_twin_html() -> str:
         background: rgba(56, 189, 248, 0.04);
     }
 
-    /* Hide UI for Clean Manuscript Screenshot Mode */
     body.screenshot-mode #hud-top,
     body.screenshot-mode #hud-bottom-left,
     body.screenshot-mode #hud-bottom-center,
@@ -580,14 +562,10 @@ def generate_3d_digital_twin_html() -> str:
 </head>
 <body>
 
-<!-- 100% Full-Screen WebGL Canvas -->
 <canvas id="webgl-canvas"></canvas>
 
-<!-- -------------------------------------------------------------
-     MINIMALIST FLOATING TOP BAR HUD
-     ------------------------------------------------------------- -->
+<!-- Top Floating HUD -->
 <div id="hud-top">
-    <!-- Left: Branding & Scenario -->
     <div class="hud-group">
         <div class="glass-panel title-pill">
             <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -600,7 +578,6 @@ def generate_3d_digital_twin_html() -> str:
         </div>
     </div>
 
-    <!-- Center: Live 24h Clock, Bulungan Surge & Tide Pill -->
     <div class="hud-group">
         <div class="glass-panel clock-pill">
             <span id="hud-clock" class="hud-clock">05:45 AM</span>
@@ -609,7 +586,6 @@ def generate_3d_digital_twin_html() -> str:
         </div>
     </div>
 
-    <!-- Right: Quick Playback & Modals -->
     <div class="hud-group">
         <button id="btn-play" class="btn-hud primary">⏸ Pause</button>
         <button class="btn-hud speed-btn active" data-speed="1">1x</button>
@@ -621,9 +597,7 @@ def generate_3d_digital_twin_html() -> str:
     </div>
 </div>
 
-<!-- -------------------------------------------------------------
-     BOTTOM-LEFT COMPACT LIVE KPI STRIP
-     ------------------------------------------------------------- -->
+<!-- Bottom-Left Live KPI Strip -->
 <div id="hud-bottom-left">
     <div class="kpi-grid">
         <div class="glass-panel kpi-card">
@@ -664,7 +638,6 @@ def generate_3d_digital_twin_html() -> str:
     </div>
 </div>
 
-<!-- Bottom Center Camera Hint -->
 <div id="hud-bottom-center">
     <div class="glass-panel hint-pill">
         <span>🖱️ Orbit: Left-Drag</span>
@@ -675,9 +648,7 @@ def generate_3d_digital_twin_html() -> str:
     </div>
 </div>
 
-<!-- -------------------------------------------------------------
-     INTERACTIVE 3D VESSEL TOOLTIP CALLOUT
-     ------------------------------------------------------------- -->
+<!-- Vessel Hover Tooltip -->
 <div id="vessel-tooltip" class="glass-panel">
     <div class="tt-title-bar">
         <span id="tt-vessel-name" class="tt-name">MV-MercedesQueen</span>
@@ -691,9 +662,7 @@ def generate_3d_digital_twin_html() -> str:
     <div class="tt-row" style="margin-top:6px;"><span>Current State:</span><span id="tt-vessel-state" class="tt-val" style="color:#38BDF8;">Unloading at Berth B4</span></div>
 </div>
 
-<!-- -------------------------------------------------------------
-     MODAL 1: SIMULATION SETTINGS & POLICY SCENARIOS
-     ------------------------------------------------------------- -->
+<!-- Modal 1: Settings -->
 <div id="modal-settings" class="modal-overlay">
     <div class="modal-card">
         <div class="modal-header">
@@ -709,12 +678,11 @@ def generate_3d_digital_twin_html() -> str:
                 <button class="modal-tab-btn" data-tab="tab-presets">2. "What-If" Policy Presets (Phase IV)</button>
             </div>
 
-            <!-- Tab 1: Baseline Parameters -->
             <div id="tab-params" class="tab-content active">
                 <div class="param-row">
                     <div class="param-info">
                         <div class="param-title">Base Arrival Intensity (λ)</div>
-                        <div class="param-desc">Baseline non-rush vessel arrival rate outside dawn auction hours.</div>
+                        <div class="param-desc">Baseline vessel arrival rate outside dawn auction hours.</div>
                     </div>
                     <div class="param-ctrl">
                         <input type="range" id="sl-lambda" min="0.1" max="1.5" step="0.02" value="0.34">
@@ -767,31 +735,30 @@ def generate_3d_digital_twin_html() -> str:
                 </div>
             </div>
 
-            <!-- Tab 2: What-If Policy Presets -->
             <div id="tab-presets" class="tab-content">
                 <div class="preset-grid">
                     <div class="preset-card active" data-preset="baseline">
                         <span class="preset-tag">Phase IV — Status Quo</span>
                         <div class="preset-name">1. Baseline (Mercedes Port Expanded)</div>
-                        <div class="preset-desc">13 medium berths, 24 small bancas, estuarine channel (1.8m low-tide draft lock), and concentrated 6:00 AM auction rush.</div>
+                        <div class="preset-desc">13 medium berths, 24 small bancas, estuarine channel (1.8m low-tide draft lock), and 6:00 AM auction rush.</div>
                     </div>
 
                     <div class="preset-card" data-preset="interventionA">
                         <span class="preset-tag" style="color:#10B981;">Intervention A</span>
                         <div class="preset-name">2. Wharf Apron & Winches (16 Berths)</div>
-                        <div class="preset-desc">Expands concrete apron to 16 berths and introduces mechanical winches (+50% banyera offload speed), cutting dock turnarounds.</div>
+                        <div class="preset-desc">Expands concrete apron to 16 berths and introduces mechanical winches (+50% banyera offload speed).</div>
                     </div>
 
                     <div class="preset-card" data-preset="interventionB">
                         <span class="preset-tag" style="color:#F59E0B;">Intervention B</span>
                         <div class="preset-name">3. Estuarine Channel Dredging (3.5m)</div>
-                        <div class="preset-desc">Deepens river mouth bathymetry to 3.5m, eliminating low-tide draft restrictions so commercial vessels berth directly without lightering.</div>
+                        <div class="preset-desc">Deepens river mouth bathymetry to 3.5m, eliminating low-tide draft restrictions so commercial vessels berth directly.</div>
                     </div>
 
                     <div class="preset-card" data-preset="interventionC">
                         <span class="preset-tag" style="color:#A855F7;">Intervention C</span>
                         <div class="preset-name">4. Staggered Bulungan Scheduling</div>
-                        <div class="preset-desc">Implements timed offloading windows for purse seiners and basnigs, smoothing out the early-morning 06:00 AM bottleneck.</div>
+                        <div class="preset-desc">Implements timed offloading windows for purse seiners and basnigs, smoothing out the 06:00 AM bottleneck.</div>
                     </div>
                 </div>
             </div>
@@ -799,9 +766,7 @@ def generate_3d_digital_twin_html() -> str:
     </div>
 </div>
 
-<!-- -------------------------------------------------------------
-     MODAL 2: PERFORMANCE ANALYTICS & BOTTLENECK REPORT
-     ------------------------------------------------------------- -->
+<!-- Modal 2: Analytics -->
 <div id="modal-analytics" class="modal-overlay">
     <div class="modal-card">
         <div class="modal-header">
@@ -875,16 +840,15 @@ def generate_3d_digital_twin_html() -> str:
     </div>
 </div>
 
-<!-- Screenshot Restore Button (Visible only during screenshot mode) -->
 <button id="screenshot-restore-btn">Restore UI Controls (Esc)</button>
 
 <!-- -------------------------------------------------------------
-     THREE.JS 3D DISCRETE-EVENT SIMULATION SCRIPT
+     THREE.JS 3D ENGINE SCRIPT
      ------------------------------------------------------------- -->
 <script>
 (function() {
     // -------------------------------------------------------------
-    // THREE.JS SCENE, CAMERA, RENDERER INITIALIZATION
+    // THREE.JS SCENE, CAMERA, RENDERER
     // -------------------------------------------------------------
     const canvas = document.getElementById('webgl-canvas');
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
@@ -895,82 +859,86 @@ def generate_3d_digital_twin_html() -> str:
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x060C18);
-    scene.fog = new THREE.FogExp2(0x060C18, 0.0005);
+    scene.fog = new THREE.FogExp2(0x060C18, 0.0016);
 
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4500);
-    // Aerial perspective showing 13-berth wharf on left and distant ocean anchorage on right
-    camera.position.set(-340, 320, 520);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+    camera.position.set(-95, 110, 160);
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2 - 0.04; // Prevent camera sinking under water
-    controls.minDistance = 60;
-    controls.maxDistance = 1800;
-    controls.target.set(80, 0, 0);
+    controls.maxPolarAngle = Math.PI / 2 - 0.04;
+    controls.minDistance = 25;
+    controls.maxDistance = 550;
+    controls.target.set(20, 0, 0);
 
     // -------------------------------------------------------------
     // LIGHTING SYSTEM
     // -------------------------------------------------------------
-    const ambientLight = new THREE.AmbientLight(0x0E1E38, 1.3);
+    const ambientLight = new THREE.AmbientLight(0x0E1E38, 1.4);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xFDF4DC, 1.4);
-    sunLight.position.set(-200, 400, 250);
+    const sunLight = new THREE.DirectionalLight(0xFDF4DC, 1.3);
+    sunLight.position.set(-120, 220, 150);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 2048;
     sunLight.shadow.mapSize.height = 2048;
     sunLight.shadow.camera.near = 10;
-    sunLight.shadow.camera.far = 1200;
-    sunLight.shadow.camera.left = -500;
-    sunLight.shadow.camera.right = 500;
-    sunLight.shadow.camera.top = 500;
-    sunLight.shadow.camera.bottom = -500;
+    sunLight.shadow.camera.far = 600;
+    sunLight.shadow.camera.left = -250;
+    sunLight.shadow.camera.right = 250;
+    sunLight.shadow.camera.top = 250;
+    sunLight.shadow.camera.bottom = -250;
     scene.add(sunLight);
 
     // -------------------------------------------------------------
-    // 1. ARCHITECTURAL LIGHTHOUSE (ORIGIN FIXED TO TOP LANTERN ROOM)
+    // STEP 1: REBUILT LIGHTHOUSE 3D HIERARCHY (LIGHT SOURCE AT Y = 18.5)
     // -------------------------------------------------------------
-    const LH_X = 180;
-    const LH_Z = -190;
-    const LH_BASE_Y = 0;
-    const TOWER_H = 56;
-    const LANTERN_Y = 69.5; // Exact Y elevation of top lantern gallery
+    // 1. LighthouseRoot (Group) placed on coastal headland at base elevation
+    const LighthouseRoot = new THREE.Group();
+    LighthouseRoot.position.set(45, 0, -65);
+    scene.add(LighthouseRoot);
 
-    // Stone Foundation & Rocks
+    // Rocky Promontory Foundation
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.9 });
-    const rockBase = new THREE.Mesh(new THREE.CylinderGeometry(24, 30, 12, 10), rockMat);
-    rockBase.position.set(LH_X, 6, LH_Z);
+    const rockBase = new THREE.Mesh(new THREE.CylinderGeometry(8, 10, 3, 8), rockMat);
+    rockBase.position.set(0, 1.5, 0);
     rockBase.receiveShadow = true;
-    scene.add(rockBase);
+    LighthouseRoot.add(rockBase);
 
-    // Tower Shaft (Masonry White with Red Accent Rings)
-    const towerMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.35 });
-    const tower = new THREE.Mesh(new THREE.CylinderGeometry(6.5, 10.5, TOWER_H, 20), towerMat);
-    tower.position.set(LH_X, 12 + TOWER_H / 2, LH_Z);
-    tower.castShadow = true;
-    scene.add(tower);
+    // 2. Tower Body: Tapered cylinder mesh from Y = 0 up to Y = 18
+    const towerMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.4 });
+    const towerGeo = new THREE.CylinderGeometry(2.2, 3.8, 18, 16);
+    const towerMesh = new THREE.Mesh(towerGeo, towerMat);
+    towerMesh.position.set(0, 9, 0); // Spans from Y = 0 to Y = 18
+    towerMesh.castShadow = true;
+    LighthouseRoot.add(towerMesh);
 
-    // Red Decorative Stripe Ring on Tower
+    // Red Maritime Stripe Rings
     const stripeMat = new THREE.MeshStandardMaterial({ color: 0xDC2626, roughness: 0.4 });
-    const redStripe = new THREE.Mesh(new THREE.CylinderGeometry(8.2, 8.8, 10, 20), stripeMat);
-    redStripe.position.set(LH_X, 36, LH_Z);
-    scene.add(redStripe);
+    const stripe1 = new THREE.Mesh(new THREE.CylinderGeometry(2.9, 3.2, 3.2, 16), stripeMat);
+    stripe1.position.set(0, 7.5, 0);
+    LighthouseRoot.add(stripe1);
 
-    // Balcony Gallery Deck
-    const deckMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 });
-    const deck = new THREE.Mesh(new THREE.CylinderGeometry(9.5, 9.5, 2.5, 20), deckMat);
-    deck.position.set(LH_X, 12 + TOWER_H + 1.25, LH_Z);
-    scene.add(deck);
+    const stripe2 = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.6, 2.8, 16), stripeMat);
+    stripe2.position.set(0, 14.2, 0);
+    LighthouseRoot.add(stripe2);
 
-    // Balcony Railing
-    const railMat = new THREE.MeshBasicMaterial({ color: 0x0F172A, wireframe: true });
-    const railing = new THREE.Mesh(new THREE.CylinderGeometry(9.2, 9.2, 3.5, 20, 1, true), railMat);
-    railing.position.set(LH_X, 12 + TOWER_H + 4, LH_Z);
-    scene.add(railing);
+    // 3. LanternRoomGroup: EXPLICITLY set local position to (0, 18.5, 0)
+    const LanternRoomGroup = new THREE.Group();
+    LanternRoomGroup.position.set(0, 18.5, 0);
+    LighthouseRoot.add(LanternRoomGroup);
 
-    // Top Lantern Glass Housing (Glowing Emissive Material)
-    const lanternGlassMat = new THREE.MeshStandardMaterial({
+    // Gallery Balcony Platform
+    const galleryDeck = new THREE.Mesh(
+        new THREE.CylinderGeometry(3.2, 3.2, 0.8, 16),
+        new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6 })
+    );
+    galleryDeck.position.set(0, -0.4, 0);
+    LanternRoomGroup.add(galleryDeck);
+
+    // Glowing Emissive Glass Cylinder inside LanternRoomGroup at (0, 0, 0)
+    const glassMat = new THREE.MeshStandardMaterial({
         color: 0xBAE6FD,
         emissive: 0x38BDF8,
         emissiveIntensity: 0.95,
@@ -979,67 +947,66 @@ def generate_3d_digital_twin_html() -> str:
         transparent: true,
         opacity: 0.85
     });
-    const lanternGlass = new THREE.Mesh(new THREE.CylinderGeometry(5.8, 5.8, 8.5, 16), lanternGlassMat);
-    lanternGlass.position.set(LH_X, LANTERN_Y, LH_Z);
-    scene.add(lanternGlass);
+    const lanternGlass = new THREE.Mesh(new THREE.CylinderGeometry(2.0, 2.0, 3.0, 16), glassMat);
+    lanternGlass.position.set(0, 1.1, 0);
+    LanternRoomGroup.add(lanternGlass);
 
-    // Copper Roof Cupola Dome
-    const roofMat = new THREE.MeshStandardMaterial({ color: 0x1E3A5F, roughness: 0.3, metalness: 0.6 });
-    const roofDome = new THREE.Mesh(new THREE.ConeGeometry(7.0, 6.0, 16), roofMat);
-    roofDome.position.set(LH_X, LANTERN_Y + 7.25, LH_Z);
-    scene.add(roofDome);
+    // Copper Roof Dome
+    const roofCupola = new THREE.Mesh(
+        new THREE.ConeGeometry(2.4, 2.0, 16),
+        new THREE.MeshStandardMaterial({ color: 0x1E3A5F, roughness: 0.3, metalness: 0.6 })
+    );
+    roofCupola.position.set(0, 3.3, 0);
+    LanternRoomGroup.add(roofCupola);
 
-    // Glowing Lamp Bulb inside Lantern
-    const bulb = new THREE.Mesh(new THREE.SphereGeometry(2.0, 12, 12), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
-    bulb.position.set(LH_X, LANTERN_Y, LH_Z);
-    scene.add(bulb);
+    // Glowing Lamp Core
+    const lampBulb = new THREE.Mesh(
+        new THREE.SphereGeometry(0.7, 8, 8),
+        new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
+    );
+    lampBulb.position.set(0, 1.1, 0);
+    LanternRoomGroup.add(lampBulb);
 
-    // ROTATING LIGHTHOUSE HEAD GROUP (Origin strictly at top lantern room: LANTERN_Y = 69.5)
-    const lighthouseHead = new THREE.Group();
-    lighthouseHead.position.set(LH_X, LANTERN_Y, LH_Z);
-    scene.add(lighthouseHead);
+    // 4. LightRotorPivot: Child of LanternRoomGroup at local (0, 1.1, 0)
+    const LightRotorPivot = new THREE.Group();
+    LightRotorPivot.position.set(0, 1.1, 0);
+    LanternRoomGroup.add(LightRotorPivot);
 
-    // 1. High-Intensity Directional SpotLight
-    const spotLight = new THREE.SpotLight(0xE0F2FE, 6.5, 650, Math.PI / 8, 0.32, 1.1);
+    // High-Mounted SpotLight (originates at Y = 18.5 + 1.1 = 19.6 in world space)
+    const spotLight = new THREE.SpotLight(0xE0F2FE, 5.5, 180, Math.PI / 7, 0.3, 1.1);
     spotLight.position.set(0, 0, 0);
     const spotTarget = new THREE.Object3D();
-    spotTarget.position.set(0, -22, 500); // Projects outward and slightly downward toward water horizon
-    lighthouseHead.add(spotTarget);
+    spotTarget.position.set(0, -2, 40); // Shines outward and slightly downward across ocean horizon
+    LightRotorPivot.add(spotTarget);
     spotLight.target = spotTarget;
-    lighthouseHead.add(spotLight);
+    LightRotorPivot.add(spotLight);
 
-    // 2. Glowing PointLight for Lantern Room Ambient Radiance
-    const lanternPointLight = new THREE.PointLight(0xBAE6FD, 3.2, 100);
-    lanternPointLight.position.set(0, 0, 0);
-    lighthouseHead.add(lanternPointLight);
-
-    // 3. Volumetric Light Beam Cone Mesh (Origin at narrow apex inside lantern room)
-    const beamLen = 460;
-    const beamRad = 42;
-    const beamGeo = new THREE.ConeGeometry(beamRad, beamLen, 32, 1, true);
-    // Translate geometry so apex is strictly at (0, 0, 0)
-    beamGeo.translate(0, -beamLen / 2, 0);
-    // Rotate so cone projects forward along +Z axis
+    // Volumetric Light Cone Mesh: ConeGeometry(4, 35, 32, 1, true)
+    const beamGeo = new THREE.ConeGeometry(4, 35, 32, 1, true);
+    // Tip locked at local (0, 0, 0)
+    beamGeo.translate(0, -17.5, 0);
+    // Rotate to project along +Z axis
     beamGeo.rotateX(-Math.PI / 2);
+    // Tilt slightly downward towards (0, -2, 40)
+    beamGeo.rotateX(Math.atan2(2, 35));
 
     const beamMat = new THREE.MeshBasicMaterial({
         color: 0xE0F2FE,
         transparent: true,
-        opacity: 0.25,
-        side: THREE.DoubleSide,
+        opacity: 0.18,
         depthWrite: false,
+        side: THREE.DoubleSide,
         blending: THREE.AdditiveBlending
     });
     const beamMesh = new THREE.Mesh(beamGeo, beamMat);
     beamMesh.position.set(0, 0, 0);
-    beamMesh.rotation.x = 0.045; // Project outward and slightly downward across water
-    lighthouseHead.add(beamMesh);
+    LightRotorPivot.add(beamMesh);
 
     // -------------------------------------------------------------
-    // 2. EXPANDED 3D ENVIRONMENT GEOMETRY (MERCEDES ESTUARY & WHARF)
+    // STEP 2: EXPANDED 3D HARBOR & MASSIVE 13-BERTH CONCRETE WHARF
     // -------------------------------------------------------------
-    // Water Mesh (3200 x 2400)
-    const waterGeo = new THREE.PlaneGeometry(3400, 2400, 80, 60);
+    // Ocean Plane (1000 x 1000)
+    const waterGeo = new THREE.PlaneGeometry(1000, 1000, 60, 60);
     const waterMat = new THREE.MeshStandardMaterial({
         color: 0x0A2244,
         roughness: 0.15,
@@ -1054,266 +1021,320 @@ def generate_3d_digital_twin_html() -> str:
     water.receiveShadow = true;
     scene.add(water);
 
-    // Store base vertices for procedural wave animation
+    // Base vertices for wave animation
     const posAttr = waterGeo.attributes.position;
     const baseVerts = [];
     for (let i = 0; i < posAttr.count; i++) {
         baseVerts.push({ x: posAttr.getX(i), y: posAttr.getY(i), z: posAttr.getZ(i) });
     }
 
-    // Coastline & Terrain (North sandbar & South bank)
-    const landMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.85, metalness: 0.1 });
-
-    // North Sandbar
-    const northBank = new THREE.Mesh(new THREE.BoxGeometry(1000, 26, 500), landMat);
-    northBank.position.set(320, 10, -440);
+    // Coastal Landmass Banks
+    const landMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.85 });
+    const northBank = new THREE.Mesh(new THREE.BoxGeometry(320, 16, 160), landMat);
+    northBank.position.set(80, 8, -150);
     northBank.receiveShadow = true;
     scene.add(northBank);
 
-    // South Mangrove Bank
-    const southBank = new THREE.Mesh(new THREE.BoxGeometry(1000, 26, 500), landMat);
-    southBank.position.set(320, 10, 440);
+    const southBank = new THREE.Mesh(new THREE.BoxGeometry(320, 16, 160), landMat);
+    southBank.position.set(80, 8, 160);
     southBank.receiveShadow = true;
     scene.add(southBank);
 
-    // -------------------------------------------------------------
-    // 3. EXPANDED 13-BERTH CONCRETE WHARF APRON INFRASTRUCTURE
-    // -------------------------------------------------------------
-    const MAX_MEDIUM_BERTHS = 13;
-    let numBerths = MAX_MEDIUM_BERTHS;
-
+    // MASSIVE CONCRETE WHARF APRON (200 units long x 26 units wide x 6 units high)
     const wharfMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.7, metalness: 0.2 });
-    // Concrete pier length 740 to fit 13 medium vessels (each ~40m with 48m spacing)
-    const wharfApron = new THREE.Mesh(new THREE.BoxGeometry(200, 22, 740), wharfMat);
-    wharfApron.position.set(-190, 10, 0);
+    const wharfApron = new THREE.Mesh(new THREE.BoxGeometry(26, 6, 200), wharfMat);
+    wharfApron.position.set(-45, 3, 0); // Front deep-water face at X = -32
     wharfApron.receiveShadow = true;
     scene.add(wharfApron);
 
-    // Safety Hazard Striping along the entire wharf berthing face (X = -89, Z = -370 to +370)
+    // Rubber / Timber Fendering along wharf face
+    const fenderMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.9 });
+    const wharfFender = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5.8, 200), fenderMat);
+    wharfFender.position.set(-31.5, 3, 0);
+    scene.add(wharfFender);
+
+    // Safety Hazard Striping on wharf edge
     const hazardLip = new THREE.Mesh(
-        new THREE.BoxGeometry(3, 22.2, 740),
+        new THREE.BoxGeometry(0.6, 6.1, 200),
         new THREE.MeshBasicMaterial({ color: 0xFBBF24 })
     );
-    hazardLip.position.set(-89, 10, 0);
+    hazardLip.position.set(-31.9, 3, 0);
     scene.add(hazardLip);
 
-    // Bulungan Wholesale Auction Pavilion Complex
-    const bulunganMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
-    const bulunganMain = new THREE.Mesh(new THREE.BoxGeometry(110, 36, 420), bulunganMat);
-    bulunganMain.position.set(-290, 18, 0);
-    bulunganMain.castShadow = true;
-    scene.add(bulunganMain);
+    // Bulungan Wholesale Auction Sheds on Wharf Apron
+    const shedMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
+    const mainShed = new THREE.Mesh(new THREE.BoxGeometry(16, 9, 130), shedMat);
+    mainShed.position.set(-51, 7.5, 0);
+    mainShed.castShadow = true;
+    scene.add(mainShed);
 
-    // Bulungan North Storage Shed
-    const bulunganNorth = new THREE.Mesh(new THREE.BoxGeometry(100, 28, 130), bulunganMat);
-    bulunganNorth.position.set(-285, 14, -240);
-    scene.add(bulunganNorth);
+    // Amber Interior Glow Lights
+    const shedLight1 = new THREE.PointLight(0xF59E0B, 2.5, 60);
+    shedLight1.position.set(-44, 9, -40);
+    scene.add(shedLight1);
 
-    // Bulungan South Ice Plant Shed
-    const bulunganSouth = new THREE.Mesh(new THREE.BoxGeometry(100, 28, 130), bulunganMat);
-    bulunganSouth.position.set(-285, 14, 240);
-    scene.add(bulunganSouth);
+    const shedLight2 = new THREE.PointLight(0xF59E0B, 3.0, 70);
+    shedLight2.position.set(-44, 9, 0);
+    scene.add(shedLight2);
 
-    // Bulungan Interior Amber Glow Lights
-    const bulunganLight1 = new THREE.PointLight(0xF59E0B, 2.8, 160);
-    bulunganLight1.position.set(-230, 26, -140);
-    scene.add(bulunganLight1);
+    const shedLight3 = new THREE.PointLight(0xF59E0B, 2.5, 60);
+    shedLight3.position.set(-44, 9, 40);
+    scene.add(shedLight3);
 
-    const bulunganLight2 = new THREE.PointLight(0xF59E0B, 3.2, 180);
-    bulunganLight2.position.set(-230, 26, 0);
-    scene.add(bulunganLight2);
-
-    const bulunganLight3 = new THREE.PointLight(0xF59E0B, 2.8, 160);
-    bulunganLight3.position.set(-230, 26, 140);
-    scene.add(bulunganLight3);
-
-    // Dedicated Shallow-Water Mooring Basin for Small Boats (South Dock Basin)
-    const woodMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.8 });
-    const woodDock1 = new THREE.Mesh(new THREE.BoxGeometry(70, 4, 130), woodMat);
-    woodDock1.position.set(-50, 4, 275);
-    scene.add(woodDock1);
-
-    const woodDock2 = new THREE.Mesh(new THREE.BoxGeometry(50, 4, 90), woodMat);
-    woodDock2.position.set(-40, 4, -280);
-    scene.add(woodDock2);
-
-    // Navigational Buoys along Channel Corridor
-    const buoyMatG = new THREE.MeshBasicMaterial({ color: 0x10B981 });
-    const buoyMatR = new THREE.MeshBasicMaterial({ color: 0xEF4444 });
-    const buoyCoords = [
-        { x: 80, z: -100, green: true }, { x: 80, z: 100, green: false },
-        { x: 260, z: -110, green: true }, { x: 260, z: 110, green: false },
-        { x: 440, z: -120, green: true }, { x: 440, z: 120, green: false }
-    ];
-    buoyCoords.forEach(b => {
-        const buoy = new THREE.Mesh(new THREE.CylinderGeometry(2, 3, 8, 8), b.green ? buoyMatG : buoyMatR);
-        buoy.position.set(b.x, 4, b.z);
-        scene.add(buoy);
-    });
-
-    // 13 Concrete Berths (B1 to B13) Definition along Wharf Apron
-    let berthCoordinates = [];
+    // 13 DISTINCT MEDIUM-BOAT BERTH COORDINATES (BERTH_SLOTS[0..12])
+    // 14 units spacing between berths (generous clearance, zero ship overlap)
+    const MAX_MEDIUM_BERTHS = 13;
+    let numBerths = MAX_MEDIUM_BERTHS;
+    const BERTH_SLOTS = [];
     const bollardMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, metalness: 0.8 });
-    const bollardGroup = new THREE.Group();
-    scene.add(bollardGroup);
+    const berthDecorGroup = new THREE.Group();
+    scene.add(berthDecorGroup);
 
-    function updateBerthGeometry() {
-        // Clear old bollards
-        while (bollardGroup.children.length > 0) {
-            bollardGroup.remove(bollardGroup.children[0]);
+    function initBerths() {
+        while (berthDecorGroup.children.length > 0) {
+            berthDecorGroup.remove(berthDecorGroup.children[0]);
         }
-        berthCoordinates = [];
-        const startZ = -288;
-        const spacing = 48; // Generous 48 units per berth to prevent any ship clipping
+        BERTH_SLOTS.length = 0;
+        const startZ = -84;
+        const spacing = 14;
+
         for (let i = 0; i < numBerths; i++) {
             const z = startZ + i * spacing;
-            berthCoordinates.push({
+            BERTH_SLOTS.push({
                 id: i + 1,
                 name: 'Berth B' + (i + 1),
-                x: -90,
+                x: -32,      // Wharf deep-water face
+                dockX: -29,  // Docked vessel center position
                 z: z,
                 occupiedBy: null
             });
 
-            // Concrete mooring bollard on wharf lip
-            const bollard = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.4, 3.5, 8), bollardMat);
-            bollard.position.set(-88, 22.5, z);
-            bollardGroup.add(bollard);
+            // Cast-iron mooring bollard on wharf lip
+            const bollard = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.5, 1.2, 8), bollardMat);
+            bollard.position.set(-31.6, 6.6, z);
+            berthDecorGroup.add(bollard);
 
-            // Painted yellow berth marking pad
-            const pad = new THREE.Mesh(new THREE.PlaneGeometry(6, 12), new THREE.MeshBasicMaterial({ color: 0xFBBF24 }));
+            // Painted yellow berth marker pad
+            const pad = new THREE.Mesh(new THREE.PlaneGeometry(2, 4), new THREE.MeshBasicMaterial({ color: 0xFBBF24 }));
             pad.rotation.x = -Math.PI / 2;
-            pad.position.set(-94, 21.1, z);
-            bollardGroup.add(pad);
+            pad.position.set(-33.5, 6.05, z);
+            berthDecorGroup.add(pad);
         }
     }
-    updateBerthGeometry();
+    initBerths();
+
+    // DEDICATED SHALLOW-WATER SMALL BOAT MOORING BASIN
+    const woodMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.8 });
+    const woodPontoon = new THREE.Mesh(new THREE.BoxGeometry(18, 1.5, 60), woodMat);
+    woodPontoon.position.set(-18, 0.75, 125);
+    scene.add(woodPontoon);
+
+    // 24 Small Boat Docking Slots in Mooring Basin
+    const BANCA_PARK_SLOTS = [];
+    for (let i = 0; i < 12; i++) {
+        BANCA_PARK_SLOTS.push({ x: -24, z: 100 + i * 4.5, yaw: Math.PI / 2 });
+    }
+    for (let i = 0; i < 12; i++) {
+        BANCA_PARK_SLOTS.push({ x: -12, z: 100 + i * 4.5, yaw: -Math.PI / 2 });
+    }
+
+    // Navigational Buoys flanking Channel Corridor
+    const greenBuoy = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.2, 3.5, 8), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+    greenBuoy.position.set(25, 1.7, -35);
+    scene.add(greenBuoy);
+
+    const redBuoy = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.2, 3.5, 8), new THREE.MeshBasicMaterial({ color: 0xEF4444 }));
+    redBuoy.position.set(25, 1.7, 35);
+    scene.add(redBuoy);
 
     // -------------------------------------------------------------
-    // PROCEDURAL 3D BOAT MESH FACTORY
+    // STEP 3: WAYPOINT ROUTING & AABB EXCLUSION DEFINITIONS
     // -------------------------------------------------------------
-    function createVesselMesh(type, cargoCount) {
+    // Pier No-Go Bounding Box (+4 padding)
+    const PIER_AABB = {
+        minX: -65,
+        maxX: -27.5,
+        minZ: -105,
+        maxZ: 160
+    };
+
+    // -------------------------------------------------------------
+    // STEP 4: BOAT MODELS & HYDRODYNAMIC EFFECTS (WAKES & FOAM)
+    // -------------------------------------------------------------
+    function createVesselMesh(type) {
         const group = new THREE.Group();
 
         if (type === 'Basnig') {
-            // Commercial Basnig: Long hull, large cabin, lateral outrigger lighting booms
+            // Commercial Basnig (L: 13, W: 4.4, H: 4.0)
             const hullMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(40, 10, 14), hullMat);
-            hull.position.y = 3;
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(13, 2.8, 4.4), hullMat);
+            hull.position.y = 1.0;
             hull.castShadow = true;
             group.add(hull);
 
             // Pointed Bow
-            const bow = new THREE.Mesh(new THREE.ConeGeometry(7, 14, 4), hullMat);
+            const bow = new THREE.Mesh(new THREE.ConeGeometry(2.2, 4.5, 4), hullMat);
             bow.rotation.z = -Math.PI / 2;
-            bow.position.set(24, 3, 0);
+            bow.position.set(7.5, 1.0, 0);
             group.add(bow);
 
-            // Deckhouse Cabin
-            const cabinMat = new THREE.MeshStandardMaterial({ color: 0x475569 });
-            const cabin = new THREE.Mesh(new THREE.BoxGeometry(16, 10, 10), cabinMat);
-            cabin.position.set(-6, 11, 0);
+            // Wheelhouse
+            const cabin = new THREE.Mesh(
+                new THREE.BoxGeometry(5.0, 3.2, 3.2),
+                new THREE.MeshStandardMaterial({ color: 0x475569 })
+            );
+            cabin.position.set(-2.0, 3.2, 0);
             group.add(cabin);
 
-            // Wheelhouse Windows
-            const winMat = new THREE.MeshBasicMaterial({ color: 0x38BDF8 });
-            const win = new THREE.Mesh(new THREE.BoxGeometry(4, 3, 8), winMat);
-            win.position.set(2, 12, 0);
-            group.add(win);
-
-            // Basnig Fishing Light Rigging Outrigger Booms
+            // Fishing Light Outrigger Booms
             const boomMat = new THREE.MeshBasicMaterial({ color: 0x94A3B8 });
-            const boom1 = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 42), boomMat);
-            boom1.rotation.x = Math.PI / 2;
-            boom1.position.set(4, 13, 0);
-            group.add(boom1);
+            const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 14), boomMat);
+            boom.rotation.x = Math.PI / 2;
+            boom.position.set(1.5, 3.8, 0);
+            group.add(boom);
 
-            // High Mast with Radar
-            const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.8, 22), boomMat);
-            mast.position.set(-4, 18, 0);
-            group.add(mast);
-
-            // Navigation Lanterns (Port Red, Starboard Green)
-            const pLight = new THREE.Mesh(new THREE.SphereGeometry(1.2, 6, 6), new THREE.MeshBasicMaterial({ color: 0xEF4444 }));
-            pLight.position.set(4, 13, 21);
-            group.add(pLight);
-            const sLight = new THREE.Mesh(new THREE.SphereGeometry(1.2, 6, 6), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
-            sLight.position.set(4, 13, -21);
-            group.add(sLight);
-
-            // Fish Crate Stacks (Banyeras) in Cargo Hold
-            const crateMat = new THREE.MeshStandardMaterial({ color: 0xD97706 });
-            const crates = new THREE.Mesh(new THREE.BoxGeometry(10, 5, 8), crateMat);
-            crates.position.set(12, 7, 0);
+            // Banyera Crates in Cargo Hold
+            const crates = new THREE.Mesh(
+                new THREE.BoxGeometry(3.5, 1.6, 2.6),
+                new THREE.MeshStandardMaterial({ color: 0xD97706 })
+            );
+            crates.position.set(3.5, 2.0, 0);
             group.add(crates);
 
         } else if (type === 'Purse Seiner' || type === 'Ring-Netter') {
-            // Purse Seiner / Ring-Netter: Deep hull with net drum
+            // Purse Seiner / Ring-Netter (L: 12, W: 4.2)
             const hullMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.5 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(36, 10, 15), hullMat);
-            hull.position.y = 3;
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(12, 2.8, 4.2), hullMat);
+            hull.position.y = 1.0;
             hull.castShadow = true;
             group.add(hull);
 
             // Forward Wheelhouse
-            const wheelhouse = new THREE.Mesh(new THREE.BoxGeometry(12, 11, 11), new THREE.MeshStandardMaterial({ color: 0xE2E8F0 }));
-            wheelhouse.position.set(10, 11, 0);
+            const wheelhouse = new THREE.Mesh(
+                new THREE.BoxGeometry(3.8, 3.2, 3.2),
+                new THREE.MeshStandardMaterial({ color: 0xE2E8F0 })
+            );
+            wheelhouse.position.set(3.0, 3.2, 0);
             group.add(wheelhouse);
 
-            // Aft Net Drum Roll
-            const drum = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 11, 12), new THREE.MeshStandardMaterial({ color: 0x334155 }));
+            // Net Drum Roll
+            const drum = new THREE.Mesh(
+                new THREE.CylinderGeometry(1.2, 1.2, 3.2, 12),
+                new THREE.MeshStandardMaterial({ color: 0x334155 })
+            );
             drum.rotation.x = Math.PI / 2;
-            drum.position.set(-10, 7, 0);
+            drum.position.set(-3.2, 2.2, 0);
             group.add(drum);
 
-            // Fish crates
-            const crates = new THREE.Mesh(new THREE.BoxGeometry(8, 4, 8), new THREE.MeshStandardMaterial({ color: 0xF59E0B }));
-            crates.position.set(0, 6, 0);
-            group.add(crates);
-
         } else {
-            // Shuttle Banca: Motorized double-outrigger (katig)
+            // Small Shuttle Banca (L: 5.5, W: 2.4 with katig outriggers)
             const bancaMat = new THREE.MeshStandardMaterial({ color: 0x0284C7 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(18, 4, 4.5), bancaMat);
-            hull.position.y = 1.5;
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(5.5, 1.1, 1.2), bancaMat);
+            hull.position.y = 0.5;
             group.add(hull);
 
-            // Twin Bamboo Outriggers (Katig)
+            // Outrigger Floats (Katig)
             const katigMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC });
-            const float1 = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 16), katigMat);
+            const float1 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 4.8), katigMat);
             float1.rotation.z = Math.PI / 2;
-            float1.position.set(0, 1, -9);
+            float1.position.set(0, 0.35, -2.4);
             group.add(float1);
 
             const float2 = float1.clone();
-            float2.position.set(0, 1, 9);
+            float2.position.set(0, 0.35, 2.4);
             group.add(float2);
 
-            // Crossbeam Struts (Tadlang)
+            // Crossbeams (Tadlang)
             const strutMat = new THREE.MeshBasicMaterial({ color: 0xCBD5E1 });
-            const strut1 = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 18), strutMat);
-            strut1.rotation.x = Math.PI / 2;
-            strut1.position.set(3, 2.5, 0);
-            group.add(strut1);
+            const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 4.8), strutMat);
+            strut.rotation.x = Math.PI / 2;
+            strut.position.set(0.8, 0.8, 0);
+            group.add(strut);
 
-            const strut2 = strut1.clone();
-            strut2.position.set(-3, 2.5, 0);
-            group.add(strut2);
-
-            // Crate Payload on Banca (shown during lightering)
-            const bancaCrates = new THREE.Mesh(new THREE.BoxGeometry(6, 3, 3), new THREE.MeshStandardMaterial({ color: 0xFBBF24 }));
-            bancaCrates.position.set(0, 3.5, 0);
-            bancaCrates.name = 'cratesMesh';
-            group.add(bancaCrates);
+            // Banyeras on deck
+            const crates = new THREE.Mesh(
+                new THREE.BoxGeometry(1.8, 0.8, 0.8),
+                new THREE.MeshStandardMaterial({ color: 0xFBBF24 })
+            );
+            crates.position.set(0, 0.9, 0);
+            crates.name = 'cratesMesh';
+            group.add(crates);
         }
+
+        // V-SHAPED KELVIN BOW WAKE MESH (Translucent chevron at waterline Y = 0.06)
+        const wakeShape = new THREE.Shape();
+        wakeShape.moveTo(0, 0);
+        wakeShape.lineTo(-1.2, -4.0);
+        wakeShape.lineTo(-0.6, -4.0);
+        wakeShape.lineTo(0, -0.6);
+        wakeShape.lineTo(0.6, -4.0);
+        wakeShape.lineTo(1.2, -4.0);
+        wakeShape.closePath();
+
+        const wakeGeo = new THREE.ShapeGeometry(wakeShape);
+        wakeGeo.rotateX(-Math.PI / 2);
+        const wakeMat = new THREE.MeshBasicMaterial({
+            color: 0xE0F2FE,
+            transparent: true,
+            opacity: 0.0,
+            depthWrite: false,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending
+        });
+        const bowWakeMesh = new THREE.Mesh(wakeGeo, wakeMat);
+        bowWakeMesh.position.set(type === 'Banca' ? 2.8 : 7.2, 0.06, 0);
+        bowWakeMesh.name = 'bowWake';
+        group.add(bowWakeMesh);
 
         return group;
     }
 
+    // MULTI-SINE WAVE HEIGHT FUNCTION FOR HYDRODYNAMIC BUOYANCY
+    function getWaveHeight(x, z, t) {
+        return Math.sin(x * 0.05 + t * 2.2) * 0.45 +
+               Math.cos(z * 0.06 + t * 1.8) * 0.35 +
+               Math.sin((x + z) * 0.04 + t * 1.2) * 0.25;
+    }
+
+    // EXPANDING STERN FOAM RINGS POOL
+    const MAX_FOAM = 60;
+    const foamPool = [];
+    const foamRingGeo = new THREE.RingGeometry(0.6, 1.4, 16);
+    foamRingGeo.rotateX(-Math.PI / 2);
+    const foamMat = new THREE.MeshBasicMaterial({
+        color: 0xE0F2FE,
+        transparent: true,
+        opacity: 0.0,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending
+    });
+
+    for (let i = 0; i < MAX_FOAM; i++) {
+        const ring = new THREE.Mesh(foamRingGeo, foamMat.clone());
+        ring.position.set(0, -50, 0);
+        ring.visible = false;
+        scene.add(ring);
+        foamPool.push({ mesh: ring, active: false, life: 0, maxLife: 1.2, scale: 1.0 });
+    }
+
+    function emitFoam(x, z) {
+        const p = foamPool.find(f => !f.active);
+        if (p) {
+            p.active = true;
+            p.life = 0;
+            p.scale = 1.0;
+            p.mesh.position.set(x, 0.05, z);
+            p.mesh.scale.set(1, 1, 1);
+            p.mesh.material.opacity = 0.55;
+            p.mesh.visible = true;
+        }
+    }
+
     // -------------------------------------------------------------
-    // STOCHASTIC SIMULATION DATA STRUCTURES & PERSISTENT FLEET
+    // FLEET INITIALIZATION: 13 BERTHS & 24 BANCAS
     // -------------------------------------------------------------
-    let simTime = 5.75; // 05:45 AM (Dawn Bulungan Peak)
+    let simTime = 5.75; // 05:45 AM
     let isPlaying = true;
     let timeScale = 1.0;
     let lastTime = performance.now();
@@ -1323,41 +1344,37 @@ def generate_3d_digital_twin_html() -> str:
     let tideLockActive = true;
     let totalCratesLanded = 1420;
 
-    let vessels = [];
-    let bancas = [];
+    const vessels = [];
+    const bancas = [];
     let arrivalTimer = 0;
 
-    // Helper: Diurnal arrival intensity λ(t)
     function computeLambda(t) {
         const dawnPeak = bulunganMultiplier * Math.exp(-Math.pow((t - 6.0), 2) / (2 * 1.44));
         const duskPeak = 0.65 * Math.exp(-Math.pow((t - 16.5), 2) / (2 * 2.25));
         return arrivalRate + dawnPeak + duskPeak;
     }
 
-    // Semi-diurnal Tide (Meters above datum: 0.5m to 2.2m)
     function computeTide(t) {
         return 1.35 + 0.85 * Math.cos((t - 6.0) * (Math.PI / 6.0));
     }
 
-    // -------------------------------------------------------------
-    // POPULATE INITIAL FLEET: MEDIUM BOATS & 24 PERSISTENT BANCAS
-    // -------------------------------------------------------------
     function initFleet() {
-        // Spawn 3 initial medium boats directly docked at berths B2, B4, B6
+        // Spawn 3 initial medium boats directly docked at B2, B5, B8
         const initialDocked = [
             { name: 'MV-MercedesQueen', type: 'Basnig', gt: 28.4, draft: 2.15, cargo: 120, maxCargo: 160, berthIdx: 1 },
-            { name: 'MV-SanMiguel', type: 'Purse Seiner', gt: 24.1, draft: 1.95, cargo: 95, maxCargo: 130, berthIdx: 3 },
-            { name: 'MV-BicolExpress', type: 'Basnig', gt: 32.0, draft: 2.30, cargo: 150, maxCargo: 180, berthIdx: 5 }
+            { name: 'MV-SanMiguel', type: 'Purse Seiner', gt: 24.1, draft: 1.95, cargo: 90, maxCargo: 130, berthIdx: 4 },
+            { name: 'MV-BicolExpress', type: 'Basnig', gt: 32.0, draft: 2.30, cargo: 140, maxCargo: 180, berthIdx: 7 }
         ];
 
         initialDocked.forEach(spec => {
-            const bCoord = berthCoordinates[spec.berthIdx];
-            if (bCoord) {
-                const mesh = createVesselMesh(spec.type, spec.cargo);
-                mesh.position.set(bCoord.x, 0, bCoord.z);
+            const b = BERTH_SLOTS[spec.berthIdx];
+            if (b) {
+                const mesh = createVesselMesh(spec.type);
+                mesh.position.set(b.dockX, 0, b.z);
                 mesh.rotation.y = Math.PI / 2; // Alongside concrete pier
                 scene.add(mesh);
-                bCoord.occupiedBy = spec.name;
+                b.occupiedBy = spec.name;
+
                 vessels.push({
                     name: spec.name,
                     type: spec.type,
@@ -1365,26 +1382,33 @@ def generate_3d_digital_twin_html() -> str:
                     draft: spec.draft,
                     cargo: spec.cargo,
                     maxCargo: spec.maxCargo,
-                    x: bCoord.x,
-                    z: bCoord.z,
+                    x: b.dockX,
+                    z: b.z,
                     mesh: mesh,
                     state: 'Unloading at Wharf',
-                    assignedBerth: bCoord,
-                    wait: 0
+                    assignedBerth: b,
+                    wait: 0,
+                    speed: 0,
+                    yaw: Math.PI / 2,
+                    turnRoll: 0,
+                    throttlePitch: 0,
+                    bobOffset: Math.random() * Math.PI * 2,
+                    foamTimer: 0
                 });
             }
         });
 
-        // Spawn 2 initial medium boats far away in San Miguel Bay Anchorage
+        // Spawn 2 initial medium boats far away in San Miguel Bay Anchorage (140-160 units out)
         const initialAnchored = [
-            { name: 'MV-DaetStar', type: 'Basnig', gt: 29.5, draft: 2.25, cargo: 160, maxCargo: 160, x: 520, z: -120 },
-            { name: 'MV-NagaPride', type: 'Ring-Netter', gt: 21.0, draft: 1.85, cargo: 110, maxCargo: 120, x: 580, z: 80 }
+            { name: 'MV-DaetStar', type: 'Basnig', gt: 29.5, draft: 2.25, cargo: 155, maxCargo: 160, x: 140, z: -40 },
+            { name: 'MV-NagaPride', type: 'Ring-Netter', gt: 21.0, draft: 1.85, cargo: 110, maxCargo: 120, x: 150, z: 35 }
         ];
 
         initialAnchored.forEach(spec => {
-            const mesh = createVesselMesh(spec.type, spec.cargo);
+            const mesh = createVesselMesh(spec.type);
             mesh.position.set(spec.x, 0, spec.z);
             scene.add(mesh);
+
             vessels.push({
                 name: spec.name,
                 type: spec.type,
@@ -1397,29 +1421,20 @@ def generate_3d_digital_twin_html() -> str:
                 mesh: mesh,
                 state: 'Waiting at Anchorage',
                 assignedBerth: null,
-                wait: 1.5
+                wait: 1.2,
+                speed: 0,
+                yaw: 0,
+                turnRoll: 0,
+                throttlePitch: 0,
+                bobOffset: Math.random() * Math.PI * 2,
+                foamTimer: 0
             });
         });
 
-        // SPAWN PERSISTENT SMALL BOAT FLEET (24 BANCAS) MOORED AT DOCK BASINS
-        // Generate 24 distinct dock mooring slots
-        const parkSlots = [];
-        // 10 slots along South Wooden Dock 1 (Z: 220 to 330)
-        for (let i = 0; i < 10; i++) {
-            parkSlots.push({ x: -45, z: 220 + i * 12, yaw: Math.PI / 2 });
-        }
-        // 8 slots along South Basin Wall (Z: 230 to 320, inner side)
-        for (let i = 0; i < 8; i++) {
-            parkSlots.push({ x: -22, z: 235 + i * 11, yaw: 0 });
-        }
-        // 6 slots along North Dock 2 (Z: -320 to -250)
-        for (let i = 0; i < 6; i++) {
-            parkSlots.push({ x: -35, z: -315 + i * 13, yaw: -Math.PI / 2 });
-        }
-
+        // Spawn 24 Small Artisanal Bancas in the Shallow Mooring Basin
         for (let i = 0; i < 24; i++) {
-            const slot = parkSlots[i % parkSlots.length];
-            const bMesh = createVesselMesh('Banca', 0);
+            const slot = BANCA_PARK_SLOTS[i % BANCA_PARK_SLOTS.length];
+            const bMesh = createVesselMesh('Banca');
             bMesh.position.set(slot.x, 0, slot.z);
             bMesh.rotation.y = slot.yaw;
             scene.add(bMesh);
@@ -1431,25 +1446,27 @@ def generate_3d_digital_twin_html() -> str:
                 gt: 2.4,
                 draft: 0.65,
                 mesh: bMesh,
-                state: 'parked', // Mostly parked at dock
+                state: 'parked',
                 parkSlot: slot,
                 targetBoat: null,
                 cargo: 0,
                 maxCargo: 25,
-                bobPhase: Math.random() * Math.PI * 2,
-                timer: 0
+                speed: 0,
+                yaw: slot.yaw,
+                turnRoll: 0,
+                throttlePitch: 0,
+                bobOffset: Math.random() * Math.PI * 2,
+                timer: 0,
+                foamTimer: 0
             });
         }
     }
     initFleet();
 
     // -------------------------------------------------------------
-    // ANIMATION & DISCRETE-EVENT UPDATE LOOP
+    // MAIN SIMULATION & HYDRODYNAMICS UPDATE LOOP
     // -------------------------------------------------------------
-    let lighthouseAngle = 0;
-
-    function updateSimulation(deltaHours) {
-        // Clock Progression
+    function updateSimulation(deltaHours, waveTime) {
         simTime = (simTime + deltaHours) % 24.0;
         const tide = computeTide(simTime);
 
@@ -1461,12 +1478,9 @@ def generate_3d_digital_twin_html() -> str:
         document.getElementById('hud-clock').textContent =
             (displayH < 10 ? '0' : '') + displayH + ':' + (clockM < 10 ? '0' : '') + clockM + ' ' + ampm;
 
-        // Bulungan Surge Active between 03:00 and 07:00
         const surgeActive = simTime >= 3.0 && simTime <= 7.2;
-        const surgePill = document.getElementById('surge-pill');
-        surgePill.style.display = surgeActive ? 'inline-flex' : 'none';
+        document.getElementById('surge-pill').style.display = surgeActive ? 'inline-flex' : 'none';
 
-        // Tide Pill Update
         const tidePill = document.getElementById('tide-pill');
         if (tide >= 1.6 || !tideLockActive) {
             tidePill.textContent = 'HIGH TIDE: Open (+' + tide.toFixed(2) + 'm)';
@@ -1476,44 +1490,19 @@ def generate_3d_digital_twin_html() -> str:
             tidePill.className = 'tide-pill low';
         }
 
-        // Dynamic Diurnal Lighting & Sky Transitions
-        if (surgeActive) {
-            scene.background.lerp(new THREE.Color(0x18182B), 0.04);
-            scene.fog.color.lerp(new THREE.Color(0x18182B), 0.04);
-            sunLight.color.lerp(new THREE.Color(0xFBBF24), 0.04);
-            sunLight.intensity = 1.6;
-        } else if (simTime >= 7.2 && simTime <= 16.0) {
-            scene.background.lerp(new THREE.Color(0x0C1E38), 0.04);
-            scene.fog.color.lerp(new THREE.Color(0x0C1E38), 0.04);
-            sunLight.color.lerp(new THREE.Color(0xFDF4DC), 0.04);
-            sunLight.intensity = 1.4;
-        } else if (simTime > 16.0 && simTime <= 18.5) {
-            scene.background.lerp(new THREE.Color(0x231828), 0.04);
-            scene.fog.color.lerp(new THREE.Color(0x231828), 0.04);
-            sunLight.color.lerp(new THREE.Color(0xF97316), 0.04);
-            sunLight.intensity = 1.3;
-        } else {
-            scene.background.lerp(new THREE.Color(0x050A14), 0.04);
-            scene.fog.color.lerp(new THREE.Color(0x050A14), 0.04);
-            sunLight.intensity = 0.25;
-        }
-
-        // -------------------------------------------------------------
-        // STOCHASTIC MEDIUM VESSEL ARRIVALS & DUAL BEHAVIOR LOGIC
-        // -------------------------------------------------------------
+        // STOCHASTIC MEDIUM VESSEL ARRIVAL
         arrivalTimer += computeLambda(simTime) * deltaHours;
-        if (arrivalTimer >= 1.0 && vessels.length < 18) {
+        if (arrivalTimer >= 1.0 && vessels.length < 16) {
             arrivalTimer = 0;
             const types = ['Basnig', 'Purse Seiner', 'Ring-Netter'];
             const selType = types[Math.floor(Math.random() * types.length)];
             const rDraft = selType === 'Basnig' ? (1.9 + Math.random() * 0.45) : (1.6 + Math.random() * 0.35);
-            const rCargo = Math.floor(110 + Math.random() * 70);
+            const rCargo = Math.floor(100 + Math.random() * 70);
             const rGT = (18 + Math.random() * 15);
             const vName = 'MV-Catch-' + Math.floor(Math.random() * 900 + 100);
 
-            const vMesh = createVesselMesh(selType, rCargo);
-            // Spawn on far eastern horizon
-            vMesh.position.set(780, 0, (Math.random() - 0.5) * 360);
+            const vMesh = createVesselMesh(selType);
+            vMesh.position.set(190, 0, (Math.random() - 0.5) * 80);
             scene.add(vMesh);
 
             const newBoat = {
@@ -1527,132 +1516,269 @@ def generate_3d_digital_twin_html() -> str:
                 z: 0,
                 mesh: vMesh,
                 state: 'Arriving',
-                wait: 0,
                 assignedBerth: null,
-                unloadTimer: 0
+                wait: 0,
+                speed: 0,
+                yaw: Math.PI,
+                turnRoll: 0,
+                throttlePitch: 0,
+                bobOffset: Math.random() * Math.PI * 2,
+                foamTimer: 0
             };
 
-            // DUAL BEHAVIOR DECISION:
-            // Check: Is there an open berth, does tide allow entry, and is anchorage empty (FIFO priority)?
             const canPassChannel = !tideLockActive || tide >= 1.6 || newBoat.draft <= 1.8;
-            const freeBerth = berthCoordinates.find(b => b.occupiedBy === null);
-            const anchoredWaiting = vessels.filter(v => v.state === 'Waiting at Anchorage').length;
+            const freeBerth = BERTH_SLOTS.find(b => b.occupiedBy === null);
+            const queueCount = vessels.filter(v => v.state === 'Waiting at Anchorage').length;
 
-            if (canPassChannel && freeBerth && anchoredWaiting === 0) {
-                // DIRECT DOCKING: Claim berth and navigate straight in
+            if (canPassChannel && freeBerth && queueCount === 0) {
                 freeBerth.occupiedBy = newBoat.name;
                 newBoat.assignedBerth = freeBerth;
                 newBoat.state = 'Navigating Channel';
+                newBoat.approachStep = 1;
             } else {
-                // STAY FAR AWAY AT ANCHORAGE: Outer San Miguel Bay holding zone
-                newBoat.x = 500 + Math.random() * 180; // Distant anchorage (X: 500-680)
-                newBoat.z = (Math.random() - 0.5) * 320;
+                newBoat.x = 135 + Math.random() * 30; // Distant Anchorage Zone (135-165 units out)
+                newBoat.z = (Math.random() - 0.5) * 80;
                 newBoat.state = 'Arriving';
             }
             vessels.push(newBoat);
         }
 
-        // -------------------------------------------------------------
-        // UPDATE MEDIUM VESSELS STATE MACHINE
-        // -------------------------------------------------------------
+        // UPDATE MEDIUM COMMERCIAL VESSELS
         let waitingCount = 0;
         let occupiedCount = 0;
 
         vessels.forEach((v, idx) => {
-            // Gentle water bobbing
-            v.mesh.position.y = Math.sin(Date.now() * 0.002 + idx) * 0.7;
+            // Hydrodynamic Wave Buoyancy (Heave, Pitch, Roll)
+            const curX = v.mesh.position.x;
+            const curZ = v.mesh.position.z;
+            const waveY = getWaveHeight(curX, curZ, waveTime);
+            const waveSlopeX = (getWaveHeight(curX + 1.2, curZ, waveTime) - waveY) / 1.2;
+            const waveSlopeZ = (getWaveHeight(curX, curZ + 1.2, waveTime) - waveY) / 1.2;
+
+            v.mesh.position.y = waveY * 0.75;
+            const targetPitch = waveSlopeX * 0.35 + v.throttlePitch;
+            const targetRoll = waveSlopeZ * 0.35 + v.turnRoll;
+            v.mesh.rotation.x = THREE.MathUtils.lerp(v.mesh.rotation.x, targetPitch, 0.1);
+            v.mesh.rotation.z = THREE.MathUtils.lerp(v.mesh.rotation.z, targetRoll, 0.1);
+
+            // Stern Foam Trail & Bow Wake Opacity
+            const bowWake = v.mesh.getObjectByName('bowWake');
+            if (bowWake) {
+                bowWake.material.opacity = THREE.MathUtils.lerp(
+                    bowWake.material.opacity,
+                    Math.min(0.55, v.speed * 2.5),
+                    0.12
+                );
+            }
+            if (v.speed > 0.08) {
+                v.foamTimer += deltaHours * 100;
+                if (v.foamTimer > 0.15) {
+                    v.foamTimer = 0;
+                    emitFoam(curX - Math.cos(v.yaw) * 6.5, curZ + Math.sin(v.yaw) * 6.5);
+                }
+            }
 
             if (v.state === 'Arriving') {
-                // Steer into Distant San Miguel Bay Anchorage
-                v.mesh.position.x += (v.x - v.mesh.position.x) * 0.04;
-                v.mesh.position.z += (v.z - v.mesh.position.z) * 0.04;
-                if (Math.abs(v.mesh.position.x - v.x) < 6) {
+                // Steer into Distant Anchorage Zone (120 to 180 units out)
+                const dx = v.x - curX;
+                const dz = v.z - curZ;
+                v.speed = THREE.MathUtils.lerp(v.speed, 0.35, 0.05);
+                const targetYaw = Math.atan2(dz, dx);
+                const yawDiff = Math.atan2(Math.sin(targetYaw - v.yaw), Math.cos(targetYaw - v.yaw));
+                v.yaw += yawDiff * 0.06;
+                v.turnRoll = -yawDiff * 1.5;
+                v.throttlePitch = -0.05;
+                v.mesh.rotation.y = v.yaw;
+
+                v.mesh.position.x += Math.cos(v.yaw) * v.speed;
+                v.mesh.position.z += Math.sin(v.yaw) * v.speed;
+
+                if (Math.hypot(dx, dz) < 4) {
                     v.state = 'Waiting at Anchorage';
+                    v.speed = 0;
+                    v.turnRoll = 0;
+                    v.throttlePitch = 0;
                 }
             } else if (v.state === 'Waiting at Anchorage') {
                 waitingCount++;
                 v.wait += deltaHours;
+                v.speed = 0;
+                v.turnRoll = 0;
+                v.throttlePitch = 0;
 
-                // Priority Check: If any docked medium boat has vacated a berth, move in!
                 const canPass = !tideLockActive || tide >= 1.6 || v.draft <= 1.8;
-                const freeBerth = berthCoordinates.find(b => b.occupiedBy === null);
+                const freeBerth = BERTH_SLOTS.find(b => b.occupiedBy === null);
 
                 if (canPass && freeBerth) {
                     freeBerth.occupiedBy = v.name;
                     v.assignedBerth = freeBerth;
                     v.state = 'Navigating Channel';
+                    v.approachStep = 1;
                 }
             } else if (v.state === 'Navigating Channel') {
-                // Transit through estuarine channel toward assigned concrete berth
-                const targetX = v.assignedBerth.x;
-                const targetZ = v.assignedBerth.z;
+                // MULTI-WAYPOINT CHANNEL ROUTING (Zero Pier Clipping)
+                let targetX = 0;
+                let targetZ = 0;
 
-                v.mesh.position.x += (targetX - v.mesh.position.x) * 0.035;
-                v.mesh.position.z += (targetZ - v.mesh.position.z) * 0.035;
+                if (v.approachStep === 1) {
+                    // Approach Waypoint 1: Channel Entry Corridor
+                    targetX = 60;
+                    targetZ = v.assignedBerth.z * 0.4;
+                    if (Math.hypot(targetX - curX, targetZ - curZ) < 10) v.approachStep = 2;
+                } else if (v.approachStep === 2) {
+                    // Approach Waypoint 2: Wharf Approach Corridor (X = -12)
+                    targetX = -12;
+                    targetZ = v.assignedBerth.z;
+                    if (Math.hypot(targetX - curX, targetZ - curZ) < 8) v.approachStep = 3;
+                } else {
+                    // Final Docking: Berth Slot
+                    targetX = v.assignedBerth.dockX;
+                    targetZ = v.assignedBerth.z;
+                }
 
-                // Turn alongside wharf
-                v.mesh.rotation.y = Math.PI / 2;
+                const dx = targetX - curX;
+                const dz = targetZ - curZ;
+                v.speed = THREE.MathUtils.lerp(v.speed, v.approachStep === 3 ? 0.15 : 0.4, 0.05);
 
-                if (Math.abs(v.mesh.position.x - targetX) < 4 && Math.abs(v.mesh.position.z - targetZ) < 4) {
+                const targetYaw = (v.approachStep === 3) ? Math.PI / 2 : Math.atan2(dz, dx);
+                const yawDiff = Math.atan2(Math.sin(targetYaw - v.yaw), Math.cos(targetYaw - v.yaw));
+                v.yaw += yawDiff * 0.06;
+                v.turnRoll = -yawDiff * 1.5;
+                v.throttlePitch = -0.04;
+                v.mesh.rotation.y = v.yaw;
+
+                v.mesh.position.x += Math.cos(v.yaw) * v.speed;
+                v.mesh.position.z += Math.sin(v.yaw) * v.speed;
+
+                if (v.approachStep === 3 && Math.hypot(targetX - curX, targetZ - curZ) < 2) {
                     v.mesh.position.x = targetX;
                     v.mesh.position.z = targetZ;
+                    v.yaw = Math.PI / 2;
+                    v.mesh.rotation.y = Math.PI / 2;
                     v.state = 'Unloading at Wharf';
+                    v.speed = 0;
+                    v.turnRoll = 0;
+                    v.throttlePitch = 0;
                 }
             } else if (v.state === 'Unloading at Wharf') {
                 occupiedCount++;
-                // Offload crates directly onto wharf apron
+                v.speed = 0;
+                v.turnRoll = 0;
+                v.throttlePitch = 0;
                 const offloadAmt = Math.round(deltaHours * 95);
                 v.cargo = Math.max(0, v.cargo - offloadAmt);
                 totalCratesLanded += offloadAmt;
 
                 if (v.cargo <= 0) {
-                    // Free berth for next waiting boat
                     if (v.assignedBerth) {
                         v.assignedBerth.occupiedBy = null;
                         v.assignedBerth = null;
                     }
-                    v.state = 'Reverse Maneuver';
-                    v.reverseTargetX = v.mesh.position.x + 45;
-                    v.reverseTargetZ = v.mesh.position.z + (v.mesh.position.z > 0 ? -24 : 24);
+                    // STEP 3: REVERSE STRAIGHT BACK 15 UNITS INTO APPROACH CORRIDOR
+                    v.state = 'Straight Reverse';
+                    v.reverseStartX = curX;
+                    v.reverseTargetX = curX + 15; // Straight back to X = -14
                 }
-            } else if (v.state === 'Reverse Maneuver') {
-                // Smooth angled reverse backing out into the open channel
-                v.mesh.position.x += (v.reverseTargetX - v.mesh.position.x) * 0.04;
-                v.mesh.position.z += (v.reverseTargetZ - v.mesh.position.z) * 0.04;
-                v.mesh.rotation.y = -Math.PI / 4;
-                if (Math.abs(v.mesh.position.x - v.reverseTargetX) < 4) {
+            } else if (v.state === 'Straight Reverse') {
+                // Strict 15-unit reverse without turning
+                v.speed = 0.2;
+                v.mesh.position.x += 0.15;
+                v.yaw = Math.PI / 2;
+                v.mesh.rotation.y = Math.PI / 2;
+
+                if (curX >= v.reverseTargetX) {
                     v.state = 'Departing';
+                    v.departStep = 1;
                 }
             } else if (v.state === 'Departing') {
-                // Sail out past the lighthouse into the horizon
-                v.mesh.position.x += 2.2;
-                v.mesh.rotation.y = 0;
-                if (v.mesh.position.x > 820) {
+                // Multi-Waypoint Departure Corridor
+                let depX = 180;
+                let depZ = 20;
+
+                if (v.departStep === 1) {
+                    depX = 60;
+                    depZ = 25;
+                    if (Math.hypot(depX - curX, depZ - curZ) < 12) v.departStep = 2;
+                } else {
+                    depX = 220;
+                    depZ = 30;
+                }
+
+                const dx = depX - curX;
+                const dz = depZ - curZ;
+                v.speed = THREE.MathUtils.lerp(v.speed, 0.45, 0.05);
+                const targetYaw = Math.atan2(dz, dx);
+                const yawDiff = Math.atan2(Math.sin(targetYaw - v.yaw), Math.cos(targetYaw - v.yaw));
+                v.yaw += yawDiff * 0.05;
+                v.turnRoll = -yawDiff * 1.5;
+                v.throttlePitch = -0.05;
+                v.mesh.rotation.y = v.yaw;
+
+                v.mesh.position.x += Math.cos(v.yaw) * v.speed;
+                v.mesh.position.z += Math.sin(v.yaw) * v.speed;
+
+                if (curX > 210) {
                     scene.remove(v.mesh);
                     vessels.splice(idx, 1);
                 }
             }
         });
 
-        // -------------------------------------------------------------
-        // UPDATE SMALL BOAT FLEET (PARKED AT DOCK + DYNAMIC LIGHTERING)
-        // -------------------------------------------------------------
+        // STEP 3: BOATS COLLISION AVOIDANCE (BOIDS REPULSION)
+        for (let i = 0; i < vessels.length; i++) {
+            for (let j = i + 1; j < vessels.length; j++) {
+                const bA = vessels[i];
+                const bB = vessels[j];
+                if (bA.speed > 0.05 || bB.speed > 0.05) {
+                    const dx = bA.mesh.position.x - bB.mesh.position.x;
+                    const dz = bA.mesh.position.z - bB.mesh.position.z;
+                    const dist = Math.hypot(dx, dz);
+                    const minSafe = 10.0; // Minimum safe hull distance
+
+                    if (dist < minSafe && dist > 0.1) {
+                        const push = (minSafe - dist) * 0.04;
+                        const nx = dx / dist;
+                        const nz = dz / dist;
+                        bA.mesh.position.x += nx * push;
+                        bA.mesh.position.z += nz * push;
+                        bB.mesh.position.x -= nx * push;
+                        bB.mesh.position.z -= nz * push;
+                        bA.speed *= 0.7;
+                        bB.speed *= 0.7;
+                    }
+                }
+            }
+        }
+
+        // UPDATE SMALL BOAT FLEET (PARKED AT DOCK + ACTIVE LIGHTERING SHUTTLES)
         let activeBancas = 0;
 
-        bancas.forEach((b, bIdx) => {
-            // Desynchronized gentle water bobbing for small boats
-            b.mesh.position.y = Math.sin(Date.now() * 0.003 + b.bobPhase) * 0.45;
+        bancas.forEach(b => {
+            const curX = b.mesh.position.x;
+            const curZ = b.mesh.position.z;
+            const waveY = getWaveHeight(curX, curZ, waveTime);
+            b.mesh.position.y = waveY * 0.6;
+
+            const bowWake = b.mesh.getObjectByName('bowWake');
+            if (bowWake) {
+                bowWake.material.opacity = THREE.MathUtils.lerp(
+                    bowWake.material.opacity,
+                    Math.min(0.45, b.speed * 2.0),
+                    0.15
+                );
+            }
 
             if (b.state === 'parked') {
-                // Keep moored in designated slot with slight rocking
+                // Moored in designated slot with gentle water rocking
                 b.mesh.position.x = b.parkSlot.x;
                 b.mesh.position.z = b.parkSlot.z;
                 b.mesh.rotation.y = b.parkSlot.yaw;
+                b.mesh.rotation.z = Math.sin(Date.now() * 0.003 + b.bobOffset) * 0.05;
+                b.speed = 0;
 
-                // DYNAMIC FISH FETCHING LOOP:
-                // If a medium boat is holding far away in anchorage with cargo, dispatch up to 2-3 bancas
-                const activeCount = bancas.filter(item => item.state !== 'parked').length;
-                if (activeCount < 3) {
+                // Dynamic Fish Fetching: dispatch up to 6 bancas (~25% of fleet)
+                const runningCount = bancas.filter(item => item.state !== 'parked').length;
+                if (runningCount < 6) {
                     const targetMB = vessels.find(v => v.state === 'Waiting at Anchorage' && v.cargo > 0);
                     if (targetMB) {
                         b.targetBoat = targetMB;
@@ -1665,47 +1791,60 @@ def generate_3d_digital_twin_html() -> str:
                     b.state = 'return_to_park';
                     return;
                 }
-                // Drive out from dock to distant anchored medium boat
                 const tx = b.targetBoat.mesh.position.x;
                 const tz = b.targetBoat.mesh.position.z;
-                const dx = tx - b.mesh.position.x;
-                const dz = tz - b.mesh.position.z;
+                const dx = tx - curX;
+                const dz = tz - curZ;
+                b.speed = THREE.MathUtils.lerp(b.speed, 0.45, 0.05);
 
-                b.mesh.position.x += dx * 0.045;
-                b.mesh.position.z += dz * 0.045;
-                b.mesh.rotation.y = -Math.atan2(dz, dx);
+                const targetYaw = Math.atan2(dz, dx);
+                const yawDiff = Math.atan2(Math.sin(targetYaw - b.yaw), Math.cos(targetYaw - b.yaw));
+                b.yaw += yawDiff * 0.08;
+                b.mesh.rotation.y = b.yaw;
+                b.mesh.rotation.z = -yawDiff * 1.2;
 
-                if (Math.hypot(dx, dz) < 22) {
+                b.mesh.position.x += Math.cos(b.yaw) * b.speed;
+                b.mesh.position.z += Math.sin(b.yaw) * b.speed;
+
+                if (Math.hypot(dx, dz) < 8.0) {
                     b.state = 'transferring';
-                    b.timer = 1.8; // Brief transfer pause alongside medium boat
+                    b.timer = 1.6;
                 }
             } else if (b.state === 'transferring') {
                 activeBancas++;
+                b.speed = 0;
                 b.timer -= deltaHours * 15;
                 if (b.timer <= 0) {
-                    const takeAmt = Math.min(b.maxCargo, b.targetBoat ? b.targetBoat.cargo : 0);
-                    if (b.targetBoat) b.targetBoat.cargo -= takeAmt;
-                    b.cargo = takeAmt;
+                    const take = Math.min(b.maxCargo, b.targetBoat ? b.targetBoat.cargo : 0);
+                    if (b.targetBoat) b.targetBoat.cargo -= take;
+                    b.cargo = take;
                     b.state = 'to_wharf';
                 }
             } else if (b.state === 'to_wharf') {
                 activeBancas++;
-                // Drive back to wharf apron landing zone
-                const landingX = -86;
-                const landingZ = 180;
-                const dx = landingX - b.mesh.position.x;
-                const dz = landingZ - b.mesh.position.z;
+                // Head to fish landing apron at X = -30, Z = 70
+                const landingX = -30;
+                const landingZ = 70;
+                const dx = landingX - curX;
+                const dz = landingZ - curZ;
+                b.speed = THREE.MathUtils.lerp(b.speed, 0.4, 0.05);
 
-                b.mesh.position.x += dx * 0.04;
-                b.mesh.position.z += dz * 0.04;
-                b.mesh.rotation.y = -Math.atan2(dz, dx);
+                const targetYaw = Math.atan2(dz, dx);
+                const yawDiff = Math.atan2(Math.sin(targetYaw - b.yaw), Math.cos(targetYaw - b.yaw));
+                b.yaw += yawDiff * 0.08;
+                b.mesh.rotation.y = b.yaw;
+                b.mesh.rotation.z = -yawDiff * 1.2;
 
-                if (Math.hypot(dx, dz) < 18) {
+                b.mesh.position.x += Math.cos(b.yaw) * b.speed;
+                b.mesh.position.z += Math.sin(b.yaw) * b.speed;
+
+                if (Math.hypot(dx, dz) < 6.0) {
                     b.state = 'unloading_at_wharf';
-                    b.timer = 1.4;
+                    b.timer = 1.2;
                 }
             } else if (b.state === 'unloading_at_wharf') {
                 activeBancas++;
+                b.speed = 0;
                 b.timer -= deltaHours * 15;
                 if (b.timer <= 0) {
                     totalCratesLanded += b.cargo;
@@ -1714,42 +1853,41 @@ def generate_3d_digital_twin_html() -> str:
                 }
             } else if (b.state === 'return_to_park') {
                 activeBancas++;
-                // Smoothly return to designated dock mooring slot
-                const dx = b.parkSlot.x - b.mesh.position.x;
-                const dz = b.parkSlot.z - b.mesh.position.z;
+                const dx = b.parkSlot.x - curX;
+                const dz = b.parkSlot.z - curZ;
+                b.speed = THREE.MathUtils.lerp(b.speed, 0.35, 0.05);
 
-                b.mesh.position.x += dx * 0.05;
-                b.mesh.position.z += dz * 0.05;
-                b.mesh.rotation.y = -Math.atan2(dz, dx);
+                const targetYaw = Math.atan2(dz, dx);
+                const yawDiff = Math.atan2(Math.sin(targetYaw - b.yaw), Math.cos(targetYaw - b.yaw));
+                b.yaw += yawDiff * 0.08;
+                b.mesh.rotation.y = b.yaw;
 
-                if (Math.hypot(dx, dz) < 4) {
+                b.mesh.position.x += Math.cos(b.yaw) * b.speed;
+                b.mesh.position.z += Math.sin(b.yaw) * b.speed;
+
+                if (Math.hypot(dx, dz) < 2.5) {
                     b.mesh.position.x = b.parkSlot.x;
                     b.mesh.position.z = b.parkSlot.z;
                     b.mesh.rotation.y = b.parkSlot.yaw;
+                    b.yaw = b.parkSlot.yaw;
                     b.state = 'parked';
                     b.targetBoat = null;
                 }
             }
         });
 
-        // -------------------------------------------------------------
-        // UPDATE FLOATING HUD KPI CARDS & STATUS PILLS
-        // -------------------------------------------------------------
-        // Card 1: Distant Anchorage Queue
+        // UPDATE FLOATING HUD METRICS
         document.getElementById('kpi-queue-count').textContent = waitingCount;
         document.getElementById('kpi-wait-time').textContent = (waitingCount > 0 ? (1.2 + waitingCount * 0.45).toFixed(2) : '0.00');
 
-        // Card 2: Wharf Apron (Medium Commercial Berths)
         const berthUtil = (occupiedCount / numBerths) * 100;
         document.getElementById('kpi-berth-util').textContent = berthUtil.toFixed(1);
         document.getElementById('kpi-berth-occ').textContent = occupiedCount;
         document.getElementById('kpi-berth-total').textContent = numBerths;
 
-        // Card 3: Small Boat Fleet
         document.getElementById('kpi-bancas-active').textContent = activeBancas;
         document.getElementById('kpi-bancas-moored').textContent = (bancas.length - activeBancas);
 
-        // Card 4: Banyera Landed & Quality
         document.getElementById('kpi-crates-count').textContent = totalCratesLanded.toLocaleString();
         const qualityRetention = Math.max(75, 100 * Math.exp(-0.028 * (waitingCount * 0.45)));
         document.getElementById('kpi-quality-score').textContent = qualityRetention.toFixed(1);
@@ -1762,24 +1900,41 @@ def generate_3d_digital_twin_html() -> str:
         const deltaMs = time - lastTime;
         lastTime = time;
 
+        const timeDelta = Math.min(deltaMs / 1000, 0.1);
+        const waveTime = time * 0.002;
+
         if (isPlaying) {
-            // 1 second real-time = 0.15 simulation hours
-            const deltaHours = (deltaMs / 1000) * (timeScale * 0.15);
-            updateSimulation(deltaHours);
+            const deltaHours = timeDelta * (timeScale * 0.15);
+            updateSimulation(deltaHours, waveTime);
         }
 
-        // Procedural Wave Motion on Water Mesh
-        const waveTime = time * 0.002;
+        // Procedural Wave Mesh Displacement
         const pAttr = waterGeo.attributes.position;
         for (let i = 0; i < pAttr.count; i++) {
             const bv = baseVerts[i];
-            const waveZ = Math.sin(bv.x * 0.015 + waveTime) * 1.5 + Math.cos(bv.y * 0.015 + waveTime * 1.2) * 1.2;
+            const waveZ = Math.sin(bv.x * 0.04 + waveTime * 2.2) * 0.6 +
+                          Math.cos(bv.y * 0.05 + waveTime * 1.8) * 0.45;
             pAttr.setZ(i, waveZ);
         }
         pAttr.needsUpdate = true;
 
-        // ROTATE LIGHTHOUSE HEAD SMOOTHLY (Origin strictly at top lantern room)
-        lighthouseHead.rotation.y += 0.018;
+        // STEP 1: ROTATE LIGHTROTORPIVOT AT TOP LANTERN GALLERY (Y = 18.5)
+        LightRotorPivot.rotation.y += timeDelta * 0.8;
+
+        // Update active foam trail rings
+        foamPool.forEach(f => {
+            if (f.active) {
+                f.life += timeDelta;
+                f.scale += timeDelta * 2.2;
+                f.mesh.scale.set(f.scale, f.scale, f.scale);
+                f.mesh.material.opacity = Math.max(0, 0.55 * (1 - f.life / f.maxLife));
+                if (f.life >= f.maxLife) {
+                    f.active = false;
+                    f.mesh.visible = false;
+                    f.mesh.position.set(0, -50, 0);
+                }
+            }
+        });
 
         controls.update();
         renderer.render(scene, camera);
@@ -1788,7 +1943,7 @@ def generate_3d_digital_twin_html() -> str:
     requestAnimationFrame(render);
 
     // -------------------------------------------------------------
-    // INTERACTIVE 3D RAYCASTING (HOVER & CLICK TOOLTIP)
+    // INTERACTIVE RAYCASTING (HOVER & CLICK TOOLTIP)
     // -------------------------------------------------------------
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
@@ -1808,7 +1963,6 @@ def generate_3d_digital_twin_html() -> str:
 
         raycaster.setFromCamera(mouse, camera);
 
-        // Check both Medium Vessels and Small Bancas
         const mediumMeshes = vessels.map(v => v.mesh);
         const bancaMeshes = bancas.map(b => b.mesh);
         const allMeshes = mediumMeshes.concat(bancaMeshes);
@@ -1821,7 +1975,6 @@ def generate_3d_digital_twin_html() -> str:
                 hitGroup = hitGroup.parent;
             }
 
-            // Find matching vessel or banca
             const foundMedium = vessels.find(v => v.mesh === hitGroup);
             const foundBanca = bancas.find(b => b.mesh === hitGroup);
 
@@ -1843,7 +1996,7 @@ def generate_3d_digital_twin_html() -> str:
                     ttBadge.textContent = 'Distant Anchorage';
                     ttBadge.style.background = 'rgba(245, 158, 11, 0.2)';
                     ttBadge.style.color = '#FBBF24';
-                    ttState.textContent = 'Holding in San Miguel Bay';
+                    ttState.textContent = 'Holding in San Miguel Bay (150m out)';
                 } else {
                     ttBadge.textContent = foundMedium.state;
                     ttBadge.style.background = 'rgba(56, 189, 248, 0.2)';
@@ -1868,7 +2021,7 @@ def generate_3d_digital_twin_html() -> str:
                     ttBadge.textContent = 'Moored at Dock';
                     ttBadge.style.background = 'rgba(148, 163, 184, 0.2)';
                     ttBadge.style.color = '#94A3B8';
-                    ttState.textContent = 'Parked at Shallow Mooring Basin';
+                    ttState.textContent = 'Parked in Mooring Basin';
                 } else {
                     ttBadge.textContent = 'Active Lightering';
                     ttBadge.style.background = 'rgba(245, 158, 11, 0.2)';
@@ -1886,7 +2039,7 @@ def generate_3d_digital_twin_html() -> str:
     });
 
     // -------------------------------------------------------------
-    // UI CONTROLS & MODAL EVENT LISTENERS
+    // UI CONTROLS & MODAL LISTENERS
     // -------------------------------------------------------------
     const btnPlay = document.getElementById('btn-play');
     btnPlay.addEventListener('click', () => {
@@ -1908,7 +2061,6 @@ def generate_3d_digital_twin_html() -> str:
         });
     });
 
-    // Modals open/close
     document.getElementById('btn-open-settings').addEventListener('click', () => {
         document.getElementById('modal-settings').style.display = 'flex';
     });
@@ -1926,7 +2078,6 @@ def generate_3d_digital_twin_html() -> str:
         }
     });
 
-    // Modal Tabs
     document.querySelectorAll('.modal-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
@@ -1936,7 +2087,6 @@ def generate_3d_digital_twin_html() -> str:
         });
     });
 
-    // Settings Sliders
     const slLambda = document.getElementById('sl-lambda');
     slLambda.addEventListener('input', (e) => {
         arrivalRate = parseFloat(e.target.value);
@@ -1951,14 +2101,13 @@ def generate_3d_digital_twin_html() -> str:
     slBerths.addEventListener('input', (e) => {
         numBerths = parseInt(e.target.value);
         document.getElementById('val-berths').textContent = numBerths + ' berths';
-        updateBerthGeometry();
+        initBerths();
     });
     const chkTide = document.getElementById('chk-tide');
     chkTide.addEventListener('change', (e) => {
         tideLockActive = e.target.checked;
     });
 
-    // Policy Presets
     document.querySelectorAll('.preset-card').forEach(card => {
         card.addEventListener('click', () => {
             document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('active'));
@@ -1982,12 +2131,12 @@ def generate_3d_digital_twin_html() -> str:
                 numBerths = 13;
                 arrivalRate = 0.34;
                 bulunganMultiplier = 2.8;
-                tideLockActive = false; // Dredging removes low tide lock
+                tideLockActive = false;
                 badge.textContent = 'Intervention B: Dredging';
             } else if (p === 'interventionC') {
                 numBerths = 13;
                 arrivalRate = 0.34;
-                bulunganMultiplier = 1.4; // Staggered scheduling cuts surge
+                bulunganMultiplier = 1.4;
                 tideLockActive = true;
                 badge.textContent = 'Intervention C: Staggered';
             }
@@ -1996,11 +2145,10 @@ def generate_3d_digital_twin_html() -> str:
             slRush.value = bulunganMultiplier;
             document.getElementById('val-rush').textContent = bulunganMultiplier.toFixed(1) + 'x';
             chkTide.checked = tideLockActive;
-            updateBerthGeometry();
+            initBerths();
         });
     });
 
-    // Screenshot Mode (Clean Manuscript Capture)
     const btnScreenshot = document.getElementById('btn-screenshot-mode');
     const restoreBtn = document.getElementById('screenshot-restore-btn');
 
@@ -2017,7 +2165,6 @@ def generate_3d_digital_twin_html() -> str:
         if (e.key === 'Escape') exitScreenshotMode();
     });
 
-    // Window Resize Handling
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
