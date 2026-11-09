@@ -12,10 +12,41 @@ Executive Design System:
 """
 
 import os
+import sys
 import pandas as pd
 import numpy as np
 import streamlit as st
-import streamlit.components.v1 as components
+try:
+    import streamlit.components.v1 as components
+except ImportError:
+    components = None
+
+# Suppress Windows asyncio WinError 10054 ConnectionResetError on browser disconnects
+if sys.platform == "win32":
+    try:
+        from asyncio.proactor_events import _ProactorBasePipeTransport
+        _orig_call_connection_lost = _ProactorBasePipeTransport._call_connection_lost
+        def _silenced_call_connection_lost(self, exc):
+            try:
+                _orig_call_connection_lost(self, exc)
+            except (ConnectionResetError, OSError):
+                pass
+        _ProactorBasePipeTransport._call_connection_lost = _silenced_call_connection_lost
+    except Exception:
+        pass
+
+
+def render_embedded_html(html_content: str, height: int, alt: str = "Mercedes Port Digital Twin"):
+    """
+    Renders HTML content using st.iframe (Streamlit modern standard),
+    falling back to st.components.v1.html for older Streamlit versions.
+    """
+    if hasattr(st, "iframe"):
+        st.iframe(html_content, height=height, width="stretch", alt=alt)
+    elif components is not None and hasattr(components, "html"):
+        components.html(html_content, height=height, scrolling=False)
+    else:
+        st.markdown(html_content, unsafe_allow_html=True)
 
 from src.model import run_simulation
 from src.scenarios import run_all_scenarios_for_ui, get_default_scenario_definitions
@@ -65,7 +96,7 @@ if view_mode == "3d":
             height: 100vh !important;
             overflow: hidden !important;
         }
-        iframe {
+        iframe, [data-testid="stIframe"], [data-testid="stCustomComponentV1"] {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
@@ -78,7 +109,7 @@ if view_mode == "3d":
     """, unsafe_allow_html=True)
 
     html_3d = generate_3d_digital_twin_html()
-    components.html(html_3d, height=1080, scrolling=False)
+    render_embedded_html(html_3d, height=1080, alt="Mercedes Fish Port — 3D DES Digital Twin")
     st.stop()
 
 # ==============================================================================
@@ -511,7 +542,7 @@ with tab1:
         channel_capacity=channel_capacity,
         base_arrival_rate=arrival_rate
     )
-    components.html(twin_html, height=605, scrolling=False)
+    render_embedded_html(twin_html, height=605, alt="Mercedes Fish Port 2D Interactive Digital Twin")
     st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
     col_btn, col_info = st.columns([1, 4])
