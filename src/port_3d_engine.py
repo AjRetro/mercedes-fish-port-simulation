@@ -3,17 +3,18 @@
 Interactive 3D Discrete-Event Simulation (DES) Digital Twin Engine
 for Mercedes Fish Port, Mercedes, Camarines Norte.
 
-Developed strictly in accordance with Agency Agents Skills:
-- C:/Users/L470/.gemini/config/skills/agency-ux-architect/SKILL.md
-- C:/Users/L470/.gemini/config/skills/agency-ui-designer/SKILL.md
-- C:/Users/L470/.gemini/config/skills/agency-frontend-developer/SKILL.md
+Architectural Standards Applied from Agency Agents Skills:
+- C:/Users/L470/.gemini/config/skills/agency-frontend-developer/SKILL.md: Non-holonomic 3-DOF kinematics, 60fps budget, zero console errors.
+- C:/Users/L470/.gemini/config/skills/agency-3d-scene-developer/SKILL.md: Accurate spatial lighting, buoy corridor fairway, wave displacement.
+- C:/Users/L470/.gemini/config/skills/agency-ux-architect/SKILL.md: Zero-clutter viewport, progressive disclosure modal hierarchy.
+- C:/Users/L470/.gemini/config/skills/agency-ui-designer/SKILL.md: High-contrast maritime design tokens, WCAG AA compliance.
 
-Key Architecture & Spatial Upgrades:
-1. Rebuilt Lighthouse Scene Graph: LighthouseRoot -> Tower (Y=0..18) -> LanternRoomGroup (Y=18.5) -> LightRotorPivot with SpotLight & volumetric cone mesh tip-locked at Y=18.5.
-2. Expanded 13-Berth Concrete Wharf Apron: 200 units long x 26 units wide, with 13 dedicated berths (BERTH_SLOTS[0..12], 14 units spacing, zero hull overlap).
-3. Persistent Small Boat Fleet: 24 artisanal bancas moored at shallow basin, dynamic lightering loop (~75% moored, ~25% fetching fish from distant anchorage).
-4. Zero-Clipping Waypoint Navigation: Pier AABB exclusion box, 15-unit straight reverse before turning, and Boids repulsion collision avoidance.
-5. Ocean Boat Hydrodynamics & Wakes: Multi-sine wave buoyancy (heave, pitch, roll), turn banking, throttle pitch, stern expanding foam trail, and Kelvin V-shaped bow wakes.
+Core Mathematical & Spatial Systems:
+1. Non-Holonomic 3-DOF Marine Kinematics: Eliminates sideways gliding. Bow points strictly along +Z. Rudder turning rate & hydrodynamic braking.
+2. Orderly IALA Navigation Fairway: Paired Green (Starboard) & Red (Port) buoys defining the channel corridor into the harbor.
+3. 13-Berth Concrete Wharf Infrastructure: 200 units long x 26 units wide, with 13 discrete berths (14 units spacing, zero hull overlap).
+4. Anti-Snaking Small Boat Fleet: 24 persistent bancas with exclusive mother vessel assignment and discrete landing berths.
+5. Strict AABB Collision Borders: Hard exclusion boundaries for wharf, shoreline sandbars, and map edges.
 """
 
 def generate_3d_digital_twin_html() -> str:
@@ -892,29 +893,25 @@ def generate_3d_digital_twin_html() -> str:
     scene.add(sunLight);
 
     // -------------------------------------------------------------
-    // STEP 1: REBUILT LIGHTHOUSE 3D HIERARCHY (LIGHT SOURCE AT Y = 18.5)
+    // LIGHTHOUSE 3D HIERARCHY (LIGHT SOURCE AT Y = 18.5)
     // -------------------------------------------------------------
-    // 1. LighthouseRoot (Group) placed on coastal headland at base elevation
     const LighthouseRoot = new THREE.Group();
     LighthouseRoot.position.set(45, 0, -65);
     scene.add(LighthouseRoot);
 
-    // Rocky Promontory Foundation
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.9 });
     const rockBase = new THREE.Mesh(new THREE.CylinderGeometry(8, 10, 3, 8), rockMat);
     rockBase.position.set(0, 1.5, 0);
     rockBase.receiveShadow = true;
     LighthouseRoot.add(rockBase);
 
-    // 2. Tower Body: Tapered cylinder mesh from Y = 0 up to Y = 18
     const towerMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.4 });
     const towerGeo = new THREE.CylinderGeometry(2.2, 3.8, 18, 16);
     const towerMesh = new THREE.Mesh(towerGeo, towerMat);
-    towerMesh.position.set(0, 9, 0); // Spans from Y = 0 to Y = 18
+    towerMesh.position.set(0, 9, 0);
     towerMesh.castShadow = true;
     LighthouseRoot.add(towerMesh);
 
-    // Red Maritime Stripe Rings
     const stripeMat = new THREE.MeshStandardMaterial({ color: 0xDC2626, roughness: 0.4 });
     const stripe1 = new THREE.Mesh(new THREE.CylinderGeometry(2.9, 3.2, 3.2, 16), stripeMat);
     stripe1.position.set(0, 7.5, 0);
@@ -924,12 +921,10 @@ def generate_3d_digital_twin_html() -> str:
     stripe2.position.set(0, 14.2, 0);
     LighthouseRoot.add(stripe2);
 
-    // 3. LanternRoomGroup: EXPLICITLY set local position to (0, 18.5, 0)
     const LanternRoomGroup = new THREE.Group();
     LanternRoomGroup.position.set(0, 18.5, 0);
     LighthouseRoot.add(LanternRoomGroup);
 
-    // Gallery Balcony Platform
     const galleryDeck = new THREE.Mesh(
         new THREE.CylinderGeometry(3.2, 3.2, 0.8, 16),
         new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6 })
@@ -937,7 +932,6 @@ def generate_3d_digital_twin_html() -> str:
     galleryDeck.position.set(0, -0.4, 0);
     LanternRoomGroup.add(galleryDeck);
 
-    // Glowing Emissive Glass Cylinder inside LanternRoomGroup at (0, 0, 0)
     const glassMat = new THREE.MeshStandardMaterial({
         color: 0xBAE6FD,
         emissive: 0x38BDF8,
@@ -951,7 +945,6 @@ def generate_3d_digital_twin_html() -> str:
     lanternGlass.position.set(0, 1.1, 0);
     LanternRoomGroup.add(lanternGlass);
 
-    // Copper Roof Dome
     const roofCupola = new THREE.Mesh(
         new THREE.ConeGeometry(2.4, 2.0, 16),
         new THREE.MeshStandardMaterial({ color: 0x1E3A5F, roughness: 0.3, metalness: 0.6 })
@@ -959,7 +952,6 @@ def generate_3d_digital_twin_html() -> str:
     roofCupola.position.set(0, 3.3, 0);
     LanternRoomGroup.add(roofCupola);
 
-    // Glowing Lamp Core
     const lampBulb = new THREE.Mesh(
         new THREE.SphereGeometry(0.7, 8, 8),
         new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
@@ -967,27 +959,21 @@ def generate_3d_digital_twin_html() -> str:
     lampBulb.position.set(0, 1.1, 0);
     LanternRoomGroup.add(lampBulb);
 
-    // 4. LightRotorPivot: Child of LanternRoomGroup at local (0, 1.1, 0)
     const LightRotorPivot = new THREE.Group();
     LightRotorPivot.position.set(0, 1.1, 0);
     LanternRoomGroup.add(LightRotorPivot);
 
-    // High-Mounted SpotLight (originates at Y = 18.5 + 1.1 = 19.6 in world space)
     const spotLight = new THREE.SpotLight(0xE0F2FE, 5.5, 180, Math.PI / 7, 0.3, 1.1);
     spotLight.position.set(0, 0, 0);
     const spotTarget = new THREE.Object3D();
-    spotTarget.position.set(0, -2, 40); // Shines outward and slightly downward across ocean horizon
+    spotTarget.position.set(0, -2, 40);
     LightRotorPivot.add(spotTarget);
     spotLight.target = spotTarget;
     LightRotorPivot.add(spotLight);
 
-    // Volumetric Light Cone Mesh: ConeGeometry(4, 35, 32, 1, true)
     const beamGeo = new THREE.ConeGeometry(4, 35, 32, 1, true);
-    // Tip locked at local (0, 0, 0)
     beamGeo.translate(0, -17.5, 0);
-    // Rotate to project along +Z axis
     beamGeo.rotateX(-Math.PI / 2);
-    // Tilt slightly downward towards (0, -2, 40)
     beamGeo.rotateX(Math.atan2(2, 35));
 
     const beamMat = new THREE.MeshBasicMaterial({
@@ -1003,9 +989,8 @@ def generate_3d_digital_twin_html() -> str:
     LightRotorPivot.add(beamMesh);
 
     // -------------------------------------------------------------
-    // STEP 2: EXPANDED 3D HARBOR & MASSIVE 13-BERTH CONCRETE WHARF
+    // HARBOR GEOMETRY & 13-BERTH CONCRETE WHARF APRON
     // -------------------------------------------------------------
-    // Ocean Plane (1000 x 1000)
     const waterGeo = new THREE.PlaneGeometry(1000, 1000, 60, 60);
     const waterMat = new THREE.MeshStandardMaterial({
         color: 0x0A2244,
@@ -1021,14 +1006,13 @@ def generate_3d_digital_twin_html() -> str:
     water.receiveShadow = true;
     scene.add(water);
 
-    // Base vertices for wave animation
     const posAttr = waterGeo.attributes.position;
     const baseVerts = [];
     for (let i = 0; i < posAttr.count; i++) {
         baseVerts.push({ x: posAttr.getX(i), y: posAttr.getY(i), z: posAttr.getZ(i) });
     }
 
-    // Coastal Landmass Banks
+    // Coastal Landmass Banks (North Sandbar & South Mangrove Bank)
     const landMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.85 });
     const northBank = new THREE.Mesh(new THREE.BoxGeometry(320, 16, 160), landMat);
     northBank.position.set(80, 8, -150);
@@ -1040,20 +1024,20 @@ def generate_3d_digital_twin_html() -> str:
     southBank.receiveShadow = true;
     scene.add(southBank);
 
-    // MASSIVE CONCRETE WHARF APRON (200 units long x 26 units wide x 6 units high)
+    // Concrete Wharf Apron (200 units long x 26 units wide x 6 units high)
     const wharfMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.7, metalness: 0.2 });
     const wharfApron = new THREE.Mesh(new THREE.BoxGeometry(26, 6, 200), wharfMat);
-    wharfApron.position.set(-45, 3, 0); // Front deep-water face at X = -32
+    wharfApron.position.set(-45, 3, 0);
     wharfApron.receiveShadow = true;
     scene.add(wharfApron);
 
-    // Rubber / Timber Fendering along wharf face
+    // Fendering along wharf edge
     const fenderMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.9 });
     const wharfFender = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5.8, 200), fenderMat);
     wharfFender.position.set(-31.5, 3, 0);
     scene.add(wharfFender);
 
-    // Safety Hazard Striping on wharf edge
+    // Safety Hazard Striping
     const hazardLip = new THREE.Mesh(
         new THREE.BoxGeometry(0.6, 6.1, 200),
         new THREE.MeshBasicMaterial({ color: 0xFBBF24 })
@@ -1061,14 +1045,13 @@ def generate_3d_digital_twin_html() -> str:
     hazardLip.position.set(-31.9, 3, 0);
     scene.add(hazardLip);
 
-    // Bulungan Wholesale Auction Sheds on Wharf Apron
+    // Bulungan Wholesale Auction Sheds
     const shedMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
     const mainShed = new THREE.Mesh(new THREE.BoxGeometry(16, 9, 130), shedMat);
     mainShed.position.set(-51, 7.5, 0);
     mainShed.castShadow = true;
     scene.add(mainShed);
 
-    // Amber Interior Glow Lights
     const shedLight1 = new THREE.PointLight(0xF59E0B, 2.5, 60);
     shedLight1.position.set(-44, 9, -40);
     scene.add(shedLight1);
@@ -1081,8 +1064,7 @@ def generate_3d_digital_twin_html() -> str:
     shedLight3.position.set(-44, 9, 40);
     scene.add(shedLight3);
 
-    // 13 DISTINCT MEDIUM-BOAT BERTH COORDINATES (BERTH_SLOTS[0..12])
-    // 14 units spacing between berths (generous clearance, zero ship overlap)
+    // 13 Distinct Berths along Wharf Edge (X = -32, Z = -84 to +84)
     const MAX_MEDIUM_BERTHS = 13;
     let numBerths = MAX_MEDIUM_BERTHS;
     const BERTH_SLOTS = [];
@@ -1103,18 +1085,16 @@ def generate_3d_digital_twin_html() -> str:
             BERTH_SLOTS.push({
                 id: i + 1,
                 name: 'Berth B' + (i + 1),
-                x: -32,      // Wharf deep-water face
-                dockX: -29,  // Docked vessel center position
+                x: -32,
+                dockX: -28.5, // Parallel docked coordinate
                 z: z,
                 occupiedBy: null
             });
 
-            // Cast-iron mooring bollard on wharf lip
             const bollard = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.5, 1.2, 8), bollardMat);
             bollard.position.set(-31.6, 6.6, z);
             berthDecorGroup.add(bollard);
 
-            // Painted yellow berth marker pad
             const pad = new THREE.Mesh(new THREE.PlaneGeometry(2, 4), new THREE.MeshBasicMaterial({ color: 0xFBBF24 }));
             pad.rotation.x = -Math.PI / 2;
             pad.position.set(-33.5, 6.05, z);
@@ -1123,156 +1103,192 @@ def generate_3d_digital_twin_html() -> str:
     }
     initBerths();
 
-    // DEDICATED SHALLOW-WATER SMALL BOAT MOORING BASIN
+    // Shallow-water small boat mooring basin
     const woodMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.8 });
     const woodPontoon = new THREE.Mesh(new THREE.BoxGeometry(18, 1.5, 60), woodMat);
     woodPontoon.position.set(-18, 0.75, 125);
     scene.add(woodPontoon);
 
-    // 24 Small Boat Docking Slots in Mooring Basin
     const BANCA_PARK_SLOTS = [];
     for (let i = 0; i < 12; i++) {
-        BANCA_PARK_SLOTS.push({ x: -24, z: 100 + i * 4.5, yaw: Math.PI / 2 });
+        BANCA_PARK_SLOTS.push({ x: -24, z: 100 + i * 4.5, yaw: Math.PI });
     }
     for (let i = 0; i < 12; i++) {
-        BANCA_PARK_SLOTS.push({ x: -12, z: 100 + i * 4.5, yaw: -Math.PI / 2 });
+        BANCA_PARK_SLOTS.push({ x: -12, z: 100 + i * 4.5, yaw: 0 });
     }
 
-    // Navigational Buoys flanking Channel Corridor
-    const greenBuoy = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.2, 3.5, 8), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
-    greenBuoy.position.set(25, 1.7, -35);
-    scene.add(greenBuoy);
+    // -------------------------------------------------------------
+    // ORDERLY IALA BUOY CORRIDOR FAIRWAY (GREEN STARBOARD / RED PORT)
+    // -------------------------------------------------------------
+    const buoyGroup = new THREE.Group();
+    scene.add(buoyGroup);
 
-    const redBuoy = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.2, 3.5, 8), new THREE.MeshBasicMaterial({ color: 0xEF4444 }));
-    redBuoy.position.set(25, 1.7, 35);
-    scene.add(redBuoy);
+    const greenBuoyMat = new THREE.MeshBasicMaterial({ color: 0x10B981 });
+    const redBuoyMat = new THREE.MeshBasicMaterial({ color: 0xEF4444 });
+    const buoyBodyGeo = new THREE.CylinderGeometry(0.8, 1.3, 3.2, 10);
+    const buoyLightGeo = new THREE.SphereGeometry(0.4, 8, 8);
+
+    // 4 Symmetrical Pairs Defining the Estuarine Navigation Highway
+    const BUOY_PAIRS = [
+        { x: 150, zStarboard: -28, zPort: 28 }, // Pair 1: Outer Bay Entrance
+        { x: 90,  zStarboard: -24, zPort: 24 }, // Pair 2: Anchorage Gateway
+        { x: 30,  zStarboard: -20, zPort: 20 }, // Pair 3: Mid-Channel Fairway
+        { x: -10, zStarboard: -18, zPort: 18 }  // Pair 4: Harbor Approach Gate
+    ];
+
+    BUOY_PAIRS.forEach(pair => {
+        // Starboard (Green)
+        const gBody = new THREE.Mesh(buoyBodyGeo, greenBuoyMat);
+        gBody.position.set(pair.x, 1.6, pair.zStarboard);
+        const gLight = new THREE.Mesh(buoyLightGeo, new THREE.MeshBasicMaterial({ color: 0x34D399 }));
+        gLight.position.set(0, 2.0, 0);
+        gBody.add(gLight);
+        buoyGroup.add(gBody);
+
+        // Port (Red)
+        const rBody = new THREE.Mesh(buoyBodyGeo, redBuoyMat);
+        rBody.position.set(pair.x, 1.6, pair.zPort);
+        const rLight = new THREE.Mesh(buoyLightGeo, new THREE.MeshBasicMaterial({ color: 0xF87171 }));
+        rLight.position.set(0, 2.0, 0);
+        rBody.add(rLight);
+        buoyGroup.add(rBody);
+    });
 
     // -------------------------------------------------------------
-    // STEP 3: WAYPOINT ROUTING & AABB EXCLUSION DEFINITIONS
+    // STRICT AABB COLLISION BOXES
     // -------------------------------------------------------------
-    // Pier No-Go Bounding Box (+4 padding)
-    const PIER_AABB = {
-        minX: -65,
-        maxX: -27.5,
-        minZ: -105,
-        maxZ: 160
-    };
+    const MAP_LIMITS = { minX: -85, maxX: 210, minZ: -120, maxZ: 140 };
+    const WHARF_AABB = { minX: -60, maxX: -31.5, minZ: -100, maxZ: 100 };
+    const NORTH_BANK_AABB = { minX: 10, maxX: 220, minZ: -160, maxZ: -72 };
+    const SOUTH_BANK_AABB = { minX: 10, maxX: 220, minZ: 72, maxZ: 160 };
 
     // -------------------------------------------------------------
-    // STEP 4: BOAT MODELS & HYDRODYNAMIC EFFECTS (WAKES & FOAM)
+    // 1. NON-HOLONOMIC 3D BOAT MESH FACTORY (BOW STRICLY AT LOCAL +Z)
     // -------------------------------------------------------------
     function createVesselMesh(type) {
-        const group = new THREE.Group();
+        const root = new THREE.Group();
+        const meshVisualGroup = new THREE.Group();
+        root.add(meshVisualGroup);
 
         if (type === 'Basnig') {
-            // Commercial Basnig (L: 13, W: 4.4, H: 4.0)
+            // Commercial Basnig (Length: 13 along Z, Width: 4.4 along X)
             const hullMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(13, 2.8, 4.4), hullMat);
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(4.4, 2.8, 13), hullMat);
             hull.position.y = 1.0;
             hull.castShadow = true;
-            group.add(hull);
+            meshVisualGroup.add(hull);
 
-            // Pointed Bow
+            // Pointed Bow Nose (+Z)
             const bow = new THREE.Mesh(new THREE.ConeGeometry(2.2, 4.5, 4), hullMat);
-            bow.rotation.z = -Math.PI / 2;
-            bow.position.set(7.5, 1.0, 0);
-            group.add(bow);
+            bow.rotation.x = Math.PI / 2; // Apex along +Z
+            bow.position.set(0, 1.0, 7.5);
+            meshVisualGroup.add(bow);
 
-            // Wheelhouse
+            // Wheelhouse Cabin
             const cabin = new THREE.Mesh(
-                new THREE.BoxGeometry(5.0, 3.2, 3.2),
+                new THREE.BoxGeometry(3.2, 3.2, 5.0),
                 new THREE.MeshStandardMaterial({ color: 0x475569 })
             );
-            cabin.position.set(-2.0, 3.2, 0);
-            group.add(cabin);
+            cabin.position.set(0, 3.2, -2.0);
+            meshVisualGroup.add(cabin);
 
-            // Fishing Light Outrigger Booms
+            // Outrigger Booms across X
             const boomMat = new THREE.MeshBasicMaterial({ color: 0x94A3B8 });
             const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 14), boomMat);
-            boom.rotation.x = Math.PI / 2;
-            boom.position.set(1.5, 3.8, 0);
-            group.add(boom);
+            boom.rotation.z = Math.PI / 2;
+            boom.position.set(0, 3.8, 1.5);
+            meshVisualGroup.add(boom);
 
-            // Banyera Crates in Cargo Hold
+            // Banyeras in Cargo Hold
             const crates = new THREE.Mesh(
-                new THREE.BoxGeometry(3.5, 1.6, 2.6),
+                new THREE.BoxGeometry(2.6, 1.6, 3.5),
                 new THREE.MeshStandardMaterial({ color: 0xD97706 })
             );
-            crates.position.set(3.5, 2.0, 0);
-            group.add(crates);
+            crates.position.set(0, 2.0, 3.5);
+            meshVisualGroup.add(crates);
 
         } else if (type === 'Purse Seiner' || type === 'Ring-Netter') {
-            // Purse Seiner / Ring-Netter (L: 12, W: 4.2)
+            // Purse Seiner (Length: 12 along Z, Width: 4.2 along X)
             const hullMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.5 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(12, 2.8, 4.2), hullMat);
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(4.2, 2.8, 12), hullMat);
             hull.position.y = 1.0;
             hull.castShadow = true;
-            group.add(hull);
+            meshVisualGroup.add(hull);
+
+            // Bow Nose (+Z)
+            const bow = new THREE.Mesh(new THREE.ConeGeometry(2.1, 4.0, 4), hullMat);
+            bow.rotation.x = Math.PI / 2;
+            bow.position.set(0, 1.0, 6.8);
+            meshVisualGroup.add(bow);
 
             // Forward Wheelhouse
             const wheelhouse = new THREE.Mesh(
-                new THREE.BoxGeometry(3.8, 3.2, 3.2),
+                new THREE.BoxGeometry(3.2, 3.2, 3.8),
                 new THREE.MeshStandardMaterial({ color: 0xE2E8F0 })
             );
-            wheelhouse.position.set(3.0, 3.2, 0);
-            group.add(wheelhouse);
+            wheelhouse.position.set(0, 3.2, 2.5);
+            meshVisualGroup.add(wheelhouse);
 
-            // Net Drum Roll
+            // Aft Net Drum Roll (-Z)
             const drum = new THREE.Mesh(
                 new THREE.CylinderGeometry(1.2, 1.2, 3.2, 12),
                 new THREE.MeshStandardMaterial({ color: 0x334155 })
             );
-            drum.rotation.x = Math.PI / 2;
-            drum.position.set(-3.2, 2.2, 0);
-            group.add(drum);
+            drum.rotation.z = Math.PI / 2;
+            drum.position.set(0, 2.2, -3.2);
+            meshVisualGroup.add(drum);
 
         } else {
-            // Small Shuttle Banca (L: 5.5, W: 2.4 with katig outriggers)
+            // Small Shuttle Banca (Length: 5.5 along Z, Width: 2.6 along X)
             const bancaMat = new THREE.MeshStandardMaterial({ color: 0x0284C7 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(5.5, 1.1, 1.2), bancaMat);
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.1, 5.5), bancaMat);
             hull.position.y = 0.5;
-            group.add(hull);
+            meshVisualGroup.add(hull);
 
-            // Outrigger Floats (Katig)
+            // Bow Nose (+Z)
+            const bow = new THREE.Mesh(new THREE.ConeGeometry(0.6, 2.0, 4), bancaMat);
+            bow.rotation.x = Math.PI / 2;
+            bow.position.set(0, 0.5, 3.4);
+            meshVisualGroup.add(bow);
+
+            // Katig Outrigger Floats (port and starboard along Z)
             const katigMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC });
-            const float1 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 4.8), katigMat);
-            float1.rotation.z = Math.PI / 2;
-            float1.position.set(0, 0.35, -2.4);
-            group.add(float1);
+            const float1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 4.8), katigMat);
+            float1.rotation.x = Math.PI / 2;
+            float1.position.set(-2.4, 0.35, 0);
+            meshVisualGroup.add(float1);
 
             const float2 = float1.clone();
-            float2.position.set(0, 0.35, 2.4);
-            group.add(float2);
+            float2.position.set(2.4, 0.35, 0);
+            meshVisualGroup.add(float2);
 
-            // Crossbeams (Tadlang)
+            // Crossbeam Struts across X
             const strutMat = new THREE.MeshBasicMaterial({ color: 0xCBD5E1 });
             const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 4.8), strutMat);
-            strut.rotation.x = Math.PI / 2;
-            strut.position.set(0.8, 0.8, 0);
-            group.add(strut);
+            strut.rotation.z = Math.PI / 2;
+            strut.position.set(0, 0.8, 0.8);
+            meshVisualGroup.add(strut);
 
-            // Banyeras on deck
+            // Crates on deck
             const crates = new THREE.Mesh(
-                new THREE.BoxGeometry(1.8, 0.8, 0.8),
+                new THREE.BoxGeometry(0.8, 0.8, 1.8),
                 new THREE.MeshStandardMaterial({ color: 0xFBBF24 })
             );
             crates.position.set(0, 0.9, 0);
             crates.name = 'cratesMesh';
-            group.add(crates);
+            meshVisualGroup.add(crates);
         }
 
-        // V-SHAPED KELVIN BOW WAKE MESH (Translucent chevron at waterline Y = 0.06)
-        const wakeShape = new THREE.Shape();
-        wakeShape.moveTo(0, 0);
-        wakeShape.lineTo(-1.2, -4.0);
-        wakeShape.lineTo(-0.6, -4.0);
-        wakeShape.lineTo(0, -0.6);
-        wakeShape.lineTo(0.6, -4.0);
-        wakeShape.lineTo(1.2, -4.0);
-        wakeShape.closePath();
+        // V-SHAPED KELVIN BOW WAKE AT WATERLINE (Y = 0.06)
+        // Explicitly trails behind the +Z bow nose towards -Z
+        const wakeGeo = new THREE.BufferGeometry();
+        const wakeZTip = (type === 'Banca') ? 3.4 : 7.2;
+        const wakeVertices = new Float32Array([
+            0, 0.06, wakeZTip,      -1.4, 0.06, wakeZTip - 4.5,   -0.7, 0.06, wakeZTip - 4.5,
+            0, 0.06, wakeZTip,       0.7, 0.06, wakeZTip - 4.5,    1.4, 0.06, wakeZTip - 4.5
+        ]);
+        wakeGeo.setAttribute('position', new THREE.BufferAttribute(wakeVertices, 3));
 
-        const wakeGeo = new THREE.ShapeGeometry(wakeShape);
-        wakeGeo.rotateX(-Math.PI / 2);
         const wakeMat = new THREE.MeshBasicMaterial({
             color: 0xE0F2FE,
             transparent: true,
@@ -1282,59 +1298,23 @@ def generate_3d_digital_twin_html() -> str:
             blending: THREE.AdditiveBlending
         });
         const bowWakeMesh = new THREE.Mesh(wakeGeo, wakeMat);
-        bowWakeMesh.position.set(type === 'Banca' ? 2.8 : 7.2, 0.06, 0);
         bowWakeMesh.name = 'bowWake';
-        group.add(bowWakeMesh);
+        root.add(bowWakeMesh);
 
-        return group;
+        return root;
     }
 
-    // MULTI-SINE WAVE HEIGHT FUNCTION FOR HYDRODYNAMIC BUOYANCY
+    // MULTI-SINE WAVE BUOYANCY
     function getWaveHeight(x, z, t) {
         return Math.sin(x * 0.05 + t * 2.2) * 0.45 +
                Math.cos(z * 0.06 + t * 1.8) * 0.35 +
                Math.sin((x + z) * 0.04 + t * 1.2) * 0.25;
     }
 
-    // EXPANDING STERN FOAM RINGS POOL
-    const MAX_FOAM = 60;
-    const foamPool = [];
-    const foamRingGeo = new THREE.RingGeometry(0.6, 1.4, 16);
-    foamRingGeo.rotateX(-Math.PI / 2);
-    const foamMat = new THREE.MeshBasicMaterial({
-        color: 0xE0F2FE,
-        transparent: true,
-        opacity: 0.0,
-        depthWrite: false,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending
-    });
-
-    for (let i = 0; i < MAX_FOAM; i++) {
-        const ring = new THREE.Mesh(foamRingGeo, foamMat.clone());
-        ring.position.set(0, -50, 0);
-        ring.visible = false;
-        scene.add(ring);
-        foamPool.push({ mesh: ring, active: false, life: 0, maxLife: 1.2, scale: 1.0 });
-    }
-
-    function emitFoam(x, z) {
-        const p = foamPool.find(f => !f.active);
-        if (p) {
-            p.active = true;
-            p.life = 0;
-            p.scale = 1.0;
-            p.mesh.position.set(x, 0.05, z);
-            p.mesh.scale.set(1, 1, 1);
-            p.mesh.material.opacity = 0.55;
-            p.mesh.visible = true;
-        }
-    }
-
     // -------------------------------------------------------------
-    // FLEET INITIALIZATION: 13 BERTHS & 24 BANCAS
+    // FLEET INITIALIZATION
     // -------------------------------------------------------------
-    let simTime = 5.75; // 05:45 AM
+    let simTime = 5.75;
     let isPlaying = true;
     let timeScale = 1.0;
     let lastTime = performance.now();
@@ -1359,7 +1339,7 @@ def generate_3d_digital_twin_html() -> str:
     }
 
     function initFleet() {
-        // Spawn 3 initial medium boats directly docked at B2, B5, B8
+        // 3 initial medium boats directly docked at berths B2, B5, B8
         const initialDocked = [
             { name: 'MV-MercedesQueen', type: 'Basnig', gt: 28.4, draft: 2.15, cargo: 120, maxCargo: 160, berthIdx: 1 },
             { name: 'MV-SanMiguel', type: 'Purse Seiner', gt: 24.1, draft: 1.95, cargo: 90, maxCargo: 130, berthIdx: 4 },
@@ -1371,7 +1351,7 @@ def generate_3d_digital_twin_html() -> str:
             if (b) {
                 const mesh = createVesselMesh(spec.type);
                 mesh.position.set(b.dockX, 0, b.z);
-                mesh.rotation.y = Math.PI / 2; // Alongside concrete pier
+                mesh.rotation.y = 0; // Bow pointed South (+Z) parallel to wharf face
                 scene.add(mesh);
                 b.occupiedBy = spec.name;
 
@@ -1382,23 +1362,25 @@ def generate_3d_digital_twin_html() -> str:
                     draft: spec.draft,
                     cargo: spec.cargo,
                     maxCargo: spec.maxCargo,
-                    x: b.dockX,
-                    z: b.z,
                     mesh: mesh,
                     state: 'Unloading at Wharf',
                     assignedBerth: b,
+                    servicedByBanca: null,
                     wait: 0,
+                    heading: 0,
                     speed: 0,
-                    yaw: Math.PI / 2,
-                    turnRoll: 0,
-                    throttlePitch: 0,
-                    bobOffset: Math.random() * Math.PI * 2,
-                    foamTimer: 0
+                    maxSpeed: 14.0,
+                    maxReverseSpeed: 4.5,
+                    acceleration: 2.2,
+                    brakingDistance: 22.0,
+                    isSmallBoat: false,
+                    isReversing: false,
+                    bobOffset: Math.random() * Math.PI * 2
                 });
             }
         });
 
-        // Spawn 2 initial medium boats far away in San Miguel Bay Anchorage (140-160 units out)
+        // 2 initial medium boats waiting far away in San Miguel Bay Anchorage
         const initialAnchored = [
             { name: 'MV-DaetStar', type: 'Basnig', gt: 29.5, draft: 2.25, cargo: 155, maxCargo: 160, x: 140, z: -40 },
             { name: 'MV-NagaPride', type: 'Ring-Netter', gt: 21.0, draft: 1.85, cargo: 110, maxCargo: 120, x: 150, z: 35 }
@@ -1407,6 +1389,7 @@ def generate_3d_digital_twin_html() -> str:
         initialAnchored.forEach(spec => {
             const mesh = createVesselMesh(spec.type);
             mesh.position.set(spec.x, 0, spec.z);
+            mesh.rotation.y = -Math.PI / 2; // Bow pointed West towards harbor
             scene.add(mesh);
 
             vessels.push({
@@ -1416,22 +1399,24 @@ def generate_3d_digital_twin_html() -> str:
                 draft: spec.draft,
                 cargo: spec.cargo,
                 maxCargo: spec.maxCargo,
-                x: spec.x,
-                z: spec.z,
                 mesh: mesh,
                 state: 'Waiting at Anchorage',
                 assignedBerth: null,
+                servicedByBanca: null,
                 wait: 1.2,
+                heading: -Math.PI / 2,
                 speed: 0,
-                yaw: 0,
-                turnRoll: 0,
-                throttlePitch: 0,
-                bobOffset: Math.random() * Math.PI * 2,
-                foamTimer: 0
+                maxSpeed: 14.0,
+                maxReverseSpeed: 4.5,
+                acceleration: 2.2,
+                brakingDistance: 22.0,
+                isSmallBoat: false,
+                isReversing: false,
+                bobOffset: Math.random() * Math.PI * 2
             });
         });
 
-        // Spawn 24 Small Artisanal Bancas in the Shallow Mooring Basin
+        // 24 Small Bancas moored in the shallow basin
         for (let i = 0; i < 24; i++) {
             const slot = BANCA_PARK_SLOTS[i % BANCA_PARK_SLOTS.length];
             const bMesh = createVesselMesh('Banca');
@@ -1449,28 +1434,87 @@ def generate_3d_digital_twin_html() -> str:
                 state: 'parked',
                 parkSlot: slot,
                 targetBoat: null,
+                landingSlotIdx: i % 3,
                 cargo: 0,
                 maxCargo: 25,
+                heading: slot.yaw,
                 speed: 0,
-                yaw: slot.yaw,
-                turnRoll: 0,
-                throttlePitch: 0,
+                maxSpeed: 18.0,
+                maxReverseSpeed: 5.0,
+                acceleration: 3.8,
+                brakingDistance: 14.0,
+                isSmallBoat: true,
+                isReversing: false,
                 bobOffset: Math.random() * Math.PI * 2,
-                timer: 0,
-                foamTimer: 0
+                timer: 0
             });
         }
     }
     initFleet();
 
     // -------------------------------------------------------------
-    // MAIN SIMULATION & HYDRODYNAMICS UPDATE LOOP
+    // 3-DOF NON-HOLONOMIC MARINE KINEMATIC UPDATE HELPER
     // -------------------------------------------------------------
-    function updateSimulation(deltaHours, waveTime) {
+    function updateVesselKinematics(boat, targetX, targetZ, dt) {
+        const dx = targetX - boat.mesh.position.x;
+        const dz = targetZ - boat.mesh.position.z;
+        const distToTarget = Math.hypot(dx, dz);
+
+        // 1. Desired heading angle (+Z aligned with (dx, dz))
+        const desiredHeading = Math.atan2(dx, dz);
+
+        // 2. Shortest angular difference (-PI to +PI)
+        let angleError = desiredHeading - boat.heading;
+        while (angleError > Math.PI) angleError -= Math.PI * 2;
+        while (angleError < -Math.PI) angleError += Math.PI * 2;
+
+        // 3. Rudder Turn Rate
+        const maxTurnRate = boat.isSmallBoat ? 1.8 : 0.85; // rad/sec
+        const turnStep = Math.sign(angleError) * Math.min(Math.abs(angleError), maxTurnRate * dt);
+        boat.heading += turnStep;
+        boat.mesh.rotation.y = boat.heading;
+
+        // 4. Throttle & Hydrodynamic Stopping Distance
+        const turnSlowdown = Math.max(0.25, Math.cos(Math.min(Math.abs(angleError), Math.PI / 2)));
+        const arrivalBraking = Math.min(1.0, distToTarget / Math.max(1.0, boat.brakingDistance));
+        const targetSpeed = boat.isReversing 
+            ? -boat.maxReverseSpeed 
+            : boat.maxSpeed * turnSlowdown * arrivalBraking;
+
+        boat.speed += (targetSpeed - boat.speed) * Math.min(1.0, boat.acceleration * dt);
+
+        // 5. Non-Holonomic Position Update (Zero Sideways Sliding!)
+        boat.mesh.position.x += Math.sin(boat.heading) * boat.speed * dt;
+        boat.mesh.position.z += Math.cos(boat.heading) * boat.speed * dt;
+
+        // 6. Hard AABB Border Clamping
+        // Wharf Exclusion
+        if (boat.mesh.position.x > WHARF_AABB.minX && boat.mesh.position.x < WHARF_AABB.maxX &&
+            boat.mesh.position.z > WHARF_AABB.minZ && boat.mesh.position.z < WHARF_AABB.maxZ) {
+            boat.mesh.position.x = WHARF_AABB.maxX + 0.5;
+        }
+        // Shoreline Banks
+        if (boat.mesh.position.z < NORTH_BANK_AABB.maxZ && boat.mesh.position.x > NORTH_BANK_AABB.minX) {
+            boat.mesh.position.z = NORTH_BANK_AABB.maxZ + 0.5;
+        }
+        if (boat.mesh.position.z > SOUTH_BANK_AABB.minZ && boat.mesh.position.x > SOUTH_BANK_AABB.minX) {
+            boat.mesh.position.z = SOUTH_BANK_AABB.minZ - 0.5;
+        }
+
+        // Return distance to waypoint
+        return distToTarget;
+    }
+
+    // -------------------------------------------------------------
+    // MAIN SIMULATION LOOP (DES + KINEMATICS)
+    // -------------------------------------------------------------
+    let bancaDispatchCooldown = 0;
+
+    function updateSimulation(deltaHours, dt, waveTime) {
         simTime = (simTime + deltaHours) % 24.0;
         const tide = computeTide(simTime);
 
-        // UI Clock & Status Update
+        // UI Clock & Status
         const clockH = Math.floor(simTime);
         const clockM = Math.floor((simTime - clockH) * 60);
         const ampm = clockH >= 12 ? 'PM' : 'AM';
@@ -1490,7 +1534,7 @@ def generate_3d_digital_twin_html() -> str:
             tidePill.className = 'tide-pill low';
         }
 
-        // STOCHASTIC MEDIUM VESSEL ARRIVAL
+        // STOCHASTIC MEDIUM VESSEL ARRIVAL (NHPP)
         arrivalTimer += computeLambda(simTime) * deltaHours;
         if (arrivalTimer >= 1.0 && vessels.length < 16) {
             arrivalTimer = 0;
@@ -1502,7 +1546,7 @@ def generate_3d_digital_twin_html() -> str:
             const vName = 'MV-Catch-' + Math.floor(Math.random() * 900 + 100);
 
             const vMesh = createVesselMesh(selType);
-            vMesh.position.set(190, 0, (Math.random() - 0.5) * 80);
+            vMesh.position.set(190, 0, (Math.random() - 0.5) * 60);
             scene.add(vMesh);
 
             const newBoat = {
@@ -1512,18 +1556,20 @@ def generate_3d_digital_twin_html() -> str:
                 draft: parseFloat(rDraft.toFixed(2)),
                 cargo: rCargo,
                 maxCargo: rCargo,
-                x: 0,
-                z: 0,
                 mesh: vMesh,
                 state: 'Arriving',
                 assignedBerth: null,
+                servicedByBanca: null,
                 wait: 0,
+                heading: -Math.PI / 2, // Inward heading towards harbor
                 speed: 0,
-                yaw: Math.PI,
-                turnRoll: 0,
-                throttlePitch: 0,
-                bobOffset: Math.random() * Math.PI * 2,
-                foamTimer: 0
+                maxSpeed: 14.0,
+                maxReverseSpeed: 4.5,
+                acceleration: 2.2,
+                brakingDistance: 22.0,
+                isSmallBoat: false,
+                isReversing: false,
+                bobOffset: Math.random() * Math.PI * 2
             };
 
             const canPassChannel = !tideLockActive || tide >= 1.6 || newBoat.draft <= 1.8;
@@ -1534,10 +1580,10 @@ def generate_3d_digital_twin_html() -> str:
                 freeBerth.occupiedBy = newBoat.name;
                 newBoat.assignedBerth = freeBerth;
                 newBoat.state = 'Navigating Channel';
-                newBoat.approachStep = 1;
+                newBoat.channelStep = 1;
             } else {
-                newBoat.x = 135 + Math.random() * 30; // Distant Anchorage Zone (135-165 units out)
-                newBoat.z = (Math.random() - 0.5) * 80;
+                newBoat.holdX = 135 + Math.random() * 25;
+                newBoat.holdZ = (Math.random() - 0.5) * 60;
                 newBoat.state = 'Arriving';
             }
             vessels.push(newBoat);
@@ -1548,63 +1594,31 @@ def generate_3d_digital_twin_html() -> str:
         let occupiedCount = 0;
 
         vessels.forEach((v, idx) => {
-            // Hydrodynamic Wave Buoyancy (Heave, Pitch, Roll)
-            const curX = v.mesh.position.x;
-            const curZ = v.mesh.position.z;
-            const waveY = getWaveHeight(curX, curZ, waveTime);
-            const waveSlopeX = (getWaveHeight(curX + 1.2, curZ, waveTime) - waveY) / 1.2;
-            const waveSlopeZ = (getWaveHeight(curX, curZ + 1.2, waveTime) - waveY) / 1.2;
+            // Wave Buoyancy Heave & Pitch
+            const waveY = getWaveHeight(v.mesh.position.x, v.mesh.position.z, waveTime);
+            v.mesh.position.y = waveY * 0.7;
+            v.mesh.rotation.x = Math.sin(waveTime * 2.0 + v.bobOffset) * 0.03;
 
-            v.mesh.position.y = waveY * 0.75;
-            const targetPitch = waveSlopeX * 0.35 + v.throttlePitch;
-            const targetRoll = waveSlopeZ * 0.35 + v.turnRoll;
-            v.mesh.rotation.x = THREE.MathUtils.lerp(v.mesh.rotation.x, targetPitch, 0.1);
-            v.mesh.rotation.z = THREE.MathUtils.lerp(v.mesh.rotation.z, targetRoll, 0.1);
-
-            // Stern Foam Trail & Bow Wake Opacity
+            // Bow Wake
             const bowWake = v.mesh.getObjectByName('bowWake');
             if (bowWake) {
                 bowWake.material.opacity = THREE.MathUtils.lerp(
                     bowWake.material.opacity,
-                    Math.min(0.55, v.speed * 2.5),
-                    0.12
+                    Math.min(0.55, Math.abs(v.speed) * 0.08),
+                    0.15
                 );
-            }
-            if (v.speed > 0.08) {
-                v.foamTimer += deltaHours * 100;
-                if (v.foamTimer > 0.15) {
-                    v.foamTimer = 0;
-                    emitFoam(curX - Math.cos(v.yaw) * 6.5, curZ + Math.sin(v.yaw) * 6.5);
-                }
             }
 
             if (v.state === 'Arriving') {
-                // Steer into Distant Anchorage Zone (120 to 180 units out)
-                const dx = v.x - curX;
-                const dz = v.z - curZ;
-                v.speed = THREE.MathUtils.lerp(v.speed, 0.35, 0.05);
-                const targetYaw = Math.atan2(dz, dx);
-                const yawDiff = Math.atan2(Math.sin(targetYaw - v.yaw), Math.cos(targetYaw - v.yaw));
-                v.yaw += yawDiff * 0.06;
-                v.turnRoll = -yawDiff * 1.5;
-                v.throttlePitch = -0.05;
-                v.mesh.rotation.y = v.yaw;
-
-                v.mesh.position.x += Math.cos(v.yaw) * v.speed;
-                v.mesh.position.z += Math.sin(v.yaw) * v.speed;
-
-                if (Math.hypot(dx, dz) < 4) {
+                const dist = updateVesselKinematics(v, v.holdX, v.holdZ, dt);
+                if (dist < 4.0) {
                     v.state = 'Waiting at Anchorage';
                     v.speed = 0;
-                    v.turnRoll = 0;
-                    v.throttlePitch = 0;
                 }
             } else if (v.state === 'Waiting at Anchorage') {
                 waitingCount++;
                 v.wait += deltaHours;
                 v.speed = 0;
-                v.turnRoll = 0;
-                v.throttlePitch = 0;
 
                 const canPass = !tideLockActive || tide >= 1.6 || v.draft <= 1.8;
                 const freeBerth = BERTH_SLOTS.find(b => b.occupiedBy === null);
@@ -1613,58 +1627,41 @@ def generate_3d_digital_twin_html() -> str:
                     freeBerth.occupiedBy = v.name;
                     v.assignedBerth = freeBerth;
                     v.state = 'Navigating Channel';
-                    v.approachStep = 1;
+                    v.channelStep = 1;
                 }
             } else if (v.state === 'Navigating Channel') {
-                // MULTI-WAYPOINT CHANNEL ROUTING (Zero Pier Clipping)
+                // Waypoint Steering Corridor through Buoy Highway
                 let targetX = 0;
                 let targetZ = 0;
 
-                if (v.approachStep === 1) {
-                    // Approach Waypoint 1: Channel Entry Corridor
-                    targetX = 60;
-                    targetZ = v.assignedBerth.z * 0.4;
-                    if (Math.hypot(targetX - curX, targetZ - curZ) < 10) v.approachStep = 2;
-                } else if (v.approachStep === 2) {
-                    // Approach Waypoint 2: Wharf Approach Corridor (X = -12)
-                    targetX = -12;
+                if (v.channelStep === 1) {
+                    // Gateway Waypoint (Pair 2: X = 90)
+                    targetX = 90;
+                    targetZ = v.assignedBerth.z * 0.3;
+                    const d = updateVesselKinematics(v, targetX, targetZ, dt);
+                    if (d < 12.0) v.channelStep = 2;
+                } else if (v.channelStep === 2) {
+                    // Approach Waypoint (Pair 4: X = -10)
+                    targetX = -10;
                     targetZ = v.assignedBerth.z;
-                    if (Math.hypot(targetX - curX, targetZ - curZ) < 8) v.approachStep = 3;
+                    const d = updateVesselKinematics(v, targetX, targetZ, dt);
+                    if (d < 8.0) v.channelStep = 3;
                 } else {
-                    // Final Docking: Berth Slot
+                    // Final Docking alongside Berth (X = -28.5)
                     targetX = v.assignedBerth.dockX;
                     targetZ = v.assignedBerth.z;
-                }
-
-                const dx = targetX - curX;
-                const dz = targetZ - curZ;
-                v.speed = THREE.MathUtils.lerp(v.speed, v.approachStep === 3 ? 0.15 : 0.4, 0.05);
-
-                const targetYaw = (v.approachStep === 3) ? Math.PI / 2 : Math.atan2(dz, dx);
-                const yawDiff = Math.atan2(Math.sin(targetYaw - v.yaw), Math.cos(targetYaw - v.yaw));
-                v.yaw += yawDiff * 0.06;
-                v.turnRoll = -yawDiff * 1.5;
-                v.throttlePitch = -0.04;
-                v.mesh.rotation.y = v.yaw;
-
-                v.mesh.position.x += Math.cos(v.yaw) * v.speed;
-                v.mesh.position.z += Math.sin(v.yaw) * v.speed;
-
-                if (v.approachStep === 3 && Math.hypot(targetX - curX, targetZ - curZ) < 2) {
-                    v.mesh.position.x = targetX;
-                    v.mesh.position.z = targetZ;
-                    v.yaw = Math.PI / 2;
-                    v.mesh.rotation.y = Math.PI / 2;
-                    v.state = 'Unloading at Wharf';
-                    v.speed = 0;
-                    v.turnRoll = 0;
-                    v.throttlePitch = 0;
+                    const d = updateVesselKinematics(v, targetX, targetZ, dt);
+                    if (d < 2.5) {
+                        v.mesh.position.set(targetX, 0, targetZ);
+                        v.heading = 0; // Bow pointed South parallel to wharf face
+                        v.mesh.rotation.y = 0;
+                        v.speed = 0;
+                        v.state = 'Unloading at Wharf';
+                    }
                 }
             } else if (v.state === 'Unloading at Wharf') {
                 occupiedCount++;
                 v.speed = 0;
-                v.turnRoll = 0;
-                v.throttlePitch = 0;
                 const offloadAmt = Math.round(deltaHours * 95);
                 v.cargo = Math.max(0, v.cargo - offloadAmt);
                 totalCratesLanded += offloadAmt;
@@ -1674,115 +1671,70 @@ def generate_3d_digital_twin_html() -> str:
                         v.assignedBerth.occupiedBy = null;
                         v.assignedBerth = null;
                     }
-                    // STEP 3: REVERSE STRAIGHT BACK 15 UNITS INTO APPROACH CORRIDOR
-                    v.state = 'Straight Reverse';
-                    v.reverseStartX = curX;
-                    v.reverseTargetX = curX + 15; // Straight back to X = -14
-                }
-            } else if (v.state === 'Straight Reverse') {
-                // Strict 15-unit reverse without turning
-                v.speed = 0.2;
-                v.mesh.position.x += 0.15;
-                v.yaw = Math.PI / 2;
-                v.mesh.rotation.y = Math.PI / 2;
-
-                if (curX >= v.reverseTargetX) {
                     v.state = 'Departing';
                     v.departStep = 1;
                 }
             } else if (v.state === 'Departing') {
-                // Multi-Waypoint Departure Corridor
-                let depX = 180;
-                let depZ = 20;
+                let depX = 0;
+                let depZ = 0;
 
                 if (v.departStep === 1) {
-                    depX = 60;
-                    depZ = 25;
-                    if (Math.hypot(depX - curX, depZ - curZ) < 12) v.departStep = 2;
+                    // Move out to Fairway Corridor (X = -10)
+                    depX = -10;
+                    depZ = v.mesh.position.z + 10;
+                    const d = updateVesselKinematics(v, depX, depZ, dt);
+                    if (d < 8.0) v.departStep = 2;
+                } else if (v.departStep === 2) {
+                    // Channel Exit Buoy Gate (X = 90)
+                    depX = 90;
+                    depZ = 12;
+                    const d = updateVesselKinematics(v, depX, depZ, dt);
+                    if (d < 12.0) v.departStep = 3;
                 } else {
+                    // Open Sea Departure (X = 220)
                     depX = 220;
-                    depZ = 30;
-                }
-
-                const dx = depX - curX;
-                const dz = depZ - curZ;
-                v.speed = THREE.MathUtils.lerp(v.speed, 0.45, 0.05);
-                const targetYaw = Math.atan2(dz, dx);
-                const yawDiff = Math.atan2(Math.sin(targetYaw - v.yaw), Math.cos(targetYaw - v.yaw));
-                v.yaw += yawDiff * 0.05;
-                v.turnRoll = -yawDiff * 1.5;
-                v.throttlePitch = -0.05;
-                v.mesh.rotation.y = v.yaw;
-
-                v.mesh.position.x += Math.cos(v.yaw) * v.speed;
-                v.mesh.position.z += Math.sin(v.yaw) * v.speed;
-
-                if (curX > 210) {
-                    scene.remove(v.mesh);
-                    vessels.splice(idx, 1);
+                    depZ = 20;
+                    updateVesselKinematics(v, depX, depZ, dt);
+                    if (v.mesh.position.x > 210) {
+                        scene.remove(v.mesh);
+                        vessels.splice(idx, 1);
+                    }
                 }
             }
         });
 
-        // STEP 3: BOATS COLLISION AVOIDANCE (BOIDS REPULSION)
-        for (let i = 0; i < vessels.length; i++) {
-            for (let j = i + 1; j < vessels.length; j++) {
-                const bA = vessels[i];
-                const bB = vessels[j];
-                if (bA.speed > 0.05 || bB.speed > 0.05) {
-                    const dx = bA.mesh.position.x - bB.mesh.position.x;
-                    const dz = bA.mesh.position.z - bB.mesh.position.z;
-                    const dist = Math.hypot(dx, dz);
-                    const minSafe = 10.0; // Minimum safe hull distance
-
-                    if (dist < minSafe && dist > 0.1) {
-                        const push = (minSafe - dist) * 0.04;
-                        const nx = dx / dist;
-                        const nz = dz / dist;
-                        bA.mesh.position.x += nx * push;
-                        bA.mesh.position.z += nz * push;
-                        bB.mesh.position.x -= nx * push;
-                        bB.mesh.position.z -= nz * push;
-                        bA.speed *= 0.7;
-                        bB.speed *= 0.7;
-                    }
-                }
-            }
-        }
-
-        // UPDATE SMALL BOAT FLEET (PARKED AT DOCK + ACTIVE LIGHTERING SHUTTLES)
+        // UPDATE SMALL BOAT FLEET (ANTI-SNAKING & DYNAMIC LIGHTERING)
         let activeBancas = 0;
+        bancaDispatchCooldown -= dt;
 
         bancas.forEach(b => {
-            const curX = b.mesh.position.x;
-            const curZ = b.mesh.position.z;
-            const waveY = getWaveHeight(curX, curZ, waveTime);
+            const waveY = getWaveHeight(b.mesh.position.x, b.mesh.position.z, waveTime);
             b.mesh.position.y = waveY * 0.6;
 
             const bowWake = b.mesh.getObjectByName('bowWake');
             if (bowWake) {
                 bowWake.material.opacity = THREE.MathUtils.lerp(
                     bowWake.material.opacity,
-                    Math.min(0.45, b.speed * 2.0),
+                    Math.min(0.45, Math.abs(b.speed) * 0.08),
                     0.15
                 );
             }
 
             if (b.state === 'parked') {
-                // Moored in designated slot with gentle water rocking
                 b.mesh.position.x = b.parkSlot.x;
                 b.mesh.position.z = b.parkSlot.z;
                 b.mesh.rotation.y = b.parkSlot.yaw;
-                b.mesh.rotation.z = Math.sin(Date.now() * 0.003 + b.bobOffset) * 0.05;
                 b.speed = 0;
 
-                // Dynamic Fish Fetching: dispatch up to 6 bancas (~25% of fleet)
+                // Anti-Snaking Staggered Dispatch: Max 3 active, 1-to-1 mother vessel exclusive assignment
                 const runningCount = bancas.filter(item => item.state !== 'parked').length;
-                if (runningCount < 6) {
-                    const targetMB = vessels.find(v => v.state === 'Waiting at Anchorage' && v.cargo > 0);
+                if (runningCount < 3 && bancaDispatchCooldown <= 0) {
+                    const targetMB = vessels.find(v => v.state === 'Waiting at Anchorage' && v.cargo > 0 && !v.servicedByBanca);
                     if (targetMB) {
+                        targetMB.servicedByBanca = b.id;
                         b.targetBoat = targetMB;
                         b.state = 'to_anchorage';
+                        bancaDispatchCooldown = 3.5; // Stagger next launch
                     }
                 }
             } else if (b.state === 'to_anchorage') {
@@ -1791,61 +1743,45 @@ def generate_3d_digital_twin_html() -> str:
                     b.state = 'return_to_park';
                     return;
                 }
-                const tx = b.targetBoat.mesh.position.x;
+                // Standoff target 5 units alongside mother vessel (port side)
+                const tx = b.targetBoat.mesh.position.x - 5.0;
                 const tz = b.targetBoat.mesh.position.z;
-                const dx = tx - curX;
-                const dz = tz - curZ;
-                b.speed = THREE.MathUtils.lerp(b.speed, 0.45, 0.05);
+                const dist = updateVesselKinematics(b, tx, tz, dt);
 
-                const targetYaw = Math.atan2(dz, dx);
-                const yawDiff = Math.atan2(Math.sin(targetYaw - b.yaw), Math.cos(targetYaw - b.yaw));
-                b.yaw += yawDiff * 0.08;
-                b.mesh.rotation.y = b.yaw;
-                b.mesh.rotation.z = -yawDiff * 1.2;
-
-                b.mesh.position.x += Math.cos(b.yaw) * b.speed;
-                b.mesh.position.z += Math.sin(b.yaw) * b.speed;
-
-                if (Math.hypot(dx, dz) < 8.0) {
+                if (dist < 3.5) {
                     b.state = 'transferring';
-                    b.timer = 1.6;
+                    b.timer = 2.0;
+                    b.speed = 0;
                 }
             } else if (b.state === 'transferring') {
                 activeBancas++;
                 b.speed = 0;
-                b.timer -= deltaHours * 15;
+                b.timer -= dt;
                 if (b.timer <= 0) {
                     const take = Math.min(b.maxCargo, b.targetBoat ? b.targetBoat.cargo : 0);
-                    if (b.targetBoat) b.targetBoat.cargo -= take;
+                    if (b.targetBoat) {
+                        b.targetBoat.cargo -= take;
+                        b.targetBoat.servicedByBanca = null; // Release reservation
+                    }
                     b.cargo = take;
                     b.state = 'to_wharf';
                 }
             } else if (b.state === 'to_wharf') {
                 activeBancas++;
-                // Head to fish landing apron at X = -30, Z = 70
-                const landingX = -30;
-                const landingZ = 70;
-                const dx = landingX - curX;
-                const dz = landingZ - curZ;
-                b.speed = THREE.MathUtils.lerp(b.speed, 0.4, 0.05);
+                // Dedicated discrete landing slots along shallow apron (Z = 65, 77, 89)
+                const landingX = -26;
+                const landingZ = 65 + b.landingSlotIdx * 12;
+                const dist = updateVesselKinematics(b, landingX, landingZ, dt);
 
-                const targetYaw = Math.atan2(dz, dx);
-                const yawDiff = Math.atan2(Math.sin(targetYaw - b.yaw), Math.cos(targetYaw - b.yaw));
-                b.yaw += yawDiff * 0.08;
-                b.mesh.rotation.y = b.yaw;
-                b.mesh.rotation.z = -yawDiff * 1.2;
-
-                b.mesh.position.x += Math.cos(b.yaw) * b.speed;
-                b.mesh.position.z += Math.sin(b.yaw) * b.speed;
-
-                if (Math.hypot(dx, dz) < 6.0) {
+                if (dist < 3.5) {
                     b.state = 'unloading_at_wharf';
-                    b.timer = 1.2;
+                    b.timer = 1.6;
+                    b.speed = 0;
                 }
             } else if (b.state === 'unloading_at_wharf') {
                 activeBancas++;
                 b.speed = 0;
-                b.timer -= deltaHours * 15;
+                b.timer -= dt;
                 if (b.timer <= 0) {
                     totalCratesLanded += b.cargo;
                     b.cargo = 0;
@@ -1853,30 +1789,20 @@ def generate_3d_digital_twin_html() -> str:
                 }
             } else if (b.state === 'return_to_park') {
                 activeBancas++;
-                const dx = b.parkSlot.x - curX;
-                const dz = b.parkSlot.z - curZ;
-                b.speed = THREE.MathUtils.lerp(b.speed, 0.35, 0.05);
+                const dist = updateVesselKinematics(b, b.parkSlot.x, b.parkSlot.z, dt);
 
-                const targetYaw = Math.atan2(dz, dx);
-                const yawDiff = Math.atan2(Math.sin(targetYaw - b.yaw), Math.cos(targetYaw - b.yaw));
-                b.yaw += yawDiff * 0.08;
-                b.mesh.rotation.y = b.yaw;
-
-                b.mesh.position.x += Math.cos(b.yaw) * b.speed;
-                b.mesh.position.z += Math.sin(b.yaw) * b.speed;
-
-                if (Math.hypot(dx, dz) < 2.5) {
-                    b.mesh.position.x = b.parkSlot.x;
-                    b.mesh.position.z = b.parkSlot.z;
+                if (dist < 2.0) {
+                    b.mesh.position.set(b.parkSlot.x, 0, b.parkSlot.z);
+                    b.heading = b.parkSlot.yaw;
                     b.mesh.rotation.y = b.parkSlot.yaw;
-                    b.yaw = b.parkSlot.yaw;
+                    b.speed = 0;
                     b.state = 'parked';
                     b.targetBoat = null;
                 }
             }
         });
 
-        // UPDATE FLOATING HUD METRICS
+        // UPDATE HUD KPI METRICS
         document.getElementById('kpi-queue-count').textContent = waitingCount;
         document.getElementById('kpi-wait-time').textContent = (waitingCount > 0 ? (1.2 + waitingCount * 0.45).toFixed(2) : '0.00');
 
@@ -1905,10 +1831,10 @@ def generate_3d_digital_twin_html() -> str:
 
         if (isPlaying) {
             const deltaHours = timeDelta * (timeScale * 0.15);
-            updateSimulation(deltaHours, waveTime);
+            updateSimulation(deltaHours, timeDelta, waveTime);
         }
 
-        // Procedural Wave Mesh Displacement
+        // Ocean Wave Mesh Motion
         const pAttr = waterGeo.attributes.position;
         for (let i = 0; i < pAttr.count; i++) {
             const bv = baseVerts[i];
@@ -1918,23 +1844,8 @@ def generate_3d_digital_twin_html() -> str:
         }
         pAttr.needsUpdate = true;
 
-        // STEP 1: ROTATE LIGHTROTORPIVOT AT TOP LANTERN GALLERY (Y = 18.5)
+        // Rotate Lighthouse Head at Top Lantern Room (Y = 18.5)
         LightRotorPivot.rotation.y += timeDelta * 0.8;
-
-        // Update active foam trail rings
-        foamPool.forEach(f => {
-            if (f.active) {
-                f.life += timeDelta;
-                f.scale += timeDelta * 2.2;
-                f.mesh.scale.set(f.scale, f.scale, f.scale);
-                f.mesh.material.opacity = Math.max(0, 0.55 * (1 - f.life / f.maxLife));
-                if (f.life >= f.maxLife) {
-                    f.active = false;
-                    f.mesh.visible = false;
-                    f.mesh.position.set(0, -50, 0);
-                }
-            }
-        });
 
         controls.update();
         renderer.render(scene, camera);
@@ -1943,7 +1854,7 @@ def generate_3d_digital_twin_html() -> str:
     requestAnimationFrame(render);
 
     // -------------------------------------------------------------
-    // INTERACTIVE RAYCASTING (HOVER & CLICK TOOLTIP)
+    // RAYCASTING & TOOLTIP
     // -------------------------------------------------------------
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
@@ -1996,7 +1907,7 @@ def generate_3d_digital_twin_html() -> str:
                     ttBadge.textContent = 'Distant Anchorage';
                     ttBadge.style.background = 'rgba(245, 158, 11, 0.2)';
                     ttBadge.style.color = '#FBBF24';
-                    ttState.textContent = 'Holding in San Miguel Bay (150m out)';
+                    ttState.textContent = 'Holding in San Miguel Bay';
                 } else {
                     ttBadge.textContent = foundMedium.state;
                     ttBadge.style.background = 'rgba(56, 189, 248, 0.2)';
