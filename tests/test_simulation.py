@@ -20,6 +20,7 @@ from src.stats import StatsCollector, compute_confidence_interval
 from src.validation import run_deterministic_verification
 from src.cost_benefit import calculate_vessel_economic_loss, estimate_scenario_incremental_cost
 from src.model import run_simulation, calculate_nhpp_intensity
+from src.port_3d_engine import generate_3d_digital_twin_html
 
 
 class TestPRNGEngine(unittest.TestCase):
@@ -83,6 +84,27 @@ class TestModelSimulation(unittest.TestCase):
         kpi = stats.compute_summary_kpis()
         self.assertGreater(kpi["boats_arrived"], 0)
         self.assertGreaterEqual(kpi["boats_completed"], 0)
+
+
+class Test3DDigitalTwinEngine(unittest.TestCase):
+    def test_generate_3d_digital_twin_html(self):
+        """Verify 3D digital twin HTML generation and required DOM/KPI elements."""
+        html = generate_3d_digital_twin_html()
+        self.assertIsInstance(html, str)
+        self.assertGreater(len(html), 50000)
+        # Check required HUD elements
+        self.assertIn("kpi-queue-count", html)
+        self.assertIn("kpi-berth-occ", html)
+        self.assertIn("kpi-at-sea-count", html)
+        self.assertIn("kpi-bancas-active", html)
+        self.assertIn("kpi-crates-count", html)
+        self.assertIn("tt-vessel-timer", html)
+        # Check key simulation algorithms
+        self.assertIn("rollCatchLoad", html)
+        self.assertIn("resolveHullCollision", html)
+        self.assertIn("AT_SEA_FISHING", html)
+        self.assertIn("BANCA_LANDING_SPOTS", html)
+
 
 
 if __name__ == "__main__":
