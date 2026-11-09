@@ -1622,6 +1622,12 @@ def generate_3d_digital_twin_html() -> str:
     // -------------------------------------------------------------
     // MAIN SIMULATION LOOP (DES + 24H DIURNAL TRAFFIC + KINEMATICS)
     // -------------------------------------------------------------
+    // Semi-diurnal tidal height formula for Mercedes River mouth (San Miguel Bay)
+    // Range: +0.60m (Low Tide) to +2.10m (High Tide) with ~12.42h periodicity
+    function computeTide(t) {
+        return 1.35 + 0.75 * Math.cos((t - 6.0) * (Math.PI / 6.0));
+    }
+
     let bancaDispatchCooldown = 0;
 
     function updateSimulation(deltaHours, dt, waveTime) {

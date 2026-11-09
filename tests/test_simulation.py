@@ -104,6 +104,7 @@ class Test3DDigitalTwinEngine(unittest.TestCase):
         self.assertIn("resolveHullCollision", html)
         self.assertIn("AT_SEA_FISHING", html)
         self.assertIn("BANCA_LANDING_SPOTS", html)
+        self.assertIn("computeTide", html)
 
 
 
