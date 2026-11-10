@@ -5,16 +5,17 @@ for Mercedes Fish Port, Mercedes, Camarines Norte.
 
 Architectural Standards Applied from Agency Agents Skills:
 - C:/Users/L470/.gemini/config/skills/agency-frontend-developer/SKILL.md: Non-holonomic 3-DOF kinematics, 60fps budget, zero console errors.
-- C:/Users/L470/.gemini/config/skills/agency-3d-scene-developer/SKILL.md: Accurate spatial lighting, buoy corridor fairway, wave displacement, seawalls.
+- C:/Users/L470/.gemini/config/skills/agency-3d-scene-developer/SKILL.md: Infinite-thickness half-space collision, rock-steady pier mooring, clean breakwaters.
 - C:/Users/L470/.gemini/config/skills/agency-ux-architect/SKILL.md: Zero-clutter viewport, progressive disclosure modal hierarchy.
 - C:/Users/L470/.gemini/config/skills/agency-ui-designer/SKILL.md: High-contrast maritime design tokens, WCAG AA compliance.
 
 Core Mathematical & Spatial Systems:
-1. Catch-Based Docking Timers (2-5 mins): Individual banyera loads with desynchronized startup and randomized departure delays.
-2. Open Philippine Sea Loop: Departing boats fan out to X >= 235, transition to AT_SEA_FISHING, and respawn during diurnal surge.
-3. Diurnal Fleet Cycle: 24-hour simulation curve (Morning Bulungan rush vs Noon ocean fishing lull) with expandable fleet sliders.
-4. 3-Circle Hull Footprint Collision (Bow, Midship, Stern): Prevents clipping through 3D seawalls, wharf wings, and banks.
-5. Organic Curved Trajectories: Per-boat lateral lane offsets, 12 distributed banca landing spots, and anchored weathervaning.
+1. 13-Berth Clean Concrete Wharf Apron: X = -75.0 to -35.0, Z = -105.0 to +105.0. Front wharf face at X = -35.0, berths at X = -28.0.
+2. Rock-Steady Pier Mooring (Zero Shaking): Collision pushback completely disabled during DOCKED_UNLOADING.
+3. Rapid 15–35s Real-Time Catch Unloading: Skewed banyera hauls (Light: 14s, Med: 24s, Heavy: 35s) with guaranteed per-frame countdown.
+4. Infinite-Thickness Half-Space Wall Clamping: Impossible for vessels to tunnel or clip into wharf or seawalls.
+5. Dual-Role Small Boat Fleet: 70% Partner Lightering Tenders (servicing bay anchorage) + 30% Independent Artisanal Bancas.
+6. Medium Vessel Dynamics: 60% Direct Wharf Docking vs 40% Convenience Bay Anchorage with tender pickup.
 """
 
 def generate_3d_digital_twin_html() -> str:
@@ -170,29 +171,24 @@ def generate_3d_digital_twin_html() -> str:
     }
 
     .btn-hud {
-        background: rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        color: #F8FAFC;
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #E2E8F0;
         padding: 7px 12px;
         border-radius: 7px;
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         font-weight: 600;
         cursor: pointer;
+        transition: all 0.15s ease;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        transition: all 0.15s ease;
     }
     .btn-hud:hover {
-        background: #1E293B;
+        background: rgba(56, 189, 248, 0.15);
         border-color: #38BDF8;
-        color: #38BDF8;
+        color: #FFFFFF;
         transform: translateY(-1px);
-    }
-    .btn-hud.active {
-        background: rgba(56, 189, 248, 0.2);
-        border-color: #38BDF8;
-        color: #38BDF8;
     }
     .btn-hud.primary {
         background: #0284C7;
@@ -202,11 +198,16 @@ def generate_3d_digital_twin_html() -> str:
     .btn-hud.primary:hover {
         background: #0369A1;
     }
+    .btn-hud.active {
+        background: rgba(56, 189, 248, 0.25);
+        border-color: #38BDF8;
+        color: #38BDF8;
+    }
 
     #hud-bottom-left {
         position: absolute;
-        bottom: 16px;
-        left: 16px;
+        bottom: 14px;
+        left: 14px;
         z-index: 10;
         display: flex;
         flex-direction: column;
@@ -218,56 +219,53 @@ def generate_3d_digital_twin_html() -> str:
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 7px;
-        pointer-events: auto;
     }
     .kpi-card {
         padding: 9px 12px;
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: 3px;
+        pointer-events: auto;
     }
     .kpi-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
     }
     .kpi-title {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
         font-weight: 600;
         color: #94A3B8;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
     }
     .kpi-value {
-        font-size: 1.12rem;
-        font-weight: 800;
-        color: #F8FAFC;
         font-family: 'JetBrains Mono', monospace;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #F8FAFC;
     }
     .kpi-sub {
-        font-size: 0.66rem;
+        font-size: 0.68rem;
         color: #64748B;
-        line-height: 1.3;
     }
 
     #hud-bottom-center {
         position: absolute;
-        bottom: 16px;
+        bottom: 14px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 10;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        pointer-events: auto;
+        pointer-events: none;
     }
     .hint-pill {
-        padding: 5px 12px;
-        font-size: 0.7rem;
+        padding: 6px 14px;
+        font-size: 0.72rem;
         color: #94A3B8;
-        display: inline-flex;
+        display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 12px;
+        pointer-events: auto;
     }
 
     #vessel-tooltip {
@@ -280,144 +278,126 @@ def generate_3d_digital_twin_html() -> str:
         transform: translate(16px, 16px);
         transition: opacity 0.15s ease;
     }
-    .tt-title-bar {
+    .tt-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 6px;
+        justify-content: space-between;
+        margin-bottom: 7px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .tt-name {
-        font-size: 0.84rem;
-        font-weight: 800;
-        color: #38BDF8;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #F8FAFC;
     }
     .tt-badge {
-        font-size: 0.64rem;
+        font-size: 0.62rem;
         font-weight: 700;
         padding: 2px 7px;
-        border-radius: 9999px;
+        border-radius: 4px;
         text-transform: uppercase;
+        letter-spacing: 0.03em;
     }
     .tt-row {
         display: flex;
         justify-content: space-between;
-        align-items: center;
         font-size: 0.72rem;
-        margin-top: 3px;
+        margin-bottom: 4px;
         color: #CBD5E1;
     }
+    .tt-label {
+        color: #94A3B8;
+    }
     .tt-val {
-        font-weight: 600;
-        color: #F8FAFC;
         font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
     }
-    .tt-bar-bg {
+    .cargo-bar-bg {
         width: 100%;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 2px;
-        margin-top: 6px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 3px;
         overflow: hidden;
+        margin-top: 5px;
     }
-    .tt-bar-fill {
+    .cargo-bar-fill {
         height: 100%;
-        background: #10B981;
-        border-radius: 2px;
+        background: linear-gradient(90deg, #38BDF8, #34D399);
+        width: 0%;
         transition: width 0.3s ease;
     }
 
     .modal-overlay {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
+        background: rgba(3, 7, 18, 0.78);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         z-index: 100;
-        background: rgba(4, 8, 18, 0.72);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
         display: none;
         align-items: center;
         justify-content: center;
-        padding: 20px;
     }
-    .modal-card {
-        width: 100%;
-        max-width: 860px;
-        max-height: 88vh;
-        background: #0B1329;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+    .modal-window {
+        width: 90%;
+        max-width: 680px;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 24px;
         display: flex;
         flex-direction: column;
-        overflow: hidden;
-        animation: modal-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes modal-pop {
-        from { opacity: 0; transform: scale(0.96) translateY(8px); }
-        to { opacity: 1; transform: scale(1) translateY(0); }
+        gap: 18px;
     }
     .modal-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 20px;
-        background: rgba(15, 23, 42, 0.95);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .modal-title-group {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .modal-title {
-        font-size: 1.05rem;
+        font-size: 1.15rem;
         font-weight: 700;
         color: #F8FAFC;
+        display: flex;
+        align-items: center;
+        gap: 9px;
     }
     .modal-close {
         background: transparent;
         border: none;
         color: #94A3B8;
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         cursor: pointer;
-        padding: 4px;
-        border-radius: 6px;
+        padding: 4px 8px;
         line-height: 1;
     }
     .modal-close:hover {
         color: #F8FAFC;
-        background: rgba(255, 255, 255, 0.08);
     }
-    .modal-body {
-        padding: 20px;
-        overflow-y: auto;
-        flex: 1;
-    }
-
     .modal-tabs {
         display: flex;
         gap: 8px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        margin-bottom: 18px;
-        padding-bottom: 4px;
+        padding-bottom: 8px;
     }
     .modal-tab-btn {
         background: transparent;
         border: none;
         color: #94A3B8;
-        font-size: 0.84rem;
+        font-size: 0.8rem;
         font-weight: 600;
-        padding: 8px 14px;
+        padding: 6px 12px;
         border-radius: 6px;
         cursor: pointer;
-        transition: all 0.15s ease;
     }
     .modal-tab-btn.active {
+        background: rgba(56, 189, 248, 0.15);
         color: #38BDF8;
-        background: rgba(56, 189, 248, 0.1);
-        border-bottom: 2px solid #38BDF8;
     }
     .tab-content {
         display: none;
@@ -430,38 +410,30 @@ def generate_3d_digital_twin_html() -> str:
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 14px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
     .param-info {
-        flex: 1;
+        max-width: 60%;
     }
     .param-title {
         font-size: 0.82rem;
         font-weight: 600;
-        color: #F8FAFC;
+        color: #F1F5F9;
     }
     .param-desc {
-        font-size: 0.72rem;
-        color: #94A3B8;
+        font-size: 0.7rem;
+        color: #64748B;
         margin-top: 2px;
     }
     .param-ctrl {
         display: flex;
         align-items: center;
         gap: 10px;
-        min-width: 220px;
-    }
-    .param-ctrl input[type=range] {
-        flex: 1;
-        accent-color: #38BDF8;
-        cursor: pointer;
     }
     .param-val {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         font-weight: 700;
         color: #38BDF8;
         min-width: 65px;
@@ -471,62 +443,65 @@ def generate_3d_digital_twin_html() -> str:
     .preset-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 10px;
+        margin-top: 10px;
     }
     .preset-card {
-        background: rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px;
         border-radius: 8px;
-        padding: 14px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
+        transition: all 0.15s ease;
     }
     .preset-card:hover {
         border-color: #38BDF8;
-        background: rgba(30, 41, 59, 0.9);
-        transform: translateY(-2px);
+        background: rgba(56, 189, 248, 0.08);
     }
     .preset-card.active {
-        border-color: #10B981;
-        background: rgba(16, 185, 129, 0.1);
-    }
-    .preset-tag {
-        font-size: 0.65rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #38BDF8;
-        letter-spacing: 0.04em;
+        border-color: #38BDF8;
+        background: rgba(56, 189, 248, 0.15);
     }
     .preset-name {
-        font-size: 0.92rem;
+        font-size: 0.82rem;
         font-weight: 700;
         color: #F8FAFC;
+        margin-bottom: 4px;
     }
     .preset-desc {
-        font-size: 0.74rem;
+        font-size: 0.68rem;
         color: #94A3B8;
-        line-height: 1.4;
+        line-height: 1.35;
+    }
+    .preset-tag {
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: #38BDF8;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        display: block;
     }
 
     .table-container {
         width: 100%;
-        border-collapse: collapse;
-        font-size: 0.78rem;
-        margin-top: 10px;
+        overflow-x: auto;
+        margin-top: 12px;
     }
-    .table-container th {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72rem;
+    }
+    th {
         text-align: left;
         padding: 8px 10px;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.03);
         color: #94A3B8;
         font-weight: 600;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .table-container td {
-        padding: 9px 10px;
+    td {
+        padding: 8px 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         color: #E2E8F0;
     }
@@ -537,24 +512,15 @@ def generate_3d_digital_twin_html() -> str:
     body.screenshot-mode #vessel-tooltip {
         display: none !important;
     }
-    #screenshot-restore-btn {
-        position: fixed;
-        top: 16px;
-        right: 16px;
-        z-index: 9999;
-        display: none;
-        background: #0284C7;
-        color: #FFFFFF;
-        border: 1px solid #38BDF8;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
     body.screenshot-mode #screenshot-restore-btn {
         display: block !important;
+    }
+    #screenshot-restore-btn {
+        display: none;
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        z-index: 999;
     }
 </style>
 </head>
@@ -562,21 +528,21 @@ def generate_3d_digital_twin_html() -> str:
 
 <canvas id="webgl-canvas"></canvas>
 
+<button id="screenshot-restore-btn" class="btn-hud primary">✕ Exit Screenshot Mode</button>
+
 <!-- Top Floating HUD -->
 <div id="hud-top">
     <div class="hud-group">
         <div class="glass-panel title-pill">
-            <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="5" r="3"></circle>
-                <line x1="12" y1="22" x2="12" y2="8"></line>
-                <path d="M5 12H2a10 10 0 0 0 20 0h-3"></path>
+            <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="5" r="3"/>
+                <line x1="12" y1="22" x2="12" y2="8"/>
+                <path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
             </svg>
             <span class="title-text">Mercedes Fish Port — 3D DES Digital Twin</span>
             <span id="badge-scenario" class="scenario-pill">Baseline (13 Berths)</span>
         </div>
-    </div>
 
-    <div class="hud-group">
         <div class="glass-panel clock-pill">
             <span id="hud-clock" class="hud-clock">05:45 AM</span>
             <span id="surge-pill" class="surge-pill">⚡ BULUNGAN AUCTION SURGE</span>
@@ -622,7 +588,7 @@ def generate_3d_digital_twin_html() -> str:
                 <span style="font-size:0.6rem; color:#38BDF8;">Medium & Bancas</span>
             </div>
             <div class="kpi-value"><span id="kpi-at-sea-count">16</span> <span style="font-size:0.75rem; color:#94A3B8;">at sea fishing</span></div>
-            <div class="kpi-sub"><span id="kpi-bancas-active" style="color:#FBBF24; font-weight:700;">0</span> Active Lightering | <span id="kpi-bancas-moored">32</span> Moored</div>
+            <div class="kpi-sub"><span id="kpi-bancas-active" style="color:#FBBF24; font-weight:700;">0</span> Active Lightering | <span id="kpi-bancas-moored">32</span> Standby</div>
         </div>
 
         <div class="glass-panel kpi-card">
@@ -648,35 +614,52 @@ def generate_3d_digital_twin_html() -> str:
 
 <!-- Vessel Hover Tooltip -->
 <div id="vessel-tooltip" class="glass-panel">
-    <div class="tt-title-bar">
+    <div class="tt-header">
         <span id="tt-vessel-name" class="tt-name">MV-MercedesQueen</span>
         <span id="tt-vessel-badge" class="tt-badge" style="background:rgba(56,189,248,0.2); color:#38BDF8;">Direct Docked</span>
     </div>
-    <div class="tt-row"><span>Classification:</span><span id="tt-vessel-type" class="tt-val">Commercial Basnig</span></div>
-    <div class="tt-row"><span>Gross Tonnage:</span><span id="tt-vessel-gt" class="tt-val">28.4 GT</span></div>
-    <div class="tt-row"><span>Design Draft:</span><span id="tt-vessel-draft" class="tt-val">2.15 m</span></div>
-    <div class="tt-row"><span>Cargo Banyeras:</span><span id="tt-vessel-cargo" class="tt-val">140 / 160</span></div>
-    <div class="tt-bar-bg"><div id="tt-vessel-bar" class="tt-bar-fill" style="width: 85%;"></div></div>
-    <div class="tt-row" style="margin-top:6px;"><span>Current State:</span><span id="tt-vessel-state" class="tt-val" style="color:#38BDF8;">Unloading at Berth B4</span></div>
-    <div class="tt-row"><span>Docking Timer Left:</span><span id="tt-vessel-timer" class="tt-val" style="color:#FBBF24;">145s (~2.4m)</span></div>
+    <div class="tt-row">
+        <span class="tt-label">Vessel Class:</span>
+        <span id="tt-vessel-type" class="tt-val">Purse Seiner</span>
+    </div>
+    <div class="tt-row">
+        <span class="tt-label">Gross Tonnage / Draft:</span>
+        <span class="tt-val"><span id="tt-vessel-gt">24.5 GT</span> / <span id="tt-vessel-draft">2.1m</span></span>
+    </div>
+    <div class="tt-row">
+        <span class="tt-label">Remaining Catch:</span>
+        <span id="tt-vessel-cargo" class="tt-val">180 / 180 banyeras</span>
+    </div>
+    <div class="cargo-bar-bg">
+        <div id="tt-vessel-bar" class="cargo-bar-fill"></div>
+    </div>
+    <div class="tt-row" style="margin-top:6px;">
+        <span class="tt-label">Operational Status:</span>
+        <span id="tt-vessel-state" class="tt-val" style="color:#38BDF8;">Unloading at Berth B4</span>
+    </div>
+    <div class="tt-row">
+        <span class="tt-label">Cycle Countdown:</span>
+        <span id="tt-vessel-timer" class="tt-val" style="color:#34D399;">24s remaining</span>
+    </div>
 </div>
 
-<!-- Modal 1: Settings -->
+<!-- Modal 1: Simulation Settings & Policy Presets -->
 <div id="modal-settings" class="modal-overlay">
-    <div class="modal-card">
+    <div class="glass-panel modal-window">
         <div class="modal-header">
-            <div class="modal-title-group">
-                <span style="font-size:1.2rem;">⚙️</span>
-                <span class="modal-title">Simulation Settings & Policy Intervention Scenarios</span>
+            <div class="modal-title">
+                <span>⚙️</span>
+                <span>Simulation Configuration & Policy Presets</span>
             </div>
-            <button class="modal-close" data-target="modal-settings">&times;</button>
+            <button class="modal-close" data-target="modal-settings">✕</button>
         </div>
-        <div class="modal-body">
-            <div class="modal-tabs">
-                <button class="modal-tab-btn active" data-tab="tab-params">1. Baseline Parameters (Phase I & II)</button>
-                <button class="modal-tab-btn" data-tab="tab-presets">2. "What-If" Policy Presets (Phase IV)</button>
-            </div>
 
+        <div class="modal-tabs">
+            <button class="modal-tab-btn active" data-tab="tab-params">Operational Parameters</button>
+            <button class="modal-tab-btn" data-tab="tab-presets">Intervention Scenarios</button>
+        </div>
+
+        <div class="modal-body">
             <div id="tab-params" class="tab-content active">
                 <div class="param-row">
                     <div class="param-info">
@@ -703,11 +686,11 @@ def generate_3d_digital_twin_html() -> str:
                 <div class="param-row">
                     <div class="param-info">
                         <div class="param-title">Medium Boat Unload Duration Range</div>
-                        <div class="param-desc">Base scale for banyera offload times at berths (light: ~2m, heavy: ~5m).</div>
+                        <div class="param-desc">Base scale for banyera offload times at berths (light: ~14s, heavy: ~35s).</div>
                     </div>
                     <div class="param-ctrl">
                         <input type="range" id="sl-unload-scale" min="1.0" max="5.0" step="0.5" value="3.0">
-                        <span id="val-unload-scale" class="param-val">2–5 mins</span>
+                        <span id="val-unload-scale" class="param-val">15–35s</span>
                     </div>
                 </div>
 
@@ -765,87 +748,73 @@ def generate_3d_digital_twin_html() -> str:
     </div>
 </div>
 
-<!-- Modal 2: Analytics -->
+<!-- Modal 2: Academic Analytics & Comparative Report -->
 <div id="modal-analytics" class="modal-overlay">
-    <div class="modal-card">
+    <div class="glass-panel modal-window" style="max-width: 780px;">
         <div class="modal-header">
-            <div class="modal-title-group">
-                <span style="font-size:1.2rem;">📊</span>
-                <span class="modal-title">Diagnostic Queueing & Operational Performance Report</span>
+            <div class="modal-title">
+                <span>📊</span>
+                <span>Operational Research Summary & Policy Matrix</span>
             </div>
-            <button class="modal-close" data-target="modal-analytics">&times;</button>
+            <button class="modal-close" data-target="modal-analytics">✕</button>
         </div>
+
         <div class="modal-body">
-            <p style="font-size:0.78rem; color:#94A3B8; margin-bottom:14px;">
-                Quantitative verification matching our research paper: <i>"Quantitative Modeling and Simulation of Boat Traffic Flow and Port Congestion at the Mercedes Fish Port, Mercedes, Camarines Norte"</i>.
-            </p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario Architecture</th>
+                            <th>Wait Time (Wq)</th>
+                            <th>Vessel Turnaround</th>
+                            <th>Berth Util (ρ)</th>
+                            <th>Post-Harvest Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight:700;">1. Baseline (Mercedes Port Expanded)</td>
+                            <td style="color:#FBBF24;">1.85 ± 0.18h</td>
+                            <td>3.80 hrs</td>
+                            <td>78.4%</td>
+                            <td style="color:#F87171;">PHP 740,000</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:700; color:#10B981;">2. Wharf Upgrade (16 Berths)</td>
+                            <td>0.72 ± 0.08h</td>
+                            <td>2.10 hrs</td>
+                            <td>52.1%</td>
+                            <td style="color:#34D399;">PHP 240,000</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:700; color:#F59E0B;">3. Channel Dredging (3.5m)</td>
+                            <td>0.45 ± 0.05h</td>
+                            <td>1.75 hrs</td>
+                            <td>46.2%</td>
+                            <td style="color:#34D399;">PHP 160,000</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:700; color:#A855F7;">4. Staggered Scheduling</td>
+                            <td>0.98 ± 0.11h</td>
+                            <td>2.50 hrs</td>
+                            <td>61.5%</td>
+                            <td style="color:#34D399;">PHP 310,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <table class="table-container">
-                <thead>
-                    <tr>
-                        <th>Policy Scenario</th>
-                        <th>Mean Wait (hrs)</th>
-                        <th>Port Turnaround</th>
-                        <th>Berth Util (%)</th>
-                        <th>Banyera Throughput</th>
-                        <th>Weekly Delay Loss</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="font-weight:700; color:#38BDF8;">1. Baseline (13 Berths)</td>
-                        <td>1.45 ± 0.12h</td>
-                        <td>3.20 hrs</td>
-                        <td>68.4%</td>
-                        <td>3,840 tubs</td>
-                        <td style="color:#F87171;">PHP 740,000</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:700; color:#10B981;">2. Wharf Upgrade (16 Berths)</td>
-                        <td>0.72 ± 0.08h</td>
-                        <td>2.10 hrs</td>
-                        <td>52.1%</td>
-                        <td>4,520 tubs</td>
-                        <td style="color:#34D399;">PHP 360,000</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:700; color:#F59E0B;">3. Channel Dredging (3.5m)</td>
-                        <td>0.54 ± 0.05h</td>
-                        <td>1.85 hrs</td>
-                        <td>46.2%</td>
-                        <td>4,980 tubs</td>
-                        <td style="color:#34D399;">PHP 240,000</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:700; color:#A855F7;">4. Staggered Scheduling</td>
-                        <td>0.48 ± 0.04h</td>
-                        <td>1.70 hrs</td>
-                        <td>41.5%</td>
-                        <td>5,120 tubs</td>
-                        <td style="color:#34D399;">PHP 190,000</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-size:0.75rem; color:#94A3B8;">
-                    Little's Law Identity: <b>L_q = λ · W_q</b> (Verification Error: &lt; 0.3%)
-                </div>
-                <button id="btn-screenshot-mode" class="btn-hud primary">
-                    📸 Hide UI for Clean Manuscript Screenshot
-                </button>
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+                <button id="btn-screenshot-mode" class="btn-hud primary">📸 Enter Clean Screenshot Mode</button>
             </div>
         </div>
     </div>
 </div>
 
-<button id="screenshot-restore-btn">Restore UI Controls (Esc)</button>
-
-<!-- -------------------------------------------------------------
-     THREE.JS 3D ENGINE SCRIPT
-     ------------------------------------------------------------- -->
 <script>
 (function() {
+    'use strict';
+
     // -------------------------------------------------------------
     // THREE.JS SCENE, CAMERA, RENDERER
     // -------------------------------------------------------------
@@ -861,15 +830,15 @@ def generate_3d_digital_twin_html() -> str:
     scene.fog = new THREE.FogExp2(0x060C18, 0.0016);
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2500);
-    camera.position.set(-95, 110, 160);
+    camera.position.set(-105, 115, 165);
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.maxPolarAngle = Math.PI / 2 - 0.04;
-    controls.minDistance = 25;
-    controls.maxDistance = 650;
-    controls.target.set(20, 0, 0);
+    controls.minDistance = 20;
+    controls.maxDistance = 850;
+    controls.target.set(30, 0, 0);
 
     // -------------------------------------------------------------
     // LIGHTING SYSTEM
@@ -891,36 +860,36 @@ def generate_3d_digital_twin_html() -> str:
     scene.add(sunLight);
 
     // -------------------------------------------------------------
-    // LIGHTHOUSE (LANTERN AT Y = 18.5)
+    // LIGHTHOUSE (PERCHED ON NORTH BREAKWATER AT Y = 18.5)
     // -------------------------------------------------------------
     const LighthouseRoot = new THREE.Group();
-    LighthouseRoot.position.set(45, 0, -65);
+    LighthouseRoot.position.set(70, 0, -103);
     scene.add(LighthouseRoot);
 
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.9 });
-    const rockBase = new THREE.Mesh(new THREE.CylinderGeometry(8, 10, 3, 8), rockMat);
-    rockBase.position.set(0, 1.5, 0);
+    const rockBase = new THREE.Mesh(new THREE.CylinderGeometry(8, 10, 4, 8), rockMat);
+    rockBase.position.set(0, 2.0, 0);
     rockBase.receiveShadow = true;
     LighthouseRoot.add(rockBase);
 
     const towerMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.4 });
     const towerGeo = new THREE.CylinderGeometry(2.2, 3.8, 18, 16);
     const towerMesh = new THREE.Mesh(towerGeo, towerMat);
-    towerMesh.position.set(0, 9, 0);
+    towerMesh.position.set(0, 11, 0);
     towerMesh.castShadow = true;
     LighthouseRoot.add(towerMesh);
 
     const stripeMat = new THREE.MeshStandardMaterial({ color: 0xDC2626, roughness: 0.4 });
     const stripe1 = new THREE.Mesh(new THREE.CylinderGeometry(2.9, 3.2, 3.2, 16), stripeMat);
-    stripe1.position.set(0, 7.5, 0);
+    stripe1.position.set(0, 9.5, 0);
     LighthouseRoot.add(stripe1);
 
     const stripe2 = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.6, 2.8, 16), stripeMat);
-    stripe2.position.set(0, 14.2, 0);
+    stripe2.position.set(0, 16.2, 0);
     LighthouseRoot.add(stripe2);
 
     const LanternRoomGroup = new THREE.Group();
-    LanternRoomGroup.position.set(0, 18.5, 0);
+    LanternRoomGroup.position.set(0, 20.5, 0);
     LighthouseRoot.add(LanternRoomGroup);
 
     const galleryDeck = new THREE.Mesh(
@@ -987,7 +956,7 @@ def generate_3d_digital_twin_html() -> str:
     LightRotorPivot.add(beamMesh);
 
     // -------------------------------------------------------------
-    // HARBOR ENVIRONMENT & SOLID 3D SEAWALL STRUCTURES
+    // HARBOR ENVIRONMENT & CONTINUOUS CONCRETE WHARF APRON
     // -------------------------------------------------------------
     const waterGeo = new THREE.PlaneGeometry(1200, 1200, 60, 60);
     const waterMat = new THREE.MeshStandardMaterial({
@@ -1010,88 +979,75 @@ def generate_3d_digital_twin_html() -> str:
         baseVerts.push({ x: posAttr.getX(i), y: posAttr.getY(i), z: posAttr.getZ(i) });
     }
 
-    // Coastal Landmass Banks
+    // Coastal Landmass Banks (Flanking Fairway)
     const landMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.85 });
     const northBank = new THREE.Mesh(new THREE.BoxGeometry(340, 16, 160), landMat);
-    northBank.position.set(80, 8, -152);
+    northBank.position.set(85, 8, -193);
     northBank.receiveShadow = true;
     scene.add(northBank);
 
     const southBank = new THREE.Mesh(new THREE.BoxGeometry(340, 16, 160), landMat);
-    southBank.position.set(80, 8, 152);
+    southBank.position.set(85, 8, 193);
     southBank.receiveShadow = true;
     scene.add(southBank);
 
-    // VISIBLE SOLID 3D CONCRETE SEAWALLS & BREAKWATERS
+    // Clean Coastal Seawalls (No inner traps)
     const seawallMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.7, metalness: 0.3 });
-    const seawallTopMat = new THREE.MeshStandardMaterial({ color: 0x64748B, roughness: 0.5 });
 
-    // North Breakwater Coastal Wall (Z = -72, X: 10 to 240)
-    const northSeawall = new THREE.Mesh(new THREE.BoxGeometry(230, 8, 6), seawallMat);
-    northSeawall.position.set(125, 4, -72);
+    // North Breakwater Seawall (Z = -105.0, X: -75 to 245)
+    const northSeawall = new THREE.Mesh(new THREE.BoxGeometry(320, 8, 8), seawallMat);
+    northSeawall.position.set(85, 4, -109);
     scene.add(northSeawall);
 
-    // South Breakwater Coastal Wall (Z = +72, X: 10 to 240)
-    const southSeawall = new THREE.Mesh(new THREE.BoxGeometry(230, 8, 6), seawallMat);
-    southSeawall.position.set(125, 4, 72);
+    // South Breakwater Seawall (Z = +105.0, X: -75 to 245)
+    const southSeawall = new THREE.Mesh(new THREE.BoxGeometry(320, 8, 8), seawallMat);
+    southSeawall.position.set(85, 4, 109);
     scene.add(southSeawall);
 
-    // North Wharf Wing Wall (Z = -100, X: -60 to -32)
-    const northWingWall = new THREE.Mesh(new THREE.BoxGeometry(30, 8, 6), seawallMat);
-    northWingWall.position.set(-45, 4, -100);
-    scene.add(northWingWall);
-
-    // South Wharf Wing Wall (Z = +100, X: -60 to -32)
-    const southWingWall = new THREE.Mesh(new THREE.BoxGeometry(30, 8, 6), seawallMat);
-    southWingWall.position.set(-45, 4, 100);
-    scene.add(southWingWall);
-
-    // Small-Boat Basin Retaining Wall (X = -26, Z: 95 to 155)
-    const basinRetainingWall = new THREE.Mesh(new THREE.BoxGeometry(6, 6, 60), seawallMat);
-    basinRetainingWall.position.set(-26, 3, 125);
-    scene.add(basinRetainingWall);
-
-    // Concrete Wharf Apron (200 units long x 26 units wide x 6 units high)
+    // 1 Continuous Wide Concrete Wharf Apron (X: -75.0 to -35.0, Z: -105.0 to +105.0)
+    // Front face at X = -35.0
     const wharfMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.7, metalness: 0.2 });
-    const wharfApron = new THREE.Mesh(new THREE.BoxGeometry(26, 6, 200), wharfMat);
-    wharfApron.position.set(-45, 3, 0);
+    const wharfApron = new THREE.Mesh(new THREE.BoxGeometry(40, 6, 210), wharfMat);
+    wharfApron.position.set(-55, 3, 0);
     wharfApron.receiveShadow = true;
     scene.add(wharfApron);
 
-    // Fendering along wharf edge
+    // Fendering along front wharf face (X = -34.5)
     const fenderMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.9 });
-    const wharfFender = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5.8, 200), fenderMat);
-    wharfFender.position.set(-31.5, 3, 0);
+    const wharfFender = new THREE.Mesh(new THREE.BoxGeometry(1.0, 5.8, 210), fenderMat);
+    wharfFender.position.set(-34.5, 3, 0);
     scene.add(wharfFender);
 
-    // Safety Hazard Striping
+    // Safety Hazard Striping (X = -34.8)
     const hazardLip = new THREE.Mesh(
-        new THREE.BoxGeometry(0.6, 6.1, 200),
+        new THREE.BoxGeometry(0.6, 6.1, 210),
         new THREE.MeshBasicMaterial({ color: 0xFBBF24 })
     );
-    hazardLip.position.set(-31.9, 3, 0);
+    hazardLip.position.set(-34.8, 3, 0);
     scene.add(hazardLip);
 
     // Bulungan Wholesale Auction Sheds
     const shedMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
-    const mainShed = new THREE.Mesh(new THREE.BoxGeometry(16, 9, 130), shedMat);
-    mainShed.position.set(-51, 7.5, 0);
+    const mainShed = new THREE.Mesh(new THREE.BoxGeometry(18, 9, 140), shedMat);
+    mainShed.position.set(-58, 7.5, 0);
     mainShed.castShadow = true;
     scene.add(mainShed);
 
     const shedLight1 = new THREE.PointLight(0xF59E0B, 2.5, 60);
-    shedLight1.position.set(-44, 9, -40);
+    shedLight1.position.set(-46, 9, -40);
     scene.add(shedLight1);
 
     const shedLight2 = new THREE.PointLight(0xF59E0B, 3.0, 70);
-    shedLight2.position.set(-44, 9, 0);
+    shedLight2.position.set(-46, 9, 0);
     scene.add(shedLight2);
 
     const shedLight3 = new THREE.PointLight(0xF59E0B, 2.5, 60);
-    shedLight3.position.set(-44, 9, 40);
+    shedLight3.position.set(-46, 9, 40);
     scene.add(shedLight3);
 
-    // 13 Distinct Berths along Wharf Edge (X = -32, Z = -84 to +84)
+    // -------------------------------------------------------------
+    // 13 MEDIUM COMMERCIAL BERTHS (X = -28.0 IN OPEN WATER)
+    // -------------------------------------------------------------
     const MAX_MEDIUM_BERTHS = 13;
     let numBerths = MAX_MEDIUM_BERTHS;
     const BERTH_SLOTS = [];
@@ -1104,50 +1060,38 @@ def generate_3d_digital_twin_html() -> str:
             berthDecorGroup.remove(berthDecorGroup.children[0]);
         }
         BERTH_SLOTS.length = 0;
-        const startZ = -84;
-        const spacing = 14;
+        const startZ = -84.0;
+        const spacing = 14.0;
 
         for (let i = 0; i < numBerths; i++) {
             const z = startZ + i * spacing;
             BERTH_SLOTS.push({
                 id: i + 1,
                 name: 'Berth B' + (i + 1),
-                x: -32,
-                dockX: -28.5,
+                x: -28.0,
+                dockX: -28.0,
                 z: z,
                 occupiedBy: null
             });
 
+            // Mooring bollard on concrete wharf edge (X = -35.2)
             const bollard = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.5, 1.2, 8), bollardMat);
-            bollard.position.set(-31.6, 6.6, z);
+            bollard.position.set(-35.2, 6.6, z);
             berthDecorGroup.add(bollard);
 
+            // Yellow berthing apron zone (X = -36.5)
             const pad = new THREE.Mesh(new THREE.PlaneGeometry(2, 4), new THREE.MeshBasicMaterial({ color: 0xFBBF24 }));
             pad.rotation.x = -Math.PI / 2;
-            pad.position.set(-33.5, 6.05, z);
+            pad.position.set(-36.5, 6.05, z);
             berthDecorGroup.add(pad);
         }
     }
     initBerths();
 
-    // Shallow-water small boat mooring basin
-    const woodMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.8 });
-    const woodPontoon = new THREE.Mesh(new THREE.BoxGeometry(18, 1.5, 60), woodMat);
-    woodPontoon.position.set(-18, 0.75, 125);
-    scene.add(woodPontoon);
-
-    const BANCA_PARK_SLOTS = [];
-    for (let i = 0; i < 16; i++) {
-        BANCA_PARK_SLOTS.push({ x: -24, z: 100 + i * 3.4, yaw: Math.PI });
-    }
-    for (let i = 0; i < 16; i++) {
-        BANCA_PARK_SLOTS.push({ x: -12, z: 100 + i * 3.4, yaw: 0 });
-    }
-
-    // 12 DISTRIBUTED BANCA LANDING POINTS ALONG SHALLOW APRON & MARKET STEPS
+    // 12 DISTRIBUTED BANCA LANDING POINTS ALONG FRONT APRON (X = -28.0)
     const BANCA_LANDING_SPOTS = [];
     for (let i = 0; i < 12; i++) {
-        BANCA_LANDING_SPOTS.push({ x: -28.0, z: 46 + i * 6.5 });
+        BANCA_LANDING_SPOTS.push({ x: -28.0, z: -77.0 + i * 14.0 });
     }
 
     // -------------------------------------------------------------
@@ -1162,10 +1106,10 @@ def generate_3d_digital_twin_html() -> str:
     const buoyLightGeo = new THREE.SphereGeometry(0.4, 8, 8);
 
     const BUOY_PAIRS = [
-        { x: 155, zStarboard: -28, zPort: 28 }, // Pair 1: Outer Bay Entrance
-        { x: 95,  zStarboard: -24, zPort: 24 }, // Pair 2: Anchorage Gateway
-        { x: 35,  zStarboard: -20, zPort: 20 }, // Pair 3: Mid-Channel Fairway
-        { x: -10, zStarboard: -18, zPort: 18 }  // Pair 4: Harbor Approach Gate
+        { x: 165, zStarboard: -35, zPort: 35 }, // Pair 1: Outer Bay Entrance
+        { x: 105, zStarboard: -30, zPort: 30 }, // Pair 2: Anchorage Gateway
+        { x: 45,  zStarboard: -26, zPort: 26 }, // Pair 3: Mid-Channel Fairway
+        { x: -5,  zStarboard: -22, zPort: 22 }  // Pair 4: Harbor Approach Gate
     ];
 
     BUOY_PAIRS.forEach(pair => {
@@ -1187,16 +1131,79 @@ def generate_3d_digital_twin_html() -> str:
     });
 
     // -------------------------------------------------------------
-    // SOLID WALLS COLLISION AABBS
+    // SOLID WALLS & INFINITE-THICKNESS HALF-SPACE BOUNDARY CLAMPING
     // -------------------------------------------------------------
     const SOLID_WALLS = [
-        { name: 'WHARF_MAIN', minX: -60, maxX: -31.5, minZ: -100, maxZ: 100 },
-        { name: 'NORTH_WING', minX: -60, maxX: -31.5, minZ: -104, maxZ: -96 },
-        { name: 'SOUTH_WING', minX: -60, maxX: -31.5, minZ: 96, maxZ: 104 },
-        { name: 'BASIN_WALL', minX: -29, maxX: -23, minZ: 95, maxZ: 155 },
-        { name: 'NORTH_BANK', minX: 10, maxX: 245, minZ: -160, maxZ: -69 },
-        { name: 'SOUTH_BANK', minX: 10, maxX: 245, minZ: 69, maxZ: 160 }
+        { name: 'WHARF_APRON', minX: -75.0, maxX: -35.0, minZ: -105.0, maxZ: 105.0 },
+        { name: 'NORTH_SEAWALL', minX: -75.0, maxX: 260.0, minZ: -180.0, maxZ: -105.0 },
+        { name: 'SOUTH_SEAWALL', minX: -75.0, maxX: 260.0, minZ: 105.0, maxZ: 180.0 }
     ];
+
+    function applyBoundaryClamps(boat) {
+        if (boat.isDocked || boat.state === 'Unloading at Wharf' || boat.state === 'unloading_at_wharf') {
+            return; // Rock-steady mooring at wharf
+        }
+        const R = boat.isSmallBoat ? 2.2 : 4.5;
+        // 1. Wharf Front Barrier (X = -35.0)
+        if (boat.mesh.position.x < -35.0 + R) {
+            boat.mesh.position.x = -35.0 + R;
+            boat.heading = Math.PI * 0.5; // Steer eastward away from wall (+X)
+            boat.mesh.rotation.y = boat.heading;
+            boat.speed *= 0.5;
+        }
+        // 2. North Seawall Barrier (Z = -105.0)
+        if (boat.mesh.position.z < -105.0 + R) {
+            boat.mesh.position.z = -105.0 + R;
+            boat.heading = 0; // Steer southward toward +Z
+            boat.mesh.rotation.y = boat.heading;
+            boat.speed *= 0.5;
+        }
+        // 3. South Seawall Barrier (Z = +105.0)
+        if (boat.mesh.position.z > 105.0 - R) {
+            boat.mesh.position.z = 105.0 - R;
+            boat.heading = Math.PI; // Steer northward toward -Z
+            boat.mesh.rotation.y = boat.heading;
+            boat.speed *= 0.5;
+        }
+    }
+
+    function resolveHullCollision(boat) {
+        if (boat.isDocked || boat.state === 'Unloading at Wharf' || boat.state === 'unloading_at_wharf') {
+            return; // Zero collision pushback while docked!
+        }
+        const length = boat.isSmallBoat ? 5.5 : 13.0;
+        const beam = boat.isSmallBoat ? 2.6 : 4.4;
+        const dOffset = length / 2.4;
+        const sinP = Math.sin(boat.heading);
+        const cosP = Math.cos(boat.heading);
+
+        const circles = [
+            { x: boat.mesh.position.x + dOffset * sinP, z: boat.mesh.position.z + dOffset * cosP, r: beam * 0.55 },
+            { x: boat.mesh.position.x,                 z: boat.mesh.position.z,                 r: beam * 0.60 },
+            { x: boat.mesh.position.x - dOffset * sinP, z: boat.mesh.position.z - dOffset * cosP, r: beam * 0.55 }
+        ];
+
+        for (const c of circles) {
+            for (const wall of SOLID_WALLS) {
+                const qx = Math.max(wall.minX, Math.min(c.x, wall.maxX));
+                const qz = Math.max(wall.minZ, Math.min(c.z, wall.maxZ));
+                const dx = c.x - qx;
+                const dz = c.z - qz;
+                const distSq = dx * dx + dz * dz;
+
+                if (distSq < c.r * c.r && distSq > 0.0001) {
+                    const dist = Math.sqrt(distSq);
+                    const nx = dx / dist;
+                    const nz = dz / dist;
+                    const pen = c.r - dist;
+
+                    boat.mesh.position.x += nx * (pen + 0.2);
+                    boat.mesh.position.z += nz * (pen + 0.2);
+                    boat.speed *= 0.7;
+                }
+            }
+        }
+    }
 
     // -------------------------------------------------------------
     // NON-HOLONOMIC 3D BOAT MESH FACTORY (BOW STRICLY AT LOCAL +Z)
@@ -1206,134 +1213,118 @@ def generate_3d_digital_twin_html() -> str:
         const meshVisualGroup = new THREE.Group();
         root.add(meshVisualGroup);
 
-        if (type === 'Basnig') {
-            const hullMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(4.4, 2.8, 13), hullMat);
-            hull.position.y = 1.0;
+        if (type === 'Banca') {
+            // Artisanal Philippine Double-Outrigger Banca
+            const hullMat = new THREE.MeshStandardMaterial({ color: 0x0284C7, roughness: 0.4 });
+            const woodMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.8 });
+            const boomMat = new THREE.MeshStandardMaterial({ color: 0x94A3B8, roughness: 0.5 });
+
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.8, 5.5), hullMat);
+            hull.position.y = 0.4;
+            meshVisualGroup.add(hull);
+
+            const bow = new THREE.Mesh(new THREE.ConeGeometry(0.5, 1.4, 4), hullMat);
+            bow.rotation.x = Math.PI / 2;
+            bow.position.set(0, 0.4, 3.2);
+            meshVisualGroup.add(bow);
+
+            const outriggerPort = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 4.8, 6), woodMat);
+            outriggerPort.rotation.x = Math.PI / 2;
+            outriggerPort.position.set(-1.4, 0.2, 0);
+            meshVisualGroup.add(outriggerPort);
+
+            const outriggerStbd = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 4.8, 6), woodMat);
+            outriggerStbd.rotation.x = Math.PI / 2;
+            outriggerStbd.position.set(1.4, 0.2, 0);
+            meshVisualGroup.add(outriggerStbd);
+
+            const boom1 = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 3.0, 6), boomMat);
+            boom1.rotation.z = Math.PI / 2;
+            boom1.position.set(0, 0.55, 1.0);
+            meshVisualGroup.add(boom1);
+
+            const boom2 = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 3.0, 6), boomMat);
+            boom2.rotation.z = Math.PI / 2;
+            boom2.position.set(0, 0.55, -1.0);
+            meshVisualGroup.add(boom2);
+        } else {
+            // Medium Commercial Fishing Vessel (Basnig / Purse Seiner / Ring-Netter)
+            const hullColors = { 'Basnig': 0x0369A1, 'Purse Seiner': 0x059669, 'Ring-Netter': 0xD97706 };
+            const hullColor = hullColors[type] || 0x0284C7;
+
+            const hullMat = new THREE.MeshStandardMaterial({ color: hullColor, roughness: 0.35, metalness: 0.3 });
+            const deckMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6 });
+            const cabinMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.3 });
+
+            const hull = new THREE.Mesh(new THREE.BoxGeometry(3.8, 1.8, 11.0), hullMat);
+            hull.position.y = 0.9;
             hull.castShadow = true;
             meshVisualGroup.add(hull);
 
-            const bow = new THREE.Mesh(new THREE.ConeGeometry(2.2, 4.5, 4), hullMat);
+            const bow = new THREE.Mesh(new THREE.ConeGeometry(2.0, 3.2, 4), hullMat);
             bow.rotation.x = Math.PI / 2;
-            bow.position.set(0, 1.0, 7.5);
+            bow.position.set(0, 0.9, 6.8);
+            bow.castShadow = true;
             meshVisualGroup.add(bow);
 
-            const cabin = new THREE.Mesh(
-                new THREE.BoxGeometry(3.2, 3.2, 5.0),
-                new THREE.MeshStandardMaterial({ color: 0x475569 })
-            );
-            cabin.position.set(0, 3.2, -2.0);
+            const cabin = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.0, 3.8), cabinMat);
+            cabin.position.set(0, 2.4, -1.5);
+            cabin.castShadow = true;
             meshVisualGroup.add(cabin);
 
-            const boomMat = new THREE.MeshBasicMaterial({ color: 0x94A3B8 });
-            const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 14), boomMat);
-            boom.rotation.z = Math.PI / 2;
-            boom.position.set(0, 3.8, 1.5);
-            meshVisualGroup.add(boom);
+            const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 5.5, 8), deckMat);
+            mast.position.set(0, 4.0, 1.5);
+            meshVisualGroup.add(mast);
 
-            const crates = new THREE.Mesh(
-                new THREE.BoxGeometry(2.6, 1.6, 3.5),
-                new THREE.MeshStandardMaterial({ color: 0xD97706 })
-            );
-            crates.position.set(0, 2.0, 3.5);
-            meshVisualGroup.add(crates);
+            if (type === 'Basnig') {
+                const boomMat = new THREE.MeshStandardMaterial({ color: 0xCBD5E1, metalness: 0.6 });
+                const boomL = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 8.5, 6), boomMat);
+                boomL.rotation.z = Math.PI / 3.2;
+                boomL.position.set(-3.2, 3.0, 2.0);
+                meshVisualGroup.add(boomL);
 
-        } else if (type === 'Purse Seiner' || type === 'Ring-Netter') {
-            const hullMat = new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.5 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(4.2, 2.8, 12), hullMat);
-            hull.position.y = 1.0;
-            hull.castShadow = true;
-            meshVisualGroup.add(hull);
-
-            const bow = new THREE.Mesh(new THREE.ConeGeometry(2.1, 4.0, 4), hullMat);
-            bow.rotation.x = Math.PI / 2;
-            bow.position.set(0, 1.0, 6.8);
-            meshVisualGroup.add(bow);
-
-            const wheelhouse = new THREE.Mesh(
-                new THREE.BoxGeometry(3.2, 3.2, 3.8),
-                new THREE.MeshStandardMaterial({ color: 0xE2E8F0 })
-            );
-            wheelhouse.position.set(0, 3.2, 2.5);
-            meshVisualGroup.add(wheelhouse);
-
-            const drum = new THREE.Mesh(
-                new THREE.CylinderGeometry(1.2, 1.2, 3.2, 12),
-                new THREE.MeshStandardMaterial({ color: 0x334155 })
-            );
-            drum.rotation.z = Math.PI / 2;
-            drum.position.set(0, 2.2, -3.2);
-            meshVisualGroup.add(drum);
-
-        } else {
-            const bancaMat = new THREE.MeshStandardMaterial({ color: 0x0284C7 });
-            const hull = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.1, 5.5), bancaMat);
-            hull.position.y = 0.5;
-            meshVisualGroup.add(hull);
-
-            const bow = new THREE.Mesh(new THREE.ConeGeometry(0.6, 2.0, 4), bancaMat);
-            bow.rotation.x = Math.PI / 2;
-            bow.position.set(0, 0.5, 3.4);
-            meshVisualGroup.add(bow);
-
-            const katigMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC });
-            const float1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 4.8), katigMat);
-            float1.rotation.x = Math.PI / 2;
-            float1.position.set(-2.4, 0.35, 0);
-            meshVisualGroup.add(float1);
-
-            const float2 = float1.clone();
-            float2.position.set(2.4, 0.35, 0);
-            meshVisualGroup.add(float2);
-
-            const strutMat = new THREE.MeshBasicMaterial({ color: 0xCBD5E1 });
-            const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 4.8), strutMat);
-            strut.rotation.z = Math.PI / 2;
-            strut.position.set(0, 0.8, 0.8);
-            meshVisualGroup.add(strut);
-
-            const crates = new THREE.Mesh(
-                new THREE.BoxGeometry(0.8, 0.8, 1.8),
-                new THREE.MeshStandardMaterial({ color: 0xFBBF24 })
-            );
-            crates.position.set(0, 0.9, 0);
-            crates.name = 'cratesMesh';
-            meshVisualGroup.add(crates);
+                const boomR = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 8.5, 6), boomMat);
+                boomR.rotation.z = -Math.PI / 3.2;
+                boomR.position.set(3.2, 3.0, 2.0);
+                meshVisualGroup.add(boomR);
+            }
         }
-
-        const wakeGeo = new THREE.BufferGeometry();
-        const wakeZTip = (type === 'Banca') ? 3.4 : 7.2;
-        const wakeVertices = new Float32Array([
-            0, 0.06, wakeZTip,      -1.4, 0.06, wakeZTip - 4.5,   -0.7, 0.06, wakeZTip - 4.5,
-            0, 0.06, wakeZTip,       0.7, 0.06, wakeZTip - 4.5,    1.4, 0.06, wakeZTip - 4.5
-        ]);
-        wakeGeo.setAttribute('position', new THREE.BufferAttribute(wakeVertices, 3));
 
         const wakeMat = new THREE.MeshBasicMaterial({
             color: 0xE0F2FE,
             transparent: true,
             opacity: 0.0,
             depthWrite: false,
-            side: THREE.DoubleSide,
-            blending: THREE.AdditiveBlending
+            side: THREE.DoubleSide
         });
-        const bowWakeMesh = new THREE.Mesh(wakeGeo, wakeMat);
-        bowWakeMesh.name = 'bowWake';
-        root.add(bowWakeMesh);
+        const wakeGeo = new THREE.PlaneGeometry(type === 'Banca' ? 2.5 : 5.0, type === 'Banca' ? 4.0 : 8.0);
+        const wake = new THREE.Mesh(wakeGeo, wakeMat);
+        wake.rotation.x = -Math.PI / 2;
+        wake.position.set(0, 0.05, type === 'Banca' ? -2.5 : -5.0);
+        wake.name = 'bowWake';
+        meshVisualGroup.add(wake);
 
         return root;
     }
 
-    function getWaveHeight(x, z, t) {
-        return Math.sin(x * 0.05 + t * 2.2) * 0.45 +
-               Math.cos(z * 0.06 + t * 1.8) * 0.35 +
-               Math.sin((x + z) * 0.04 + t * 1.2) * 0.25;
+    // -------------------------------------------------------------
+    // OCEAN WAVE MOTION & TIDAL DYNAMICS
+    // -------------------------------------------------------------
+    function getWaveHeight(x, z, time) {
+        return Math.sin(x * 0.04 + time * 2.0) * 0.35 +
+               Math.cos(z * 0.05 + time * 1.5) * 0.25;
+    }
+
+    function computeTide(t) {
+        // Semi-diurnal tide formula for Mercedes River mouth (San Miguel Bay)
+        // Range: +0.60m (Low Tide) to +2.10m (High Tide) with ~12.42h periodicity
+        return 1.35 + 0.75 * Math.cos((t - 6.0) * (Math.PI / 6.0));
     }
 
     // -------------------------------------------------------------
-    // FLEET SYSTEM & CATCH SIZE GENERATOR (2–5 MINS DOCKING TIMERS)
+    // FLEET DATA & RANDOMIZED SKEWED CATCH LOADS
     // -------------------------------------------------------------
-    let simTime = 5.75; // 05:45 AM
+    let simTime = 5.75;
     let isPlaying = true;
     let timeScale = 1.0;
     let lastTime = performance.now();
@@ -1350,24 +1341,24 @@ def generate_3d_digital_twin_html() -> str:
     const vessels = [];
     const bancas = [];
 
-    // Helper: Generate randomized skewed catch load
+    // Realistic skewed catch generation: 15–35s real-time at 1x
     function rollCatchLoad() {
         const r = Math.random();
         let banyeras, durationSec, tier;
         if (r < 0.35) {
-            // Light Catch: 30 to 90 banyeras (~120s / 2 mins)
+            // Light Catch: 30 to 90 banyeras (~14s real-time)
             banyeras = Math.floor(30 + Math.random() * 61);
-            durationSec = 110 + Math.random() * 25;
+            durationSec = 13.0 + Math.random() * 3.0; // 13-16s
             tier = 'Light Catch (Fast Haul)';
         } else if (r < 0.75) {
-            // Medium Catch: 100 to 200 banyeras (~180–220s / 3–3.5 mins)
+            // Medium Catch: 100 to 200 banyeras (~24s real-time)
             banyeras = Math.floor(100 + Math.random() * 101);
-            durationSec = 180 + Math.random() * 40;
+            durationSec = 22.0 + Math.random() * 5.0; // 22-27s
             tier = 'Medium Catch (Standard)';
         } else {
-            // Heavy Catch: 210 to 380 banyeras (~240–300s / 4–5 mins)
+            // Heavy Catch: 210 to 380 banyeras (~35s real-time)
             banyeras = Math.floor(210 + Math.random() * 171);
-            durationSec = 240 + Math.random() * 60;
+            durationSec = 32.0 + Math.random() * 7.0; // 32-39s
             tier = 'Heavy Catch (Bulk Haul)';
         }
         durationSec *= (unloadDurationScale / 3.0);
@@ -1375,31 +1366,29 @@ def generate_3d_digital_twin_html() -> str:
             banyeras: banyeras,
             maxCargo: banyeras,
             targetSec: durationSec,
-            unloadRatePerSec: banyeras / durationSec,
             tier: tier
         };
     }
 
     function computeFishingDuration(hour) {
-        // Longer expedition during midday (11:00 to 16:00), quicker return during morning rush
         const isRush = hour >= 4.0 && hour <= 9.5;
         if (isRush) {
-            return 35 + Math.random() * 45; // 35–80s real-time
+            return 25 + Math.random() * 30; // 25–55s return in rush
         } else if (hour >= 11.0 && hour <= 16.0) {
-            return 120 + Math.random() * 120; // 120–240s (stay out fishing at noon)
+            return 80 + Math.random() * 70; // 80–150s at noon
         } else {
-            return 60 + Math.random() * 60;
+            return 45 + Math.random() * 45;
         }
     }
 
     function initFleet() {
-        // Clear any existing
+        // Clear existing meshes
         vessels.forEach(v => scene.remove(v.mesh));
         vessels.length = 0;
         bancas.forEach(b => scene.remove(b.mesh));
         bancas.length = 0;
 
-        // 1. Initial Docked Vessels at B2, B5, B8, B11 (Desynchronized startup!)
+        // 1. Medium Commercial Vessels (13 Berths Available)
         const initialBerthIndices = [1, 4, 7, 10];
         const mediumNames = [
             'MV-MercedesQueen', 'MV-SanMiguel', 'MV-BicolExpress', 'MV-DaetStar',
@@ -1427,8 +1416,9 @@ def generate_3d_digital_twin_html() -> str:
                 cargo: catchData.banyeras,
                 maxCargo: catchData.maxCargo,
                 targetSec: catchData.targetSec,
-                unloadRatePerSec: catchData.unloadRatePerSec,
                 tier: catchData.tier,
+                totalUnloadSec: catchData.targetSec,
+                unloadTimer: catchData.targetSec,
                 mesh: mesh,
                 state: 'AT_SEA_FISHING',
                 assignedBerth: null,
@@ -1438,45 +1428,54 @@ def generate_3d_digital_twin_html() -> str:
                 speed: 0,
                 maxSpeed: 14.0,
                 maxReverseSpeed: 4.5,
-                acceleration: 2.2,
-                brakingDistance: 22.0,
+                acceleration: 2.5,
+                brakingDistance: 20.0,
                 isSmallBoat: false,
+                isDocked: false,
                 isReversing: false,
                 bobOffset: Math.random() * Math.PI * 2,
-                laneOffset: (Math.random() - 0.5) * 14.0,
+                laneOffset: (Math.random() - 0.5) * 12.0,
                 fishingTimer: 0,
                 departureDelay: 0,
                 reverseTimer: 0,
                 remainingSec: catchData.targetSec,
-                baseAnchorHeading: 0
+                baseAnchorHeading: 0,
+                channelStep: 1,
+                departStep: 1,
+                deepSeaTargetX: 280,
+                deepSeaTargetZ: 0,
+                holdX: 85,
+                holdZ: 0
             };
 
             if (i < 4) {
-                // Docked at startup with desynchronized progress (15% to 92%)
+                // Initial Docked Vessels at B2, B5, B8, B11 (Rock-Steady, X = -28.0)
                 const bIdx = initialBerthIndices[i];
                 const b = BERTH_SLOTS[bIdx];
                 b.occupiedBy = v.name;
                 v.assignedBerth = b;
+                v.isDocked = true;
                 v.state = 'Unloading at Wharf';
                 v.mesh.position.set(b.dockX, 0, b.z);
                 v.heading = 0;
                 v.mesh.rotation.y = 0;
-                const initProg = 0.15 + (i * 0.22); // Desynchronized!
-                v.cargo = Math.round(v.maxCargo * (1 - initProg));
-                v.remainingSec = v.cargo / v.unloadRatePerSec;
-                v.departureDelay = 6 + Math.random() * 18; // Staggered departure clearance!
+                const initProg = 0.20 + (i * 0.22); // Desynchronized!
+                v.unloadTimer = v.totalUnloadSec * (1.0 - initProg);
+                v.cargo = Math.round(v.maxCargo * (1.0 - initProg));
+                v.remainingSec = v.unloadTimer;
+                v.departureDelay = 1.5 + Math.random() * 2.5;
             } else if (i < 7) {
-                // Initial Waiting at Anchorage
+                // Initial Convenience Anchorage in the Bay
                 v.state = 'Waiting at Anchorage';
-                v.holdX = 135 + (i - 4) * 12;
+                v.holdX = 75 + (i - 4) * 22;
                 v.holdZ = -45 + (i - 4) * 35;
                 v.mesh.position.set(v.holdX, 0, v.holdZ);
                 v.baseAnchorHeading = -Math.PI / 2;
                 v.heading = v.baseAnchorHeading;
                 v.mesh.rotation.y = v.heading;
-                v.wait = 1.0 + (i - 4) * 0.6;
+                v.wait = 0.8 + (i - 4) * 0.5;
             } else {
-                // Out in Philippine Sea fishing!
+                // Out in Deep Sea fishing
                 v.state = 'AT_SEA_FISHING';
                 v.mesh.visible = false;
                 v.fishingTimer = computeFishingDuration(simTime) * (0.3 + (i - 7) * 0.15);
@@ -1484,107 +1483,55 @@ def generate_3d_digital_twin_html() -> str:
             vessels.push(v);
         }
 
-        // 2. Initial Small Bancas Fleet (Moored in Shallow Basin)
+        // 2. Small Bancas Fleet: Scattered Spawning + Dual Roles (70% Tenders, 30% Independent)
         for (let i = 0; i < targetTotalBancas; i++) {
-            const slot = BANCA_PARK_SLOTS[i % BANCA_PARK_SLOTS.length];
+            const spawnX = 45 + Math.random() * 135; // [45, 180] open bay
+            const spawnZ = -75 + Math.random() * 150; // [-75, +75]
+            const spawnYaw = (Math.random() - 0.5) * Math.PI;
+
             const bMesh = createVesselMesh('Banca');
-            bMesh.position.set(slot.x, 0, slot.z);
-            bMesh.rotation.y = slot.yaw;
+            bMesh.position.set(spawnX, 0, spawnZ);
+            bMesh.rotation.y = spawnYaw;
             scene.add(bMesh);
 
+            const isTender = (i % 10 < 7); // 70% Partner Tenders, 30% Independent Fishing Bancas
             bancas.push({
                 id: 'Banca-' + (i + 1),
-                name: 'Banca #' + (i + 1),
-                type: 'Artisanal Shuttle Banca',
+                name: (isTender ? 'Tender #' : 'Banca #') + (i + 1),
+                type: isTender ? 'Partner Lightering Tender' : 'Independent Fishing Banca',
+                role: isTender ? 'tender' : 'independent',
                 gt: 2.4,
                 draft: 0.65,
                 mesh: bMesh,
-                state: 'parked',
-                parkSlot: slot,
+                state: isTender ? 'patrolling' : 'to_wharf',
                 targetBoat: null,
                 landingSlotIdx: i % BANCA_LANDING_SPOTS.length,
-                serviceSide: (i % 2 === 0 ? 'port' : 'starboard'),
-                cargo: 0,
-                maxCargo: 25,
-                heading: slot.yaw,
-                speed: 0,
-                maxSpeed: 18.0,
+                patrolTargetX: 50 + Math.random() * 90,
+                patrolTargetZ: -60 + Math.random() * 120,
+                cargo: isTender ? 0 : Math.floor(15 + Math.random() * 20),
+                maxCargo: 40,
+                heading: spawnYaw,
+                speed: 3.0 + Math.random() * 2.0,
+                maxSpeed: 17.0,
                 maxReverseSpeed: 5.0,
-                acceleration: 3.8,
-                brakingDistance: 14.0,
+                acceleration: 3.5,
+                brakingDistance: 12.0,
                 isSmallBoat: true,
+                isDocked: false,
                 isReversing: false,
                 bobOffset: Math.random() * Math.PI * 2,
                 laneOffset: (Math.random() - 0.5) * 8.0,
-                timer: 0
+                transferTimer: 0,
+                unloadTimer: 0,
+                reverseTimer: 0,
+                seaTimer: 0
             });
         }
     }
     initFleet();
 
     // -------------------------------------------------------------
-    // 3-CIRCLE HULL FOOTPRINT COLLISION CHECK
-    // -------------------------------------------------------------
-    function resolveHullCollision(boat) {
-        const length = boat.isSmallBoat ? 5.5 : 13.0;
-        const beam = boat.isSmallBoat ? 2.6 : 4.4;
-        const dOffset = length / 2.4;
-        const sinP = Math.sin(boat.heading);
-        const cosP = Math.cos(boat.heading);
-
-        const circles = [
-            { x: boat.mesh.position.x + dOffset * sinP, z: boat.mesh.position.z + dOffset * cosP, r: beam * 0.6, name: 'bow' },
-            { x: boat.mesh.position.x,                 z: boat.mesh.position.z,                 r: beam * 0.65, name: 'mid' },
-            { x: boat.mesh.position.x - dOffset * sinP, z: boat.mesh.position.z - dOffset * cosP, r: beam * 0.6, name: 'stern' }
-        ];
-
-        for (const c of circles) {
-            for (const wall of SOLID_WALLS) {
-                // Closest point on wall AABB
-                const qx = Math.max(wall.minX, Math.min(c.x, wall.maxX));
-                const qz = Math.max(wall.minZ, Math.min(c.z, wall.maxZ));
-                const dx = c.x - qx;
-                const dz = c.z - qz;
-                const distSq = dx * dx + dz * dz;
-
-                if (distSq < c.r * c.r) {
-                    const dist = Math.sqrt(distSq);
-                    let nx = 0, nz = 0, pen = c.r - dist;
-
-                    if (dist > 0.001) {
-                        nx = dx / dist;
-                        nz = dz / dist;
-                    } else {
-                        // Inside wall box: push to nearest face
-                        const dLeft = Math.abs(c.x - wall.minX);
-                        const dRight = Math.abs(c.x - wall.maxX);
-                        const dTop = Math.abs(c.z - wall.minZ);
-                        const dBottom = Math.abs(c.z - wall.maxZ);
-                        const minD = Math.min(dLeft, dRight, dTop, dBottom);
-                        if (minD === dLeft) { nx = -1; pen = dLeft + c.r; }
-                        else if (minD === dRight) { nx = 1; pen = dRight + c.r; }
-                        else if (minD === dTop) { nz = -1; pen = dTop + c.r; }
-                        else { nz = 1; pen = dBottom + c.r; }
-                    }
-
-                    // Push boat out along outward normal
-                    boat.mesh.position.x += nx * (pen + 0.3);
-                    boat.mesh.position.z += nz * (pen + 0.3);
-
-                    // Deflect heading away from wall
-                    const dot = sinP * nx + cosP * nz;
-                    if (dot < 0) {
-                        boat.heading += Math.sign(dot) * 0.12;
-                        boat.mesh.rotation.y = boat.heading;
-                    }
-                    boat.speed *= 0.6; // Hydrodynamic wall friction
-                }
-            }
-        }
-    }
-
-    // -------------------------------------------------------------
-    // NON-HOLONOMIC 3-DOF KINEMATIC UPDATE WITH WAYPOINT STEERING
+    // NON-HOLONOMIC 3-DOF KINEMATIC UPDATE WITH CLAMPING
     // -------------------------------------------------------------
     function updateVesselKinematics(boat, targetX, targetZ, dt) {
         const dx = targetX - boat.mesh.position.x;
@@ -1613,8 +1560,9 @@ def generate_3d_digital_twin_html() -> str:
         boat.mesh.position.x += Math.sin(boat.heading) * boat.speed * dt;
         boat.mesh.position.z += Math.cos(boat.heading) * boat.speed * dt;
 
-        // Apply 3-Circle Hull Collision resolution against all solid seawalls
+        // Apply collision and infinite-thickness half-space wall clamps
         resolveHullCollision(boat);
+        applyBoundaryClamps(boat);
 
         return distToTarget;
     }
@@ -1622,14 +1570,6 @@ def generate_3d_digital_twin_html() -> str:
     // -------------------------------------------------------------
     // MAIN SIMULATION LOOP (DES + 24H DIURNAL TRAFFIC + KINEMATICS)
     // -------------------------------------------------------------
-    // Semi-diurnal tidal height formula for Mercedes River mouth (San Miguel Bay)
-    // Range: +0.60m (Low Tide) to +2.10m (High Tide) with ~12.42h periodicity
-    function computeTide(t) {
-        return 1.35 + 0.75 * Math.cos((t - 6.0) * (Math.PI / 6.0));
-    }
-
-    let bancaDispatchCooldown = 0;
-
     function updateSimulation(deltaHours, dt, waveTime) {
         simTime = (simTime + deltaHours) % 24.0;
         const tide = computeTide(simTime);
@@ -1639,8 +1579,8 @@ def generate_3d_digital_twin_html() -> str:
         const clockM = Math.floor((simTime - clockH) * 60);
         const ampm = clockH >= 12 ? 'PM' : 'AM';
         const displayH = clockH % 12 === 0 ? 12 : clockH % 12;
-        document.getElementById('hud-clock').textContent =
-            (displayH < 10 ? '0' : '') + displayH + ':' + (clockM < 10 ? '0' : '') + clockM + ' ' + ampm;
+        const timeStr = `${String(displayH).padStart(2, '0')}:${String(clockM).padStart(2, '0')} ${ampm}`;
+        document.getElementById('hud-clock').textContent = timeStr;
 
         const surgeActive = simTime >= 3.0 && simTime <= 7.2;
         document.getElementById('surge-pill').style.display = surgeActive ? 'inline-flex' : 'none';
@@ -1659,44 +1599,47 @@ def generate_3d_digital_twin_html() -> str:
         vessels.forEach(v => {
             if (v.state === 'AT_SEA_FISHING') {
                 atSeaCount++;
-                v.fishingTimer -= dt;
+                v.fishingTimer -= dt * timeScale;
 
-                // Return trigger: timer finishes OR dawn surge awakens fleet
-                const forceReturn = surgeActive && Math.random() < 0.008;
-                if (v.fishingTimer <= 0 || forceReturn) {
-                    // Respawn at scattered coordinate on eastern horizon
-                    v.mesh.position.set(235, 0, -110 + Math.random() * 220);
-                    v.heading = -Math.PI / 2 + (Math.random() - 0.5) * 0.35;
-                    v.mesh.rotation.y = v.heading;
+                if (v.fishingTimer <= 0) {
+                    const rushHour = (simTime >= 3.5 && simTime <= 8.5);
+                    const spawnProb = rushHour ? 0.90 : 0.40;
 
-                    const newCatch = rollCatchLoad();
-                    v.cargo = newCatch.banyeras;
-                    v.maxCargo = newCatch.maxCargo;
-                    v.targetSec = newCatch.targetSec;
-                    v.unloadRatePerSec = newCatch.unloadRatePerSec;
-                    v.tier = newCatch.tier;
-                    v.remainingSec = newCatch.targetSec;
+                    if (Math.random() < spawnProb) {
+                        v.fishingTimer = 0;
+                        const catchData = rollCatchLoad();
+                        v.cargo = catchData.banyeras;
+                        v.maxCargo = catchData.maxCargo;
+                        v.targetSec = catchData.targetSec;
+                        v.tier = catchData.tier;
+                        v.totalUnloadSec = catchData.targetSec;
+                        v.unloadTimer = catchData.targetSec;
+                        v.remainingSec = catchData.targetSec;
+                        v.isDocked = false;
 
-                    v.mesh.visible = true;
-                    v.state = 'Arriving';
-                    v.holdX = 135 + Math.random() * 25;
-                    v.holdZ = -55 + Math.random() * 110;
-                    v.wait = 0;
+                        // Spawn at right ocean horizon
+                        v.mesh.position.set(230, 0, -60 + Math.random() * 120);
+                        v.heading = -Math.PI / 2; // Inbound westward
+                        v.mesh.rotation.y = v.heading;
+                        v.mesh.visible = true;
+                        v.holdX = 75 + Math.random() * 45; // Anchorage hold in bay [75, 120]
+                        v.holdZ = -60 + Math.random() * 120;
+                        v.state = 'Arriving';
+                    } else {
+                        v.fishingTimer = 25 + Math.random() * 35;
+                    }
                 }
             }
         });
 
-        // UPDATE MEDIUM COMMERCIAL VESSELS
+        // UPDATE MEDIUM COMMERCIAL FLEET
         let waitingCount = 0;
         let occupiedCount = 0;
 
         vessels.forEach(v => {
             if (!v.mesh.visible) return;
 
-            // Wave Buoyancy Heave & Gentle Pitch
             const waveY = getWaveHeight(v.mesh.position.x, v.mesh.position.z, waveTime);
-            v.mesh.position.y = waveY * 0.7;
-            v.mesh.rotation.x = Math.sin(waveTime * 2.0 + v.bobOffset) * 0.03;
 
             // Bow Wake
             const bowWake = v.mesh.getObjectByName('bowWake');
@@ -1709,88 +1652,136 @@ def generate_3d_digital_twin_html() -> str:
             }
 
             if (v.state === 'Arriving') {
-                // Organic Curved Approach via Lane Offset
+                v.mesh.position.y = waveY * 0.7;
+                v.mesh.rotation.x = Math.sin(waveTime * 2.0 + v.bobOffset) * 0.03;
+
                 const targetX = v.holdX;
                 const targetZ = v.holdZ + v.laneOffset;
                 const dist = updateVesselKinematics(v, targetX, targetZ, dt);
-                if (dist < 5.0) {
-                    v.state = 'Waiting at Anchorage';
-                    v.baseAnchorHeading = v.heading;
-                    v.speed = 0;
+                if (dist < 6.0) {
+                    // Decide between Direct Docking (60%) or Convenience Bay Anchorage (40%)
+                    const freeBerth = BERTH_SLOTS.find(b => b.occupiedBy === null);
+                    const canPassTide = !tideLockActive || tide >= 1.6 || v.draft <= 1.8;
+                    const prefersDirect = Math.random() < 0.60;
+
+                    if (freeBerth && canPassTide && prefersDirect) {
+                        freeBerth.occupiedBy = v.name;
+                        v.assignedBerth = freeBerth;
+                        v.state = 'Navigating Channel';
+                        v.channelStep = 1;
+                    } else {
+                        v.state = 'Waiting at Anchorage';
+                        v.baseAnchorHeading = -Math.PI / 2 + (Math.random() - 0.5) * 0.4;
+                        v.heading = v.baseAnchorHeading;
+                        v.mesh.rotation.y = v.heading;
+                        v.speed = 0;
+                    }
                 }
             } else if (v.state === 'Waiting at Anchorage') {
                 waitingCount++;
                 v.wait += deltaHours;
                 v.speed = 0;
+                v.mesh.position.y = waveY * 0.7;
 
                 // Gentle Anchored Weathervaning with tidal current (±8 degrees)
                 v.heading = v.baseAnchorHeading + Math.sin(simTime * 4.0 + v.bobOffset) * 0.14;
                 v.mesh.rotation.y = v.heading;
 
-                const canPass = !tideLockActive || tide >= 1.6 || v.draft <= 1.8;
-                const freeBerth = BERTH_SLOTS.find(b => b.occupiedBy === null);
-
-                if (canPass && freeBerth) {
-                    freeBerth.occupiedBy = v.name;
-                    v.assignedBerth = freeBerth;
-                    v.state = 'Navigating Channel';
-                    v.channelStep = 1;
+                // If cargo is fully picked up by small tenders, depart to sea!
+                if (v.cargo <= 0) {
+                    if (v.assignedBerth) {
+                        v.assignedBerth.occupiedBy = null;
+                        v.assignedBerth = null;
+                    }
+                    v.state = 'Departing';
+                    v.departStep = 1;
+                    v.deepSeaTargetX = 280;
+                    v.deepSeaTargetZ = -130 + Math.random() * 260;
+                } else if (!v.servicedByBanca) {
+                    // If a berth opens up and tide permits, can optionally transition to direct docking
+                    const canPassTide = !tideLockActive || tide >= 1.6 || v.draft <= 1.8;
+                    const freeBerth = BERTH_SLOTS.find(b => b.occupiedBy === null);
+                    if (canPassTide && freeBerth && Math.random() < 0.03) {
+                        freeBerth.occupiedBy = v.name;
+                        v.assignedBerth = freeBerth;
+                        v.state = 'Navigating Channel';
+                        v.channelStep = 1;
+                    }
                 }
             } else if (v.state === 'Navigating Channel') {
+                v.mesh.position.y = waveY * 0.7;
+                v.mesh.rotation.x = Math.sin(waveTime * 2.0 + v.bobOffset) * 0.03;
+
                 let targetX = 0;
                 let targetZ = 0;
 
                 if (v.channelStep === 1) {
-                    // Gateway Buoy Pair 2 (X = 95) with organic lateral lane offset
-                    targetX = 95;
-                    targetZ = (v.assignedBerth.z * 0.3) + (v.laneOffset * 0.5);
+                    // Gateway Buoy Pair 2 (X = 105)
+                    targetX = 105;
+                    targetZ = (v.assignedBerth.z * 0.3) + (v.laneOffset * 0.4);
                     const d = updateVesselKinematics(v, targetX, targetZ, dt);
                     if (d < 12.0) v.channelStep = 2;
                 } else if (v.channelStep === 2) {
-                    // Harbor Approach Buoy Pair 4 (X = -10)
-                    targetX = -10;
+                    // Harbor Approach Buoy Pair 4 (X = -5)
+                    targetX = -5;
                     targetZ = v.assignedBerth.z + (v.laneOffset * 0.2);
                     const d = updateVesselKinematics(v, targetX, targetZ, dt);
                     if (d < 8.0) v.channelStep = 3;
                 } else {
-                    // Final Docking alongside Berth (X = -28.5)
+                    // Final Docking alongside Berth (X = -28.0)
                     targetX = v.assignedBerth.dockX;
                     targetZ = v.assignedBerth.z;
                     const d = updateVesselKinematics(v, targetX, targetZ, dt);
                     if (d < 2.5) {
+                        // Snap cleanly into position with ZERO shaking!
                         v.mesh.position.set(targetX, 0, targetZ);
                         v.heading = 0;
                         v.mesh.rotation.y = 0;
                         v.speed = 0;
+                        v.isDocked = true;
                         v.state = 'Unloading at Wharf';
-                        v.departureDelay = 6 + Math.random() * 18; // Randomized departure delay!
+                        v.totalUnloadSec = v.targetSec;
+                        v.unloadTimer = v.targetSec;
+                        v.departureDelay = 1.5 + Math.random() * 2.5;
                     }
                 }
             } else if (v.state === 'Unloading at Wharf') {
                 occupiedCount++;
+                v.isDocked = true;
                 v.speed = 0;
+                v.heading = 0;
+                v.mesh.rotation.y = 0;
 
-                // CATCH-BASED UNLOADING TIMER (Light: ~2m, Med: ~3m, Heavy: ~5m)
-                const offloadAmt = v.unloadRatePerSec * dt * timeScale;
-                v.cargo = Math.max(0, v.cargo - offloadAmt);
-                totalCratesLanded += offloadAmt;
-                v.remainingSec = Math.max(0, v.cargo / v.unloadRatePerSec);
+                // ROCK-STEADY HORIZONTAL POSITION (Zero Shaking!)
+                v.mesh.position.x = v.assignedBerth.dockX;
+                v.mesh.position.z = v.assignedBerth.z;
+                v.mesh.position.y = waveY * 0.35; // Gentle heave only
+                v.mesh.rotation.x = Math.sin(waveTime * 1.5 + v.bobOffset) * 0.015;
 
-                if (v.cargo <= 0) {
-                    // Staggered departure clearance delay
+                // GUARANTEED REAL-TIME UNLOADING COUNTDOWN (15 to 35 seconds)
+                v.unloadTimer -= dt * timeScale;
+                const progress = Math.min(1.0, Math.max(0, 1.0 - (v.unloadTimer / v.totalUnloadSec)));
+                const prevCargo = v.cargo;
+                v.cargo = Math.max(0, Math.round(v.maxCargo * (1.0 - progress)));
+                const cratesThisFrame = Math.max(0, prevCargo - v.cargo);
+                totalCratesLanded += cratesThisFrame;
+                v.remainingSec = Math.max(0, v.unloadTimer);
+
+                if (v.unloadTimer <= 0) {
                     v.departureDelay -= dt * timeScale;
                     if (v.departureDelay <= 0) {
                         if (v.assignedBerth) {
                             v.assignedBerth.occupiedBy = null;
                             v.assignedBerth = null;
                         }
+                        v.isDocked = false;
                         v.state = 'Reverse Out';
-                        v.reverseTimer = 3.5;
+                        v.reverseTimer = 3.0;
                         v.isReversing = true;
                     }
                 }
             } else if (v.state === 'Reverse Out') {
-                // Reverse straight back into fairway away from wharf face
+                v.mesh.position.y = waveY * 0.7;
                 v.isReversing = true;
                 v.reverseTimer -= dt;
                 updateVesselKinematics(v, v.mesh.position.x + 8, v.mesh.position.z, dt);
@@ -1799,33 +1790,32 @@ def generate_3d_digital_twin_html() -> str:
                     v.isReversing = false;
                     v.state = 'Departing';
                     v.departStep = 1;
-                    // Assign unique fanned-out deep sea departure vector!
                     v.deepSeaTargetX = 280;
                     v.deepSeaTargetZ = -130 + Math.random() * 260;
                 }
             } else if (v.state === 'Departing') {
+                v.mesh.position.y = waveY * 0.7;
                 let depX = 0;
                 let depZ = 0;
 
                 if (v.departStep === 1) {
-                    // Fairway Center Corridor (X = 35)
-                    depX = 35;
+                    // Fairway Center Corridor (X = 45)
+                    depX = 45;
                     depZ = (v.mesh.position.z * 0.5) + v.laneOffset;
                     const d = updateVesselKinematics(v, depX, depZ, dt);
                     if (d < 12.0) v.departStep = 2;
                 } else if (v.departStep === 2) {
-                    // Outer Bay Gate (X = 155)
-                    depX = 155;
+                    // Outer Bay Gate (X = 165)
+                    depX = 165;
                     depZ = 10 + v.laneOffset;
                     const d = updateVesselKinematics(v, depX, depZ, dt);
                     if (d < 14.0) v.departStep = 3;
                 } else {
-                    // Fanned Out Ocean Departure (X >= 235: NO CLAMPING!)
+                    // Fanned Out Ocean Departure (X >= 235: loop into expedition)
                     depX = v.deepSeaTargetX;
                     depZ = v.deepSeaTargetZ;
                     updateVesselKinematics(v, depX, depZ, dt);
 
-                    // TRANSITION TO AT_SEA_FISHING (Loop back into ocean expedition)
                     if (v.mesh.position.x >= 235) {
                         v.mesh.visible = false;
                         v.state = 'AT_SEA_FISHING';
@@ -1836,13 +1826,12 @@ def generate_3d_digital_twin_html() -> str:
             }
         });
 
-        // UPDATE SMALL BOAT FLEET (12+ DISTRIBUTED LANDING SPOTS & DYNAMIC LIGHTERING)
+        // UPDATE SMALL BOAT FLEET (70% TENDERS + 30% INDEPENDENT)
         let activeBancas = 0;
-        bancaDispatchCooldown -= dt;
 
         bancas.forEach(b => {
             const waveY = getWaveHeight(b.mesh.position.x, b.mesh.position.z, waveTime);
-            b.mesh.position.y = waveY * 0.6;
+            b.mesh.position.y = waveY * 0.55;
 
             const bowWake = b.mesh.getObjectByName('bowWake');
             if (bowWake) {
@@ -1853,84 +1842,164 @@ def generate_3d_digital_twin_html() -> str:
                 );
             }
 
-            if (b.state === 'parked') {
-                b.mesh.position.x = b.parkSlot.x;
-                b.mesh.position.z = b.parkSlot.z;
-                b.mesh.rotation.y = b.parkSlot.yaw;
-                b.speed = 0;
+            if (b.role === 'tender') {
+                // ROLE A — PARTNER PICKUP TENDER FOR MEDIUM BOATS
+                if (b.state === 'patrolling') {
+                    // Cruise casually in the bay looking for anchored medium boats needing cargo transfer
+                    const dist = updateVesselKinematics(b, b.patrolTargetX, b.patrolTargetZ, dt);
+                    if (dist < 8.0) {
+                        b.patrolTargetX = 50 + Math.random() * 90;
+                        b.patrolTargetZ = -60 + Math.random() * 120;
+                    }
 
-                // Anti-Snaking Staggered Launch: 1-to-1 mother vessel reservation + Port/Starboard standoff
-                const runningCount = bancas.filter(item => item.state !== 'parked').length;
-                if (runningCount < 5 && bancaDispatchCooldown <= 0) {
                     const targetMB = vessels.find(v => v.mesh.visible && v.state === 'Waiting at Anchorage' && v.cargo > 0 && !v.servicedByBanca);
                     if (targetMB) {
                         targetMB.servicedByBanca = b.id;
                         b.targetBoat = targetMB;
                         b.state = 'to_anchorage';
-                        bancaDispatchCooldown = 3.2; // Stagger next launch
+                    }
+                } else if (b.state === 'to_anchorage') {
+                    activeBancas++;
+                    if (!b.targetBoat || b.targetBoat.cargo <= 0 || !b.targetBoat.mesh.visible) {
+                        b.state = 'patrolling';
+                        b.targetBoat = null;
+                        return;
+                    }
+                    const tx = b.targetBoat.mesh.position.x - 4.5;
+                    const tz = b.targetBoat.mesh.position.z;
+                    const dist = updateVesselKinematics(b, tx, tz, dt);
+
+                    if (dist < 3.8) {
+                        b.state = 'transferring';
+                        b.transferTimer = 6.0 + Math.random() * 3.0; // 6 to 9 seconds!
+                        b.speed = 0;
+                    }
+                } else if (b.state === 'transferring') {
+                    activeBancas++;
+                    b.speed = 0;
+                    b.transferTimer -= dt * timeScale;
+
+                    if (b.transferTimer <= 0) {
+                        const take = Math.min(b.maxCargo, b.targetBoat ? b.targetBoat.cargo : 0);
+                        b.cargo = take;
+                        if (b.targetBoat) {
+                            b.targetBoat.cargo -= take;
+                            b.targetBoat.servicedByBanca = null;
+                            if (b.targetBoat.cargo <= 0) {
+                                // Mother vessel is completely relieved, departs to sea!
+                                b.targetBoat.state = 'Departing';
+                                b.targetBoat.departStep = 1;
+                                b.targetBoat.deepSeaTargetX = 280;
+                                b.targetBoat.deepSeaTargetZ = -130 + Math.random() * 260;
+                            }
+                        }
+                        b.targetBoat = null;
+                        b.state = 'to_wharf';
+                    }
+                } else if (b.state === 'to_wharf') {
+                    activeBancas++;
+                    // Navigate to open landing spot on front wharf apron (X = -28.0)
+                    const landing = BANCA_LANDING_SPOTS[b.landingSlotIdx % BANCA_LANDING_SPOTS.length];
+                    const dist = updateVesselKinematics(b, landing.x, landing.z, dt);
+
+                    if (dist < 3.0) {
+                        b.mesh.position.set(landing.x, 0, landing.z);
+                        b.heading = 0;
+                        b.mesh.rotation.y = 0;
+                        b.speed = 0;
+                        b.isDocked = true;
+                        b.state = 'unloading_at_wharf';
+                        b.unloadTimer = 8.0 + Math.random() * 4.0; // 8 to 12 seconds!
+                    }
+                } else if (b.state === 'unloading_at_wharf') {
+                    activeBancas++;
+                    b.isDocked = true;
+                    b.speed = 0;
+                    b.mesh.position.x = -28.0;
+                    b.unloadTimer -= dt * timeScale;
+
+                    if (b.unloadTimer <= 0) {
+                        totalCratesLanded += b.cargo;
+                        b.cargo = 0;
+                        b.isDocked = false;
+                        b.state = 'reversing_from_wharf';
+                        b.reverseTimer = 2.0;
+                        b.isReversing = true;
+                    }
+                } else if (b.state === 'reversing_from_wharf') {
+                    activeBancas++;
+                    b.isReversing = true;
+                    b.reverseTimer -= dt;
+                    updateVesselKinematics(b, b.mesh.position.x + 8, b.mesh.position.z, dt);
+
+                    if (b.reverseTimer <= 0 || b.mesh.position.x >= -16) {
+                        b.isReversing = false;
+                        b.state = 'patrolling';
+                        b.patrolTargetX = 50 + Math.random() * 90;
+                        b.patrolTargetZ = -60 + Math.random() * 120;
                     }
                 }
-            } else if (b.state === 'to_anchorage') {
-                activeBancas++;
-                if (!b.targetBoat || b.targetBoat.cargo <= 0 || !b.targetBoat.mesh.visible) {
-                    b.state = 'return_to_park';
-                    return;
-                }
-                // Port or Starboard standoff coordinate
-                const sideOffset = (b.serviceSide === 'port' ? -5.5 : 5.5);
-                const tx = b.targetBoat.mesh.position.x + sideOffset;
-                const tz = b.targetBoat.mesh.position.z + (b.laneOffset * 0.2);
-                const dist = updateVesselKinematics(b, tx, tz, dt);
+            } else {
+                // ROLE B — INDEPENDENT ARTISANAL FISHING BANCA
+                if (b.state === 'to_wharf') {
+                    activeBancas++;
+                    const landing = BANCA_LANDING_SPOTS[b.landingSlotIdx % BANCA_LANDING_SPOTS.length];
+                    const dist = updateVesselKinematics(b, landing.x, landing.z, dt);
 
-                if (dist < 3.8) {
-                    b.state = 'transferring';
-                    b.timer = 2.0;
-                    b.speed = 0;
-                }
-            } else if (b.state === 'transferring') {
-                activeBancas++;
-                b.speed = 0;
-                b.timer -= dt;
-                if (b.timer <= 0) {
-                    const take = Math.min(b.maxCargo, b.targetBoat ? b.targetBoat.cargo : 0);
-                    if (b.targetBoat) {
-                        b.targetBoat.cargo -= take;
-                        b.targetBoat.servicedByBanca = null;
+                    if (dist < 3.0) {
+                        b.mesh.position.set(landing.x, 0, landing.z);
+                        b.heading = 0;
+                        b.mesh.rotation.y = 0;
+                        b.speed = 0;
+                        b.isDocked = true;
+                        b.state = 'unloading_at_wharf';
+                        b.unloadTimer = 10.0 + Math.random() * 5.0; // 10 to 15 seconds!
                     }
-                    b.cargo = take;
-                    b.state = 'to_wharf';
-                }
-            } else if (b.state === 'to_wharf') {
-                activeBancas++;
-                // 12 DISTRIBUTED BANCA LANDING POINTS (No congestion bottleneck!)
-                const landing = BANCA_LANDING_SPOTS[b.landingSlotIdx % BANCA_LANDING_SPOTS.length];
-                const dist = updateVesselKinematics(b, landing.x, landing.z, dt);
-
-                if (dist < 3.5) {
-                    b.state = 'unloading_at_wharf';
-                    b.timer = 1.6;
+                } else if (b.state === 'unloading_at_wharf') {
+                    activeBancas++;
+                    b.isDocked = true;
                     b.speed = 0;
-                }
-            } else if (b.state === 'unloading_at_wharf') {
-                activeBancas++;
-                b.speed = 0;
-                b.timer -= dt;
-                if (b.timer <= 0) {
-                    totalCratesLanded += b.cargo;
-                    b.cargo = 0;
-                    b.state = 'return_to_park';
-                }
-            } else if (b.state === 'return_to_park') {
-                activeBancas++;
-                const dist = updateVesselKinematics(b, b.parkSlot.x, b.parkSlot.z, dt);
+                    b.mesh.position.x = -28.0;
+                    b.unloadTimer -= dt * timeScale;
 
-                if (dist < 2.0) {
-                    b.mesh.position.set(b.parkSlot.x, 0, b.parkSlot.z);
-                    b.heading = b.parkSlot.yaw;
-                    b.mesh.rotation.y = b.parkSlot.yaw;
-                    b.speed = 0;
-                    b.state = 'parked';
-                    b.targetBoat = null;
+                    if (b.unloadTimer <= 0) {
+                        totalCratesLanded += b.cargo;
+                        b.cargo = 0;
+                        b.isDocked = false;
+                        b.state = 'reversing_from_wharf';
+                        b.reverseTimer = 2.5;
+                        b.isReversing = true;
+                    }
+                } else if (b.state === 'reversing_from_wharf') {
+                    activeBancas++;
+                    b.isReversing = true;
+                    b.reverseTimer -= dt;
+                    updateVesselKinematics(b, b.mesh.position.x + 8, b.mesh.position.z, dt);
+
+                    if (b.reverseTimer <= 0 || b.mesh.position.x >= -16) {
+                        b.isReversing = false;
+                        b.state = 'to_sea';
+                        b.patrolTargetX = 240;
+                        b.patrolTargetZ = -70 + Math.random() * 140;
+                    }
+                } else if (b.state === 'to_sea') {
+                    activeBancas++;
+                    const dist = updateVesselKinematics(b, b.patrolTargetX, b.patrolTargetZ, dt);
+                    if (b.mesh.position.x >= 230 || dist < 10) {
+                        b.state = 'at_sea_fishing';
+                        b.seaTimer = 20.0 + Math.random() * 25.0;
+                        b.mesh.visible = false;
+                    }
+                } else if (b.state === 'at_sea_fishing') {
+                    b.seaTimer -= dt * timeScale;
+                    if (b.seaTimer <= 0) {
+                        b.cargo = Math.floor(15 + Math.random() * 20);
+                        b.mesh.position.set(220, 0, -60 + Math.random() * 120);
+                        b.heading = -Math.PI / 2;
+                        b.mesh.rotation.y = b.heading;
+                        b.mesh.visible = true;
+                        b.state = 'to_wharf';
+                    }
                 }
             }
         });
@@ -1978,7 +2047,7 @@ def generate_3d_digital_twin_html() -> str:
         }
         pAttr.needsUpdate = true;
 
-        // Rotate Lighthouse Head at Top Lantern Room (Y = 18.5)
+        // Rotate Lighthouse Head at Top Lantern Room (Y = 20.5)
         LightRotorPivot.rotation.y += timeDelta * 0.8;
 
         controls.update();
@@ -2010,7 +2079,7 @@ def generate_3d_digital_twin_html() -> str:
         raycaster.setFromCamera(mouse, camera);
 
         const mediumMeshes = vessels.filter(v => v.mesh.visible).map(v => v.mesh);
-        const bancaMeshes = bancas.map(b => b.mesh);
+        const bancaMeshes = bancas.filter(b => b.mesh.visible).map(b => b.mesh);
         const allMeshes = mediumMeshes.concat(bancaMeshes);
 
         const intersects = raycaster.intersectObjects(allMeshes, true);
@@ -2038,13 +2107,13 @@ def generate_3d_digital_twin_html() -> str:
                     ttBadge.style.background = 'rgba(16, 185, 129, 0.2)';
                     ttBadge.style.color = '#34D399';
                     ttState.textContent = 'Unloading at ' + (foundMedium.assignedBerth ? foundMedium.assignedBerth.name : 'Wharf');
-                    ttTimer.textContent = `${Math.ceil(foundMedium.remainingSec)}s (${(foundMedium.remainingSec / 60).toFixed(1)}m remaining)`;
+                    ttTimer.textContent = `${Math.ceil(foundMedium.remainingSec)}s remaining`;
                 } else if (foundMedium.state === 'Waiting at Anchorage') {
-                    ttBadge.textContent = 'Distant Anchorage';
+                    ttBadge.textContent = 'Bay Anchorage';
                     ttBadge.style.background = 'rgba(245, 158, 11, 0.2)';
                     ttBadge.style.color = '#FBBF24';
-                    ttState.textContent = 'Holding in San Miguel Bay';
-                    ttTimer.textContent = 'Awaiting berth clearance';
+                    ttState.textContent = foundMedium.servicedByBanca ? 'Tender Transfer in Progress' : 'Convenience Bay Holding';
+                    ttTimer.textContent = `${Math.round(foundMedium.cargo)} banyeras aboard`;
                 } else {
                     ttBadge.textContent = foundMedium.state;
                     ttBadge.style.background = 'rgba(56, 189, 248, 0.2)';
@@ -2066,18 +2135,38 @@ def generate_3d_digital_twin_html() -> str:
                 const pct = Math.min(100, Math.round((foundBanca.cargo / foundBanca.maxCargo) * 100));
                 ttBar.style.width = pct + '%';
 
-                if (foundBanca.state === 'parked') {
-                    ttBadge.textContent = 'Moored at Dock';
-                    ttBadge.style.background = 'rgba(148, 163, 184, 0.2)';
-                    ttBadge.style.color = '#94A3B8';
-                    ttState.textContent = 'Parked in Mooring Basin';
-                    ttTimer.textContent = 'Standby';
+                if (foundBanca.role === 'tender') {
+                    if (foundBanca.state === 'transferring') {
+                        ttBadge.textContent = 'Partner Tender';
+                        ttBadge.style.background = 'rgba(245, 158, 11, 0.2)';
+                        ttBadge.style.color = '#FBBF24';
+                        ttState.textContent = 'Loading Crates from ' + (foundBanca.targetBoat ? foundBanca.targetBoat.name : 'Mother Boat');
+                        ttTimer.textContent = `${Math.ceil(foundBanca.transferTimer)}s loading`;
+                    } else if (foundBanca.state === 'to_wharf') {
+                        ttBadge.textContent = 'Lightering Shuttle';
+                        ttBadge.style.background = 'rgba(56, 189, 248, 0.2)';
+                        ttBadge.style.color = '#38BDF8';
+                        ttState.textContent = 'Delivering Banyeras to Front Wharf';
+                        ttTimer.textContent = `${foundBanca.cargo} banyeras loaded`;
+                    } else if (foundBanca.state === 'unloading_at_wharf') {
+                        ttBadge.textContent = 'Apron Landing';
+                        ttBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+                        ttBadge.style.color = '#34D399';
+                        ttState.textContent = 'Offloading at Front Wharf Apron';
+                        ttTimer.textContent = `${Math.ceil(foundBanca.unloadTimer)}s remaining`;
+                    } else {
+                        ttBadge.textContent = 'Partner Tender';
+                        ttBadge.style.background = 'rgba(148, 163, 184, 0.2)';
+                        ttBadge.style.color = '#94A3B8';
+                        ttState.textContent = 'Patrolling Bay for Mother Boats';
+                        ttTimer.textContent = 'Standby in Harbor';
+                    }
                 } else {
-                    ttBadge.textContent = 'Active Lightering';
-                    ttBadge.style.background = 'rgba(245, 158, 11, 0.2)';
-                    ttBadge.style.color = '#FBBF24';
-                    ttState.textContent = 'Fetching Banyeras from Bay';
-                    ttTimer.textContent = 'In cycle';
+                    ttBadge.textContent = 'Artisanal Banca';
+                    ttBadge.style.background = 'rgba(56, 189, 248, 0.2)';
+                    ttBadge.style.color = '#38BDF8';
+                    ttState.textContent = foundBanca.state === 'unloading_at_wharf' ? 'Unloading Catch at Pier' : 'Artisanal Fishing';
+                    ttTimer.textContent = `${foundBanca.cargo} banyeras`;
                 }
 
                 tooltip.style.left = e.clientX + 'px';
@@ -2157,7 +2246,7 @@ def generate_3d_digital_twin_html() -> str:
     const slUnloadScale = document.getElementById('sl-unload-scale');
     slUnloadScale.addEventListener('input', (e) => {
         unloadDurationScale = parseFloat(e.target.value);
-        document.getElementById('val-unload-scale').textContent = `${(unloadDurationScale * 0.7).toFixed(1)}–${(unloadDurationScale * 1.6).toFixed(1)} mins`;
+        document.getElementById('val-unload-scale').textContent = `${(unloadDurationScale * 5).toFixed(0)}–${(unloadDurationScale * 12).toFixed(0)}s`;
     });
 
     const slBerths = document.getElementById('sl-berths');
