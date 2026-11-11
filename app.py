@@ -477,7 +477,7 @@ def render_card(label: str, value: str, unit: str = "", subtext: str = "", badge
 st.sidebar.markdown(f'<div style="font-weight: 700; font-size: 1.05rem; color: #F8FAFC; display: flex; align-items: center; margin-bottom: 0.6rem;">{SVG_SLIDERS} 1. Physical Harbor Topology</div>', unsafe_allow_html=True)
 
 num_berths = st.sidebar.slider("Wharf Berths (Physical Slips)", min_value=1, max_value=8, value=3, help="Number of physical wharf docking spots available for vessel discharge.")
-num_small_boats = st.sidebar.slider("Shuttle Banca Fleet Size", min_value=2, max_value=30, value=10, help="Pool of small motorized lightering bancas shuttling fish crates.")
+num_small_boats = st.sidebar.slider("Shuttle Banca Fleet Size", min_value=2, max_value=25, value=8, help="Pool of small motorized lightering bancas shuttling fish crates.")
 channel_capacity = st.sidebar.slider("Channel Capacity (Max Craft)", min_value=1, max_value=8, value=3, help="Maximum concurrent vessel transits permitted in the river mouth channel.")
 max_parallel_bancas = st.sidebar.slider("Parallel Bancas per Mother Boat", min_value=1, max_value=4, value=2, help="Number of lightering bancas assigned simultaneously to a single mother boat.")
 
